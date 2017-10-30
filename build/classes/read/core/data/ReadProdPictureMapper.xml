@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadProdPictureMapper">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<resultMap type="wtb.core.model.ProdPictures" id="PictureClassResultMap">
+		<result property="ID" column="Picture_ID" />
+		<result property="PKID" column="Picture_ID" />
+		<result property="Url" column="Picture_Url" />
+		<result property="RealUrl" column="Picture_RealUrl" />
+		<result property="Memo" column="Picture_Memo" />
+		<result property="Status" column="Picture_Status" />
+		<result property="Type" column="Picture_Type" />
+		<result property="ProductID" column="Picture_ProductID" />
+		<result property="CreateTime" column="Picture_CreateTime" />
+		<result property="ModifyTime" column="Picture_ModifyTime" />
+		<result property="IsEnable" column="Picture_IsEnable" />
+		<result property="IsEnables" column="Picture_IsEnables" />
+		<result property="PUrl" column="ProdPicture_Url" />
+		<result property="Title" column="ProdPicture_Title" />
+	</resultMap>
+
+	<sql id="params">
+		Picture_ID,
+		Picture_Url ,
+		Picture_RealUrl ,
+		Picture_Memo ,
+		Picture_Status,
+		Picture_ProductID ,
+		Picture_CreateTime ,
+		Picture_Type ,
+		Picture_ModifyTime,
+		Picture_IsEnable,
+		case Picture_IsEnable when 1 then '启用' else '禁用'end as Picture_IsEnables,
+		ProdPicture_Url,
+		ProdPicture_Title
+	</sql>
+	<sql id="where">
+		<if test="ID != null">
+			and Picture_ID = #{ID}
+		</if>
+
+		<if test="Status != null and ProductID != null">
+			and Picture_Status = #{Status} and Picture_ProductID = #{ProductID}
+		</if>
+
+		<if test="Status != null">
+			and Picture_Status = #{Status}
+		</if>
+		<if test="Status == null">
+			and Picture_Status = 1
+		</if>
+		<if test="ProductID != null">
+			and Picture_ProductID = #{ProductID}
+		</if>
+		<if test="Type != null">
+			and Picture_Type = #{Type}
+		</if>
+		<if test="TypeNormal != null">
+			and (Picture_Type = 1 or Picture_Type = 0)
+		</if>
+		<if test="WeChatID != null">
+			and Picture_WeChatID = #{WeChatID}
+		</if>
+		<if test="AreaID != null">
+			and Picture_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic
+			where WeChatPublic_AreaID=#{AreaID})
+		</if>
+		<if test="searchText != null">
+			and Picture_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic
+			where WeChatPublic_Company like CONCAT(CONCAT('%',
+			#{searchText,
+			jdbcType=VARCHAR}),'%'))
+		</if>
+		<if test="UnEqType != null">
+			and Picture_Type != #{UnEqType}
+		</if>
+		<if test="IsEnable != null">
+			and Picture_IsEnable = #{IsEnable}
+		</if>
+		<if test="Sina != null">
+			and #{Sina} = #{Sina}
+		</if>
+	</sql>
+	<select id="getPictureByIDList" parameterType="map"
+		resultMap="PictureClassResultMap">
+		SELECT
+		<include refid="params"></include>
+		FROM wtb_ProdPicture
+		<where>
+			Picture_Status=1
+			<if test="_parameter != null">
+				and Picture_ID = #{_parameter}
+			</if>
+		</where>
+	</select>
+	<select id="getPictureList" parameterType="map"
+		resultMap="PictureClassResultMap">
+		SELECT
+		<include refid="params"></include>
+		FROM wtb_ProdPicture
+		<where>
+			1=1
+			<include refid="where"></include>
+
+		</where>
+		<if test="time != null">
+			order by Picture_ModifyTime desc
+		</if>
+		<if test="time == null">
+			order by Picture_IsEnable desc,Picture_ModifyTime desc
+		</if>
+
+		<if test="limit != null and start !=null ">
+			limit ${start},${limit}
+		</if>
+	</select>
+
+
+	<select id="getPictureCount" parameterType="map" resultType="int">
+		SELECT
+		Count(1)
+		FROM wtb_ProdPicture
+		<where>
+			1=1
+
+			<include refid="where"></include>
+
+		</where>
+
+
+	</select>
+
+	<select id="getPictureByProductIDList" parameterType="map"
+		resultMap="PictureClassResultMap">
+		SELECT
+		<include refid="params"></include>
+		FROM wtb_ProdPicture
+		<where>
+			Picture_Status=1
+			<if test="_parameter != null">
+				and Picture_ProductID = #{_parameter}
+			</if>
+
+
+		</where>
+	</select>
+</mapper>
+

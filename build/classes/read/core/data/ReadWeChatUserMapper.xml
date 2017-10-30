@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadWeChatUserMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<resultMap type="wtb.core.model.WeChatUser" id="ClassResultMap">
+	<result property="ID" column="WeChatUser_ID"/>
+	<result property="PKID" column="WeChatUser_ID"/>
+	<result property="OpenID" column="WeChatUser_OpenID"/>
+	<result property="UnionID" column="WeChatUser_UnionID"/>
+	<result property="NickName" column="WeChatUser_NickName" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="Language" column="WeChatUser_Language"/>
+	<result property="Sex" column="WeChatUser_Sex"/>
+	<result property="City" column="WeChatUser_City"/>
+	<result property="Province" column="WeChatUser_Province"/>
+	<result property="HeadImgUrl" column="WeChatUser_HeadImgUrl"/>
+	<result property="CreateTime" column="WeChatUser_CreateTime"/>
+	<result property="Privilege" column="WeChatUser_Privilege"/>
+	<result property="Status" column="WeChatUser_Status"/>
+	
+</resultMap>
+<sql id="where">
+
+
+		<if  test="OpenID != null">
+			and WeChatUser_OpenID = #{OpenID}
+		</if>
+		<if  test="UnionID != null">
+			and WeChatUser_UnionID = #{UnionID}
+		</if>
+		<if  test="NickName != null">
+			and WeChatUser_NickName = #{NickName}
+		</if>
+		<if  test="isLoginIntervals">
+			and TIMESTAMPDIFF(MINUTE,now(),WeChatUser_CreateTime)&gt;-#{isLoginIntervals} 
+		</if>
+		<if  test="Sex != null">
+			and WeChatUser_Sex = #{Sex}
+		</if>
+		<if  test="City != null">
+			and WeChatUser_City = #{City}
+		</if>
+		<if  test="Province != null">
+			and WeChatUser_Province = #{Province}
+		</if>
+		<if  test="Status != null">
+			and WeChatUser_Status = #{Status}
+		</if>
+		<if  test="ID != null">
+			and WeChatUser_ID = #{ID}
+		</if>
+
+
+</sql>
+<select id="getWeChatUserList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		WeChatUser_OpenID,
+		WeChatUser_NickName,
+		WeChatUser_Language,
+		WeChatUser_Sex,
+		WeChatUser_City,
+		WeChatUser_Province,
+		WeChatUser_HeadImgUrl,
+		WeChatUser_CreateTime,
+		WeChatUser_ID,
+		WeChatUser_Privilege,
+		WeChatUser_Status,
+		WeChatUser_UnionID
+		FROM wtb_WeChatUser
+		<where>
+			1=1
+				<include refid="where"></include>
+				
+		</where>
+</select>
+
+<select id="getWeChatUserEffCount" parameterType="map" resultType="int">
+	SELECT
+		Count(distinct WeChatUser_OpenID) as Count
+		FROM wtb_WeChatUser
+		<where>
+			1=1
+				<include refid="where"></include>
+		</where>
+
+</select>
+
+</mapper>
+

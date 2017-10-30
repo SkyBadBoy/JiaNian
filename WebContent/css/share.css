@@ -1,0 +1,103 @@
+body {
+    height: auto;
+    text-align: center;
+    display: block;
+    font-size:15px;
+    margin: 0 auto;
+    /*position: relative;*/
+}
+a {
+    display: block;
+    text-decoration: none;
+    color: #444444;
+    margin: 0 auto;
+    width:100px;
+}
+a:active ,a:hover ,a:focus{
+    background-color: #fff
+}
+.share_head {
+    width: 68%;
+
+}
+.share_rectangle_spanzero {
+    position: absolute;
+    left: 20%;
+    top:25px;
+    width: 60%;
+    font-size: 22px;
+}
+
+.share_money {
+    width: 100%;
+}
+.share_rectangle {
+    width: 76%;
+}
+.share_rectangle_spanone {
+    position: absolute;
+    left: 9%;
+    top: 30%;
+    width: 82%;
+    font-size: 13px;
+}
+.share_rectangle_spantwo {
+    position: absolute;
+    left: 12%;
+    top: 60%;
+    width: 76%;
+    font-size: 13px;
+}
+.share_rectangle_spanthree {
+    position: absolute;
+    left: 12%;
+    top: 100%;
+    width: 76%;
+    font-size: 13px;
+}
+.share_down {
+    width: 6%;
+}
+.share_load {
+    /*position: absolute;*/
+    /*left: 35%;*/
+    /*bottom: 2%;*/
+    width: 100%;
+}
+@media screen and (min-width: 375px) {
+    .share_rectangle_spanzero {
+        font-size: 24px;
+    }
+    .share_rectangle_spanone {
+        font-size: 15px;
+        /*top: 35px;*/
+
+    }
+    .share_rectangle_spantwo {
+        font-size: 15px;
+        /*top: 70px;*/
+    }
+    .share_rectangle_spanthree {
+        font-size: 15px;
+        /*top:115px;*/
+    }
+}
+
+@media screen and (min-width: 414px) {
+    .share_rectangle_spanzero {
+        font-size: 25px;
+    }
+    .share_rectangle_spanone {
+        font-size: 16px;
+        /*top: 40px;*/
+    }
+    .share_rectangle_spantwo {
+        font-size: 16px;
+        /*top:80px;*/
+    }
+    .share_rectangle_spanthree {
+        font-size: 16px;
+        /*top: 125px;*/
+    }
+}
+

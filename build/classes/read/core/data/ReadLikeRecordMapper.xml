@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadLikeRecordMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+     
+<resultMap type="wtb.core.model.LikeRecord" id="ClassResultMap">
+	<result property="ID" column="LikeRecord_ID"/>
+	<result property="PKID" column="LikeRecord_ID"/>
+	<result property="NoticesID" column="LikeRecord_NoticesID"/>
+	<result property="Memo" column="LikeRecord_Memo"/>
+	<result property="UserID" column="LikeRecord_UserID"/>
+	<result property="CreateTime" column="LikeRecord_CreateTime"/>
+	<result property="ModifyTime" column="LikeRecord_ModifyTime"/>
+	<result property="Status" column="LikeRecord_Status"/>
+	<result property="Deleted" column="LikeRecord_Deleted"/>
+</resultMap>
+<sql id="sql">
+		LikeRecord_ID,
+		LikeRecord_UserID,
+		LikeRecord_NoticesID,
+		LikeRecord_CreateTime,
+		LikeRecord_Status,
+		LikeRecord_Deleted,
+		LikeRecord_ModifyTime,
+		LikeRecord_Memo
+</sql>
+<sql id="where">
+	1=1 and LikeRecord_Status=1
+	<if test="ID != null">
+		and LikeRecord_ID = #{ID}
+	</if>
+	<if test="UserID != null">
+		and LikeRecord_UserID = #{UserID}
+	</if>
+	<if test="NoticesID != null">
+		and LikeRecord_NoticesID = #{NoticesID}
+	</if>
+	<if test="Status != null">
+		and LikeRecord_Status = #{Status}
+	</if>
+	<if test="Deleted != null">
+		and LikeRecord_Deleted = #{Deleted}
+	</if>
+		<if test="Rand != null">
+		and #{Rand} = #{Rand}
+	</if>
+</sql>
+
+<select id="getLikeRecordList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+			<include refid="sql"></include>
+		FROM wtb_LikeRecord
+		<where>
+			<include refid="where"></include>
+		</where>
+		
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+		order by LikeRecord_ModifyTime desc
+</select>
+
+<select id="getLikeRecordCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_LikeRecord
+		<where>
+			<include refid="where"></include>
+		</where>
+		
+</select>
+<select id="getLikeRecordByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+			<include refid="sql"></include>
+		FROM wtb_LikeRecord
+		<where>
+			LikeRecord_Status=1
+				<if test="ID != null">
+					and LikeRecord_ID = #{ID}
+				</if>
+				
+		</where>
+		order by LikeRecord_Weight desc
+		
+</select>
+
+</mapper>
+

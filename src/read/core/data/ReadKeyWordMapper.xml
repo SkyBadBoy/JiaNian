@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadKeyWordMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+    <select id="findKeyWord" parameterType="wtb.core.model.KeyWord" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM wtb_keywords
+        WHERE KeyWord_ID = #{iD} AND KeyWord_Deleted = 0
+    </select>
+
+    <select id="searchKeyWord" parameterType="wtb.core.model.KeyWord" resultMap="ClassResultMap">
+        SELECT * FROM wtb_keywords
+        WHERE KeyWord_ID = #{iD} AND KeyWord_Deleted = 0
+    </select>
+    <select id="queryKeyWordCount" parameterType="wtb.core.model.KeyWord" resultType="int">
+        SELECT
+       Count(1)
+        FROM wtb_keywords
+
+        <where>
+            KeyWord_Deleted = 0
+            <if test="iD != null">
+                AND KeyWord_ID = #{iD}
+            </if>
+            <if test="typeID != null">
+                AND KeyWord_TypeID = #{typeID}
+            </if>
+            <if test="type != null">
+                AND KeyWord_TypeID in(1,2,3,5)
+            </if>
+            <if test="keyWord != null">
+                AND  KeyWord_KeyWord like CONCAT(CONCAT('%', #{keyWord, jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="status != null">
+                AND KeyWord_Status = #{status}
+            </if>
+        </where>
+    </select>
+    <select id="queryKeyWord" parameterType="map" resultMap="ClassResultMap">
+        SELECT
+        KeyWord_ID, KeyWord_TypeID, KeyWord_KeyWord, KeyWord_CreateTime,
+        KeyWord_ModifyTime, KeyWord_Version, KeyWord_Status, KeyWord_Deleted,KeyWord_Count,KeyWord_VoteID
+        FROM wtb_keywords
+        <where>
+            KeyWord_Deleted = 0
+            <if test="iD != null">
+                AND KeyWord_ID = #{iD}
+            </if>
+            <if test="typeID != null">
+                AND KeyWord_TypeID = #{typeID}
+            </if>
+            <if test="type != null">
+                AND KeyWord_TypeID in(1,2,3,5)
+            </if>
+            <if test="keyWord != null">
+                AND KeyWord_KeyWord like CONCAT(CONCAT('%', #{keyWord, jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="status != null">
+                AND KeyWord_Status = #{status}
+            </if>
+        </where>
+        order by KeyWord_Count desc
+        <if test="limit != null and start!=null">
+            limit #{start},#{limit}
+        </if>
+    </select>
+    <resultMap type="wtb.core.model.KeyWord" id="ClassResultMap">
+        <result property="iD" column="KeyWord_ID"/>
+        <result property="pkid" column="KeyWord_ID"/>
+        <result property="typeID" column="KeyWord_TypeID"/>
+        <result property="keyWord" column="KeyWord_KeyWord"/>
+        <result property="createTime" column="KeyWord_CreateTime"/>
+        <result property="modifyTime" column="KeyWord_ModifyTime"/>
+        <result property="version" column="KeyWord_Version"/>
+        <result property="status" column="KeyWord_Status"/>
+        <result property="deleted" column="KeyWord_Deleted"/>
+        <result property="count" column="KeyWord_Count"/>
+        <result property="VoteID" column="KeyWord_VoteID"/>
+    </resultMap>
+</mapper>
+

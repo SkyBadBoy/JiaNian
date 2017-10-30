@@ -1,0 +1,210 @@
+@charset "UTF-8";
+ul,li{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+#warp{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: url(/WeNewsAgency/images/games/ct_bj1.png) no-repeat;
+    background-size:100% 100% ;
+}
+header{
+    width: 100%;
+    height: 1.24rem;
+    background: url(/WeNewsAgency/images/games/bj-top.jpg) repeat-x;
+    position: relative;
+}
+.sl{
+    width: 1.44rem;
+    height: 1.44rem;
+    position: absolute;
+    top: 170px;;
+    right: 49px;;
+    /*background: url(img/level.png) no-repeat;*/
+    /*background: url(img/ct_bj3..png) no-repeat;*/
+    /*background-size:100% 100% ;*/
+    font:0.333333rem/0.8rem "微软雅黑";
+    color: #DA2F45;
+    text-align: center;
+}
+.content{
+    width: 100%;
+    position: relative;
+}
+.heder{
+    width: 5.466666rem;
+    height: 1.04rem;
+    /*background:url(img/bj-bt.png) no-repeat;*/
+    /*background-size:100% 100% ; */
+    position: absolute;
+    left: calc(50% - 2.733333rem);
+    top: 0.553333rem;
+    font: 0.433333rem/0.8rem "微软雅黑";
+    text-align: center;
+    color: #FFFFFF;
+    color: #DA2F45;
+    z-index: 3;
+    font-weight: 500;
+}
+
+.img{
+    width: 4.266666rem;
+    height: 4.266666rem;
+    background: white;
+    background-size: 100% 100%;
+    border: 0.206666rem solid #A630F1;
+    position: absolute;
+    top: 1.49rem;
+    border-radius: 10px;;
+    left: calc(50% - 2.233333rem);
+    z-index: 3;
+}
+.wz{
+    position: absolute;
+    top:7.2rem;
+}
+.wz li{
+    float: left;
+    position: relative;
+    margin-right: 0.066666rem;
+    width: 1.333333rem;
+    height: 1.333333rem;
+    background: #300056;
+    border-radius: 0.133333rem;
+    color: #FFFFFF;
+    text-align: center;
+}
+.x{
+    width: 8rem;
+    height: 0.066666rem;
+    background: #150025;
+    position: absolute;
+    top: 9.333333rem;
+    left: calc(50% - 4rem);
+}
+.wz1{
+    width: 8rem;
+    position: absolute;
+    left: calc(50% - 4rem);
+    top: 10.666666rem;
+}
+.wz1 li{
+    float: left;
+    width: 0.933333rem;
+    height: 0.933333rem;
+    background: #FFFFFF;
+    margin: 0.026666rem;
+    color: #000000;
+    font: 0.666666rem/0.933333rem "微软雅黑";
+    text-align: center;
+    border-radius:0.066666rem ;
+}
+.zg{
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 4;
+    background: rgba(0,0,0,.3);
+}
+.next{
+    width: 8.333333rem;
+    /*height: 1.333333rem;*/
+    position: absolute;
+    font: 0.4rem/1.333333rem "微软雅黑";
+    left: calc(50% - 4.166665rem);
+    top: 5.333333rem;
+    background: #6ba94e;
+    border-bottom: 0.133333rem solid #256f00;
+    border-radius:0.133333rem ;
+    text-align: center;
+    z-index: 6;
+    color: #FFF;
+}
+.weixinwenshe{
+    width: 2.5rem;
+    position: absolute;
+    top: 20px;;
+    right: 15px;;
+}
+.gs_num{
+    width: 1.44rem;
+    height: 1.44rem;
+    position: absolute;
+    top: 127px;;
+    right: 49px;;
+    /*background: url(img/level.png) no-repeat;*/
+    background: url(/WeNewsAgency/images/games/ct_bj3.png) no-repeat;
+    background-size:100% 100% ;
+    font-size: 50px;
+    color: #DA2F45;
+    text-align: center;
+}
+.guanshu{
+    width: 1.44rem;
+    height: 1.44rem;
+    position: absolute;
+    top:140px;
+    right: 45px;;
+    /*background: url(img/level.png) no-repeat;*/
+    font:0.343333rem/0.8rem "微软雅黑";
+    color: #DA2F45;
+    text-align: center;
+    font-weight: 500;
+}
+.heder_img{
+    width: 4rem;
+    /*background:url(img/bj-bt.png) no-repeat;*/
+    background:url(/WeNewsAgency/images/games/ct_bj2.png) no-repeat;
+    background-size:100% 100% ;
+    position: absolute;
+    left: calc(50% - 1.9rem);
+    top: -1.533333rem;
+    font-size: 15px;
+    text-align: center;
+    color: #FFFFFF;
+    z-index: 1;
+}
+
+.next{
+    width: 8.333333rem;
+    /*height: 1.333333rem;*/
+    position: absolute;
+    font: 0.4rem/1.333333rem "微软雅黑";
+    left: calc(50% - 4.166665rem);
+    top: 3.333333rem;
+    background: #6ba94e;
+    border-bottom: 0.133333rem solid #256f00;
+    border-radius:0.133333rem ;
+    text-align: center;
+    z-index: 6;
+    color: #FFF;
+}
+.game_comment{
+	background:#fff;color:#333;height: auto;
+    max-height: 600px;overflow: scroll;line-height: 0.733333rem;padding: 40px;
+    text-align: left;
+    font-size: 25pt;}
+.game_rank{width: 50%;float: left;text-decoration: none;color: #fff}
+.game_next{width: 50%;float: left;}
+/*@media only screen and (device-height :480px) and (-webkit-device-pixel-ratio:2){/!*4 4s*!/*/
+/*.pc-underline{left: 28%;}*/
+/*}*/
+/*@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/!* 兼容iphone5 *!/*/
+/*.pc-underline{left: 29%;}}*/
+@media (min-device-width : 375px) and (max-device-width : 667px) and (-webkit-min-device-pixel-ratio : 2){/*6*/
+    .gs_num{top: 148px;right: 56px;}
+    .guanshu{top: 155px;right: 50px;}
+    .sl{top: 190px;right: 56px;}
+}
+@media (min-device-width : 414px) and (max-device-width : 736px) and (-webkit-min-device-pixel-ratio : 3){/*6+*/
+    .gs_num{top: 230px;right: 80px;}
+    .guanshu{top: 240px;right: 80px;}
+    .sl{top: 300px;right: 80px;}
+}

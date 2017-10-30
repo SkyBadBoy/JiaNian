@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadUsersMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Users" id="ClassResultMapForHomeList">
+	<result property="ID" column="Users_ID"/>
+	<result property="PKID" column="Users_ID"/>
+	<result property="LoginName" column="Users_LoginName"/>
+	<result property="Level" column="Users_Level"/>
+	<result property="Name" column="Users_Name"/>
+	<result property="Status" column="Users_Status"/>
+	<result property="AreaID" column="Users_AreaID"/>
+	<result property="Phone" column="Users_Phone"/>
+	<association property="BaseInfo" column="Users_Status" select="read.core.data.ReadBaseInfoMapper.getBaseInfoList"/>
+</resultMap>
+
+<resultMap type="wtb.core.model.Users" id="ClassResultMap">
+	<result property="ID" column="Users_ID"/>
+	<result property="PKID" column="Users_ID"/>
+	<result property="LoginName" column="Users_LoginName"/>
+	<result property="PassWord" column="Users_PassWord"/>
+	<result property="Level" column="Users_Level"/>
+	<result property="CreateTime" column="Users_CreateTime"/>
+	<result property="ModifyTime" column="Users_ModifyTime"/>
+	<result property="ImageID" column="Users_ImageID"/>
+	<result property="Name" column="Users_Name"/>
+	<result property="Status" column="Users_Status"/>
+	<result property="WeChatID" column="Users_WeChatID"/>
+	<result property="AreaID" column="Users_AreaID"/>
+	<result property="Phone" column="Users_Phone"/>
+	
+	<association property="Image" column="Users_ImageID" select="read.core.data.ReadPictureMapper.getPictureList"/>
+	<association property="BaseInfo" column="Users_Status" select="read.core.data.ReadBaseInfoMapper.getBaseInfoList"/>
+	<association property="AdminLevel" column="Users_Level" select="read.core.data.ReadBaseInfoMapper.getBaseInfoList"/>
+	<association property="Area" column="Users_AreaID" select="read.core.data.ReadRegionMapper.getRegionByIDList"/>
+</resultMap>
+<select id="getUsersList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Users_ID,
+  Users_LoginName ,
+  Users_PassWord ,
+  Users_Level ,
+  Users_CreateTime,
+  Users_ModifyTime ,
+  Users_Status ,
+  Users_Name ,
+  Users_ImageID,
+  Users_WeChatID,
+  Users_AreaID,
+  Users_Phone
+		FROM wtb_Users
+		<where>
+			1=1
+				<if test="ID != null">
+					and Users_ID = #{ID}
+				</if>
+				<if test="NoQueryID != null">
+					and Users_ID != #{NoQueryID}
+				</if>
+				<if test="LoginName != null">
+					and Users_LoginName = #{LoginName}
+				</if>
+				<if test="Name != null">
+					and Users_Name like CONCAT(CONCAT('%', #{Name,
+					jdbcType=VARCHAR}),'%')
+					
+				</if>
+				<if test="PassWord != null">
+					and Users_PassWord = #{PassWord}
+				</if>
+				<if test="Level != null">
+					and Users_Level = #{Level}
+				</if>
+				<if test="CreateTime != null">
+					and Users_CreateTime = #{CreateTime}
+				</if>
+				<if test="ModifyTime != null">
+					and Users_ModifyTime = #{ModifyTime}
+				</if>
+				<if test="Status != null">
+					and Users_Status = #{Status}
+				</if>
+				<if test="AreaID != null">
+					and Users_AreaID = #{AreaID}
+				</if>
+				<if test="NoEqLevel != null">
+					and Users_Level != #{NoEqLevel}
+				</if>
+				<if test="NoQueryLevel != null">
+					and Users_Level !=3
+				</if>
+				<if test="NoQueryStatus != null">
+					and Users_Status !=#{NoQueryStatus}
+				</if>
+				<if test="WeChatID != null">
+					and Users_WeChatID =#{WeChatID}
+				</if>
+				
+		</where>
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getHomeUsersList" parameterType="map" resultMap="ClassResultMapForHomeList">
+	SELECT
+		Users_ID,
+  Users_LoginName ,
+  Users_Level ,
+  Users_Status ,
+  Users_Name ,
+  Users_AreaID,
+  Users_Phone
+		FROM wtb_Users
+		<where>
+			1=1
+				<if test="ID != null">
+					and Users_ID = #{ID}
+				</if>
+				<if test="NoQueryID != null">
+					and Users_ID != #{NoQueryID}
+				</if>
+				<if test="LoginName != null">
+					and Users_LoginName = #{LoginName}
+				</if>
+				<if test="Name != null">
+					and Users_Name like CONCAT(CONCAT('%', #{Name,
+					jdbcType=VARCHAR}),'%')
+					
+				</if>
+				<if test="PassWord != null">
+					and Users_PassWord = #{PassWord}
+				</if>
+				<if test="Level != null and AdminAreaID==null">
+					and Users_Level = #{Level}
+				</if>
+				<if test="Level != null and AdminAreaID!=null">
+					and ( Users_Level = #{Level} or Users_AreaID = #{AdminAreaID} )
+				</if>
+				<if test="CreateTime != null">
+					and Users_CreateTime = #{CreateTime}
+				</if>
+				<if test="ModifyTime != null">
+					and Users_ModifyTime = #{ModifyTime}
+				</if>
+				<if test="Status != null">
+					and Users_Status = #{Status}
+				</if>
+				<if test="AreaID != null">
+					and Users_AreaID = #{AreaID}
+				</if>
+				<if test="NoEqLevel != null">
+					and Users_Level != #{NoEqLevel}
+				</if>
+				<if test="NoQueryLevel != null">
+					and Users_Level !=3
+				</if>
+				<if test="NoQueryStatus != null">
+					and Users_Status !=#{NoQueryStatus}
+				</if>
+				<if test="WeChatID != null">
+					and Users_WeChatID =#{WeChatID}
+				</if>
+				
+		</where>
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+		</if>
+</select>
+<select id="getUsersListByID" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Users_ID,
+  Users_LoginName ,
+  Users_PassWord ,
+  Users_Level ,
+  Users_CreateTime,
+  Users_ModifyTime ,
+  Users_Status ,
+  Users_Name ,
+  Users_ImageID,
+  Users_WeChatID,
+  Users_AreaID,
+  Users_Phone
+		FROM wtb_Users
+		<where>
+			1=1
+				<if test="_parameter != null">
+					and Users_ID = #{_parameter}
+				</if>
+				
+				
+		</where>
+		
+</select>
+
+
+<select id="getUsersCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Users
+		<where>
+			1=1
+				<if test="ID != null">
+					and Users_ID = #{ID}
+				</if>
+				<if test="NoQueryID != null">
+					and Users_ID != #{NoQueryID}
+				</if>
+				<if test="LoginName != null">
+					and Users_LoginName = #{LoginName}
+				</if>
+				<if test="Name != null">
+					and Users_Name like CONCAT(CONCAT('%', #{Name,
+					jdbcType=VARCHAR}),'%')
+				</if>
+				<if test="PassWord != null">
+					and Users_PassWord = #{PassWord}
+				</if>
+				<if test="Level != null">
+					and Users_Level = #{Level}
+				</if>
+				<if test="NoEqLevel != null">
+					and Users_Level != #{NoEqLevel}
+				</if>
+				<if test="NoQueryLevel != null">
+					and Users_Level !=3
+				</if>
+				<if test="CreateTime != null">
+					and Users_CreateTime = #{CreateTime}
+				</if>
+				<if test="ModifyTime != null">
+					and Users_ModifyTime = #{ModifyTime}
+				</if>
+				<if test="Status != null">
+					and Users_Status = #{Status}
+				</if>
+				<if test="AreaID != null">
+					and Users_AreaID = #{AreaID}
+				</if>
+				<if test="NoQueryStatus != null">
+					and Users_Status !=#{NoQueryStatus}
+				</if>
+				<if test="WeChatID != null">
+					and Users_WeChatID =#{WeChatID}
+				</if>
+		</where>
+		
+</select>
+
+
+</mapper>
+

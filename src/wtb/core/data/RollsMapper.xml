@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wtb.core.data.RollsMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.Rolls" >
+    <id column="roll_id" property="ID" jdbcType="BIGINT" />
+	<result column="roll_id" property="PKID" jdbcType="BIGINT"/>
+    <result column="roll_markid" property="rollMarkid" jdbcType="VARCHAR" />
+    <result column="roll_userid" property="rollUserid" jdbcType="BIGINT" />
+    <result column="roll_belongid" property="rollBelongid" jdbcType="BIGINT" />
+    <result column="roll_type" property="rollType" jdbcType="INTEGER" />
+    <result column="roll_status" property="rollStatus" jdbcType="INTEGER" />
+    <result column="roll_delete" property="rollDelete" jdbcType="INTEGER" />
+    <result column="roll_prizeid" property="rollPrizeid" jdbcType="BIGINT" />
+    <result column="roll_redundancy" property="rollRedundancy" jdbcType="VARCHAR" />
+    <result column="roll_createtime" property="rollCreatetime" jdbcType="TIMESTAMP" />
+    <result column="roll_modifytime" property="rollModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    roll_id, roll_markid, roll_userid, roll_belongid, roll_type, roll_status, roll_delete, 
+    roll_prizeid, roll_redundancy, roll_createtime, roll_modifytime
+  </sql>
+  
+  <!-- by Sheryl -->
+  <insert id="AddRollMessage" parameterType="wtb.core.model.Rolls" >
+    insert into wtb_rolls (roll_id, roll_markid, roll_userid, 
+      roll_belongid, roll_type, roll_status, 
+      roll_delete, roll_prizeid, roll_redundancy, 
+      roll_createtime, roll_modifytime)
+    values (#{ID,jdbcType=BIGINT}, #{rollMarkid,jdbcType=VARCHAR}, #{rollUserid,jdbcType=BIGINT}, 
+      #{rollBelongid,jdbcType=BIGINT}, #{rollType,jdbcType=INTEGER}, 0, 
+      0 , #{rollPrizeid,jdbcType=BIGINT}, #{rollRedundancy,jdbcType=VARCHAR}, 
+      now(), now())
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wtb_rolls
+    where roll_id = #{ID,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="wtb.core.model.Rolls" >
+    insert into wtb_rolls (roll_id, roll_markid, roll_userid, 
+      roll_belongid, roll_type, roll_status, 
+      roll_delete, roll_prizeid, roll_redundancy, 
+      roll_createtime, roll_modifytime)
+    values (#{ID,jdbcType=BIGINT}, #{rollMarkid,jdbcType=VARCHAR}, #{rollUserid,jdbcType=BIGINT}, 
+      #{rollBelongid,jdbcType=BIGINT}, #{rollType,jdbcType=INTEGER}, #{rollStatus,jdbcType=INTEGER}, 
+      #{rollDelete,jdbcType=INTEGER}, #{rollPrizeid,jdbcType=BIGINT}, #{rollRedundancy,jdbcType=VARCHAR}, 
+      #{rollCreatetime,jdbcType=TIMESTAMP}, #{rollModifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="wtb.core.model.Rolls" >
+    insert into wtb_rolls
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ID != null" >
+        roll_id,
+      </if>
+      <if test="rollMarkid != null" >
+        roll_markid,
+      </if>
+      <if test="rollUserid != null" >
+        roll_userid,
+      </if>
+      <if test="rollBelongid != null" >
+        roll_belongid,
+      </if>
+      <if test="rollType != null" >
+        roll_type,
+      </if>
+      <if test="rollStatus != null" >
+        roll_status,
+      </if>
+      <if test="rollDelete != null" >
+        roll_delete,
+      </if>
+      <if test="rollPrizeid != null" >
+        roll_prizeid,
+      </if>
+      <if test="rollRedundancy != null" >
+        roll_redundancy,
+      </if>
+      <if test="rollCreatetime != null" >
+        roll_createtime,
+      </if>
+      <if test="rollModifytime != null" >
+        roll_modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ID != null" >
+        #{ID,jdbcType=BIGINT},
+      </if>
+      <if test="rollMarkid != null" >
+        #{rollMarkid,jdbcType=VARCHAR},
+      </if>
+      <if test="rollUserid != null" >
+        #{rollUserid,jdbcType=BIGINT},
+      </if>
+      <if test="rollBelongid != null" >
+        #{rollBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="rollType != null" >
+        #{rollType,jdbcType=INTEGER},
+      </if>
+      <if test="rollStatus != null" >
+        #{rollStatus,jdbcType=INTEGER},
+      </if>
+      <if test="rollDelete != null" >
+        #{rollDelete,jdbcType=INTEGER},
+      </if>
+      <if test="rollPrizeid != null" >
+        #{rollPrizeid,jdbcType=BIGINT},
+      </if>
+      <if test="rollRedundancy != null" >
+        #{rollRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="rollCreatetime != null" >
+        #{rollCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rollModifytime != null" >
+        #{rollModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="wtb.core.model.Rolls" >
+    update wtb_rolls
+    <set >
+      <if test="rollMarkid != null" >
+        roll_markid = #{rollMarkid,jdbcType=VARCHAR},
+      </if>
+      <if test="rollUserid != null" >
+        roll_userid = #{rollUserid,jdbcType=BIGINT},
+      </if>
+      <if test="rollBelongid != null" >
+        roll_belongid = #{rollBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="rollType != null" >
+        roll_type = #{rollType,jdbcType=INTEGER},
+      </if>
+      <if test="rollStatus != null" >
+        roll_status = #{rollStatus,jdbcType=INTEGER},
+      </if>
+      <if test="rollDelete != null" >
+        roll_delete = #{rollDelete,jdbcType=INTEGER},
+      </if>
+      <if test="rollPrizeid != null" >
+        roll_prizeid = #{rollPrizeid,jdbcType=BIGINT},
+      </if>
+      <if test="rollRedundancy != null" >
+        roll_redundancy = #{rollRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="rollCreatetime != null" >
+        roll_createtime = #{rollCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rollModifytime != null" >
+        roll_modifytime = #{rollModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where roll_id = #{ID,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="wtb.core.model.Rolls" >
+    update wtb_rolls
+    set roll_markid = #{rollMarkid,jdbcType=VARCHAR},
+      roll_userid = #{rollUserid,jdbcType=BIGINT},
+      roll_belongid = #{rollBelongid,jdbcType=BIGINT},
+      roll_type = #{rollType,jdbcType=INTEGER},
+      roll_status = #{rollStatus,jdbcType=INTEGER},
+      roll_delete = #{rollDelete,jdbcType=INTEGER},
+      roll_prizeid = #{rollPrizeid,jdbcType=BIGINT},
+      roll_redundancy = #{rollRedundancy,jdbcType=VARCHAR},
+      roll_createtime = #{rollCreatetime,jdbcType=TIMESTAMP},
+      roll_modifytime = #{rollModifytime,jdbcType=TIMESTAMP}
+    where roll_id = #{ID,jdbcType=BIGINT}
+  </update>
+</mapper>

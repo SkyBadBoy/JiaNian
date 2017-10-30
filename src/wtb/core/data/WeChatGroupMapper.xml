@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeChatGroupMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.WeChatGroup" id="ClassResultMap">
+	<result property="ID" column="WeChatGroup_ID"/>
+	<result property="PKID" column="WeChatGroup_ID"/>
+	<result property="Code" column="WeChatGroup_Code"/>
+	<result property="Title" column="WeChatGroup_Title"/>
+	<result property="Industry" column="WeChatGroup_Industry"/>
+	<result property="CreateTime" column="WeChatGroup_CreateTime"/>
+	<result property="ModifyTime" column="WeChatGroup_ModifyTime"/>
+	<result property="QRCodeURLID" column="WeChatGroup_QRCodeURLID"/>
+	<result property="Status" column="WeChatGroup_Status"/>
+	<result property="BannerURLID" column="WeChatGroup_BannerURLID"/>
+	<result property="AreaID" column="WeChatGroup_AreaID"/>
+	<association property="QRCodeURL" column="WeChatGroup_QRCodeURLID" select="wtb.core.data.PictureMapper.getPictureList"/>
+	<association property="BannerURL" column="WeChatGroup_BannerURLID" select="wtb.core.data.PictureMapper.getPictureList"/>
+	<association property="BaseInfo" column="WeChatGroup_Status" select="wtb.core.data.BaseInfoMapper.getBaseInfoList"/>
+	<association property="WeChatCounter" column="WeChatGroup_ID" select="wtb.core.data.WeChatGroupPartMapper.getWeChatGroupPartCounter"/>
+	<association property="Area" column="WeChatGroup_AreaID" select="wtb.core.data.RegionMapper.getRegionByIDList" />
+</resultMap>
+
+	<select id="getWeChatGroupList" parameterType="map" resultMap="ClassResultMap"
+		resultType="wtb.core.model.WeChatGroup">
+		SELECT
+		WeChatGroup_ID ,
+		WeChatGroup_Code ,
+		WeChatGroup_Title ,
+		WeChatGroup_Industry ,
+		WeChatGroup_CreateTime ,
+		WeChatGroup_ModifyTime ,
+		WeChatGroup_QRCodeURLID ,
+		WeChatGroup_BannerURLID,
+		WeChatGroup_Status,
+		WeChatGroup_AreaID
+		FROM wtb_WeChatGroup
+		<where>
+			1=1
+			<if test="ID != null">
+				and WeChatGroup_ID = #{ID}
+			</if>
+			<if test="Code != null">
+				and WeChatGroup_Code = #{Code}
+			</if>
+			<if test="Title != null">
+				and WeChatGroup_Title like CONCAT(CONCAT('%', #{Title,
+				jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="Industry != null">
+				and WeChatGroup_Industry = #{Industry}
+			</if>
+			<if test="CreateTime != null">
+				and WeChatGroup_CreateTime = #{CreateTime}
+			</if>
+			<if test="ModifyTime != null">
+				and WeChatGroup_ModifyTime = #{ModifyTime}
+			</if>
+			<if test="AreaID != null">
+				and WeChatGroup_AreaID = #{AreaID}
+			</if>
+			<if test="Status != null">
+				and WeChatGroup_Status = #{Status}
+			</if>
+		</where>
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+				</if>
+	</select>
+	
+	<select id="getWeChatGroupByIDList" parameterType="map" resultMap="ClassResultMap"
+		resultType="wtb.core.model.WeChatGroup">
+		SELECT
+		WeChatGroup_ID ,
+		WeChatGroup_Code ,
+		WeChatGroup_Title ,
+		WeChatGroup_Industry ,
+		WeChatGroup_CreateTime ,
+		WeChatGroup_ModifyTime ,
+		WeChatGroup_QRCodeURLID ,
+		WeChatGroup_BannerURLID,
+		WeChatGroup_AreaID,
+		WeChatGroup_Status
+		FROM wtb_WeChatGroup
+		<where>
+			1=1
+			<if test="_parameter != null">
+				and WeChatGroup_ID = #{_parameter}
+			</if>
+			
+		</where>
+	</select>
+	<resultMap type="wtb.core.model.WeChatStatInfo" id="ClassCountResultMap">
+		<result property="WeChatDayForDay" column="Count" />
+	</resultMap>
+	<select id="getWeChatGroupByDaysList" parameterType="map"
+		resultMap="ClassCountResultMap">
+		SELECT
+		count(1) as Count
+		FROM wtb_WeChatGroup
+		<where>
+			1=1
+			<if test="Days != null">
+				and  to_days(now()) - to_days(WeChatGroup_CreateTime)&lt;= #{Days}
+			</if>
+			<if test="Status != null">
+				and WeChatGroup_Status &gt;= #{Status}
+			</if>
+		</where>
+	</select>
+	<select id="getWeChatGroupCount" parameterType="map"
+		resultType="int">
+		SELECT
+		count(1) as Count
+		FROM wtb_WeChatGroup
+		<where>
+			1=1
+			<if test="Status != null">
+				and WeChatGroup_Status &gt;= #{Status}
+			</if>
+			<if test="ID != null">
+				and WeChatGroup_ID = #{ID}
+			</if>
+			<if test="Code != null">
+				and WeChatGroup_Code = #{Code}
+			</if>
+			<if test="Title != null">
+				and WeChatGroup_Title like CONCAT(CONCAT('%', #{Title,
+				jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="Industry != null">
+				and WeChatGroup_Industry = #{Industry}
+			</if>
+			<if test="CreateTime != null">
+				and WeChatGroup_CreateTime = #{CreateTime}
+			</if>
+			<if test="ModifyTime != null">
+				and WeChatGroup_ModifyTime = #{ModifyTime}
+			</if>
+			<if test="AreaID != null">
+				and WeChatGroup_AreaID = #{AreaID}
+			</if>
+		</where>
+	</select>
+	
+		<resultMap type="wtb.core.model.WeChatLastMonthStatInfo" id="ClassLastMonthResultMap">
+		<result property="Year" column="Create_Year" />
+		<result property="Month" column="Create_Month" />
+		<result property="Days" column="days" />
+		<result property="Count" column="count" />
+	</resultMap>
+	<select id="getWeChatLastMonthStat" parameterType="map"
+		resultMap="ClassLastMonthResultMap">
+	select year(WeChatGroup_CreateTime) as Create_Year, month(WeChatGroup_CreateTime) as Create_Month,day(WeChatGroup_CreateTime) days,count(1) count from wtb_WeChatGroup
+	 where month(WeChatGroup_CreateTime)=#{Month} and year(WeChatGroup_CreateTime)=#{Year} and WeChatGroup_Status&gt;=1
+	 group by days,Create_Year,Create_Month;  
+	</select>
+	
+	
+	
+	<insert id="addWeChatGroup" parameterType="wtb.core.model.WeChatGroup"
+		keyProperty="ID" useGeneratedKeys="true">
+		INSERT INTO wtb_WeChatGroup (
+		WeChatGroup_ID ,
+		WeChatGroup_Title ,
+		WeChatGroup_Code,
+		WeChatGroup_Industry ,
+		WeChatGroup_CreateTime ,
+		WeChatGroup_ModifyTime ,
+		WeChatGroup_QRCodeURLID ,
+		WeChatGroup_BannerURLID,
+		WeChatGroup_Status,
+		WeChatGroup_AreaID
+		) VALUES (
+		#{ID},#{Title}, #{Code}, #{Industry},
+		#{CreateTime}, #{ModifyTime}, #{QRCodeURLID},#{BannerURLID}, #{Status},#{AreaID}
+		)
+		<selectKey resultType="int" order="AFTER" keyProperty="ID" >
+       SELECT LAST_INSERT_ID() as ID
+    </selectKey>
+	</insert>
+	<update id="updateWeChatGroup" parameterType="wtb.core.model.WeChatGroup">
+		UPDATE wtb_WeChatGroup
+		SET
+		WeChatGroup_ID=#{ID},WeChatGroup_Code=#{Code},
+		WeChatGroup_Title=#{Title}, WeChatGroup_Industry=#{Industry},
+		WeChatGroup_CreateTime=#{CreateTime},
+		WeChatGroup_ModifyTime=#{ModifyTime},
+		WeChatGroup_QRCodeURLID=#{QRCodeURLID},
+		WeChatGroup_BannerURLID=#{BannerURLID},
+		WeChatGroup_Status=#{Status},
+		WeChatGroup_AreaID=#{AreaID}
+		where WeChatGroup_ID = #{ID}
+
+	</update>
+	<delete id="deleteWeChatGroup" parameterType="wtb.core.model.WeChatGroup">
+		update wtb_WeChatGroup set WeChatGroup_Status=88,WeChatGroup_ModifyTime =#{ModifyTime}
+		where WeChatGroup_ID = #{ID}
+
+	</delete>
+	
+	<update id="enabledWeChatGroup" parameterType="wtb.core.model.WeChatGroup">
+		update wtb_WeChatGroup set WeChatGroup_Status=1,WeChatGroup_ModifyTime =#{ModifyTime}
+		where WeChatGroup_ID = #{ID}
+
+	</update>
+</mapper>
+

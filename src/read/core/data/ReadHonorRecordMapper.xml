@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadHonorRecordMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.HonorRecord" id="ClassResultMap">
+	<result property="ID" column="HonorRecord_ID"/>
+	<result property="PKID" column="HonorRecord_ID"/>
+	<result property="Type" column="HonorRecord_Type"/>
+	<result property="Memo" column="HonorRecord_Memo"/>
+	<result property="Status" column="HonorRecord_Status"/>
+	<result property="EndTime" column="HonorRecord_EndTime"/>
+	<result property="ModifyTime" column="HonorRecord_ModifyTime"/>
+	<result property="CreateTime" column="HonorRecord_CreateTime"/>
+	<result property="StudentID" column="HonorRecord_StudentID"/>
+	<association property="Student" column="HonorRecord_StudentID" select="read.core.data.ReadStudentsMapper.getStudentsByIDList"/>
+	<association property="BaseInfo" column="HonorRecord_Type" select="read.core.data.ReadBaseInfoMapper.getBaseInfoList"/>
+</resultMap>
+<sql id="param">
+HonorRecord_ID,
+		HonorRecord_Type,
+		HonorRecord_CreateTime,
+		HonorRecord_ModifyTime,
+		HonorRecord_EndTime,
+		HonorRecord_Status,
+		HonorRecord_Memo,
+		HonorRecord_StudentID
+</sql> 
+<sql id="where">
+HonorRecord_Status=1
+		<if test="ID != null">
+			and HonorRecord_ID = #{ID}
+		</if>
+		<if test="StudentID != null">
+			and HonorRecord_StudentID = #{StudentID}
+		</if>
+		<if test="Type != null">
+			and HonorRecord_Type = #{Type}
+		</if>
+		<if test="startTime!=null and endTime!=null">
+			and HonorRecord_CreateTime  between  #{startTime} and #{endTime}
+		</if>
+		<if test="Status != null">
+			and HonorRecord_Status = #{Status}
+		</if>
+		<if test="EndTime==1">
+		 	and to_days(now())-to_days(`HonorRecord_EndTime`) &lt;1
+		 </if>
+		 <if test="EndTime==0">
+		 	and to_days(now())-to_days(`HonorRecord_EndTime`) &gt;1
+		 </if>
+		 <if test="CustomerTime !=null">
+		 	and to_days(#{CustomerTime})-to_days(`HonorRecord_EndTime`) &lt;1
+		 </if>
+		 <if test="Sina !=null">
+		 	and #{Sina}=#{Sina}
+		 </if>
+</sql>
+<select id="getHonorRecordListByID" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="param"></include>
+		FROM wtb_HonorRecords
+		<where>
+			1=1
+				<if test="_parameter != null">
+					and HonorRecord_ID = #{_parameter}
+				</if>
+				
+		</where>
+</select>
+<select id="getHonorRecordList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="param"></include>
+		FROM wtb_HonorRecords
+		<where>
+			<include refid="where"></include>
+		</where>
+	order by HonorRecord_CreateTime desc
+	<if test="limit != null and start !=null ">
+				 limit ${start},${limit} 
+			</if>
+</select>
+<select id="getHonorRecordCount" parameterType="map" resultType="int">
+	SELECT
+		count(1)
+		FROM wtb_HonorRecords
+		<where>
+			<include refid="where"></include>
+		</where>
+</select>
+</mapper>
+

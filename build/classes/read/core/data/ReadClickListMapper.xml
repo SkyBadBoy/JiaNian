@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadClickListMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.ClickList" id="ClassResultMap">
+	<result property="ID" column="ClickList_ID"/>
+	<result property="PKID" column="ClickList_ID"/>
+	<result property="IPAddress" column="ClickList_IPAddress"/>
+	<result property="Type" column="ClickList_Type"/>
+	<result property="BeLongID" column="ClickList_BeLongID"/>
+	<result property="CreateTime" column="ClickList_CreateTime"/>
+	<result property="ModifyTime" column="ClickList_ModifyTime"/>
+	<result property="Status" column="ClickList_Status"/>
+	<result property="MacAddress" column="ClickList_MacAddress"/>
+</resultMap>
+<select id="getClickListList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		ClickList_IPAddress,
+		ClickList_ID,
+		ClickList_ModifyTime,
+		ClickList_CreateTime,
+		ClickList_Status,
+		ClickList_Type,
+		ClickList_BeLongID,
+		ClickList_MacAddress
+		FROM wtb_ClickList
+		<where>
+			1=1
+				<if test="_parameter != null">
+					and ClickList_IPAddress = #{_parameter}
+				</if>
+				
+		</where>
+		order by ClickList_CreateTime desc
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+		</if>
+</select>
+<select id="CheckExistByIdAddress" parameterType="map" resultType="int">
+	SELECT
+		count(1) as CountNum
+
+		FROM wtb_ClickList
+		<where>
+			1=1
+				<if test="IPAddress != null">
+					and ClickList_IPAddress = #{IPAddress}
+				</if>
+				<if test="Type != null">
+					and ClickList_Type = #{Type}
+				</if>
+				<if test="BeLongID != null">
+					and ClickList_BeLongID = #{BeLongID}
+				</if>
+				
+		</where>
+</select>
+
+</mapper>
+

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="read.core.data.ReadRedPacketMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.RedPacket" >
+    <id column="redpacket_id" property="ID" jdbcType="BIGINT" />
+	<result column="redpacket_id" property="PKID" jdbcType="BIGINT"/>
+    <result column="redpacket_userid" property="redpacketUserid" jdbcType="BIGINT" />
+    <result column="redpacket_source" property="redpacketSource" jdbcType="INTEGER" />
+    <result column="redpacket_receiveid" property="redpacketReceiveid" jdbcType="BIGINT" />
+    <result column="redpacket_lotterynumber" property="redpacketLotterynumber" jdbcType="INTEGER" />
+    <result column="redpacket_belongid" property="redpacketBelongid" jdbcType="BIGINT" />
+    <result column="redpacket_type" property="redpacketType" jdbcType="INTEGER" />
+    <result column="redpacket_status" property="redpacketStatus" jdbcType="INTEGER" />
+    <result column="redpacket_delete" property="redpacketDelete" jdbcType="INTEGER" />
+    <result column="redpacket_redundancy" property="redpacketRedundancy" jdbcType="VARCHAR" />
+    <result column="redpacket_createtime" property="redpacketCreatetime" jdbcType="TIMESTAMP" />
+    <result column="redpacket_modifytime" property="redpacketModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    redpacket_id, redpacket_userid, redpacket_source, redpacket_receiveid, redpacket_lotterynumber, 
+    redpacket_belongid, redpacket_type, redpacket_status, redpacket_delete, redpacket_redundancy, 
+    redpacket_createtime, redpacket_modifytime
+  </sql>
+  
+  <resultMap id="QueryListMap" type="wtb.core.json.ReturnRedPacketList" >
+    <id column="redpacket_id" property="ID" jdbcType="BIGINT" />
+    <result column="redpacket_userid" property="UserId" jdbcType="BIGINT" />
+    <result column="redpacket_source" property="Source" jdbcType="INTEGER" />
+    <result column="redpacket_belongid" property="Belongid" jdbcType="BIGINT" />
+    <result column="redpacket_type" property="Type" jdbcType="INTEGER" />
+    <result column="redpacket_status" property="Status" jdbcType="INTEGER" />
+    <result column="redpacket_createtime" property="Time" jdbcType="TIMESTAMP" />
+    
+    <!-- <association column="redpacket_belongid" property="Initiator" select="read.core.data.ReadStudentsMapper.QueryName" /> -->
+  </resultMap>
+  <sql id="QueryList_Column_List" >
+    redpacket_id, redpacket_userid, redpacket_source, redpacket_belongid, redpacket_type, redpacket_status, redpacket_createtime
+  </sql>
+  <!-- by Sheryl -->
+   <select id="QueryList" resultMap="QueryListMap" parameterType="map" >
+    select 
+    <include refid="QueryList_Column_List" />
+    from wtb_redpacket
+    where redpacket_belongid = #{ID,jdbcType=BIGINT}
+     AND redpacket_delete = 0 AND #{Rand}=#{Rand}
+    ORDER BY redpacket_status ASC,redpacket_createtime DESC
+    LIMIT #{start},#{size}
+  </select>
+  
+  <select id="QueryOne" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_redpacket
+    where redpacket_id = #{rpID,jdbcType=BIGINT} AND redpacket_delete = 0 AND #{Rand}=#{Rand}
+    LIMIT 1
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_redpacket
+    where redpacket_id = #{ID,jdbcType=BIGINT}
+  </select>
+  
+</mapper>

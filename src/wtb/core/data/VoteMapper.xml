@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.VoteMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Vote" id="ClassResultMap">
+	<result property="ID" column="Vote_ID"/>
+	<result property="Pkid" column="Vote_ID"/>
+	<result property="Title" column="Vote_Title" />
+	<result property="CreateTime" column="Vote_CreateTime"/>
+	<result property="ModifyTime" column="Vote_ModifyTime"/>
+	<result property="StartTime" column="Vote_StartTime"/>
+	<result property="EndTime" column="Vote_EndTime"/>
+	<result property="StartDate" column="Vote_StartTime"/>
+	<result property="EndDate" column="Vote_EndTime"/>
+	<result property="Status" column="Vote_Status"/>
+	<result property="RewardTimes" column="Vote_RewardTimes"/>
+	<result property="Memo" column="Vote_Memo"/>
+	<result property="HeadUrl" column="Vote_HeadUrl"/>
+	<result property="MiddleUrl" column="Vote_MiddleUrl"/>
+	<result property="FootUrl" column="Vote_FootUrl"/>
+	<result property="AreaID" column="Vote_AreaID"/>
+	<association property="StatusInfo" column="Vote_Status"
+			select="wtb.core.data.BaseInfoMapper.getBaseInfoList" />
+	
+</resultMap>
+
+<sql id="where">
+<if test="ID != null">
+					and Vote_ID = #{ID}
+			</if>
+			<if test="Title != null">
+					and Vote_Title like CONCAT(CONCAT('%', #{Title,
+				jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="Status != null">
+					and Vote_Status = #{Status}
+			</if>
+			<if test="AreaID != null">
+				and ( Vote_AreaID is null or Vote_AreaID='' or  Vote_AreaID=0 or  Vote_AreaID = #{AreaID} or 
+				#{AreaID} In (select REGION_ID from wtb_Region where PARENT_ID=Vote_AreaID) or
+				#{AreaID} In ( select REGION_ID from wtb_Region where PARENT_ID in( select REGION_ID from wtb_Region where PARENT_ID=Vote_AreaID)) or 
+				#{AreaID} In ( select REGION_ID from wtb_Region where PARENT_ID in( select REGION_ID from wtb_Region where PARENT_ID in( select REGION_ID from wtb_Region where PARENT_ID=Vote_AreaID)))
+				)
+			</if>
+			<if test="IsEffect">
+				and datediff(now(),Vote_EndTime)&lt;=0
+			</if>
+			<if test="Rand != null">
+					and #{Rand} = #{Rand}
+			</if>
+
+</sql>
+<select id="getVoteList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Vote_ID,
+  		Vote_Title,
+		Vote_CreateTime,
+		Vote_ModifyTime,
+		Vote_StartTime,
+		Vote_EndTime,
+		Vote_Status,
+		Vote_Memo,
+		Vote_RewardTimes,
+		Vote_HeadUrl,
+		Vote_MiddleUrl,
+		Vote_FootUrl,
+		Vote_AreaID
+		
+		FROM wtb_Vote
+		<where>
+			1=1
+			<include refid="where"></include>
+		</where>
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getVoteCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Vote
+		<where>
+			1=1
+			<include refid="where"></include>
+		</where>
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+		
+</select>
+<insert id="addVote" parameterType="wtb.core.model.Vote" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Vote (
+		Vote_ID,
+  		Vote_Title,
+		Vote_CreateTime,
+		Vote_ModifyTime,
+		Vote_StartTime,
+		Vote_EndTime,
+		Vote_Status,
+		Vote_Memo,
+		Vote_RewardTimes,
+		Vote_HeadUrl,
+		Vote_MiddleUrl,
+		Vote_FootUrl,
+		Vote_AreaID
+		) VALUES (
+			#{ID}, #{Title}, now(), now(),#{StartTime},#{EndTime},#{Status},#{Memo},#{RewardTimes},#{HeadUrl},#{MiddleUrl},#{FootUrl},#{AreaID}
+		)
+</insert>
+<update id="updateVote" parameterType="wtb.core.model.Vote">
+	UPDATE wtb_Vote 
+		SET
+  		Vote_Title=#{title},
+		Vote_ModifyTime=now(),
+		Vote_StartTime=#{StartTime},
+		Vote_EndTime=#{EndTime},
+		Vote_Status=#{Status},
+		Vote_Memo=#{Memo},
+		Vote_HeadUrl=#{HeadUrl},
+		Vote_MiddleUrl=#{MiddleUrl},
+		Vote_FootUrl=#{FootUrl},
+		Vote_RewardTimes=#{RewardTimes},
+		Vote_AreaID=#{AreaID}
+			where Vote_ID = #{ID}
+</update>
+
+<delete id="deleteVote" parameterType="wtb.core.model.Vote">
+	update  wtb_Vote set Vote_Status=88,Vote_ModifyTime = now()
+			where
+			1=2 
+				<if test="ID != null">
+					or Vote_ID = #{ID}
+				</if>
+</delete>
+</mapper>
+

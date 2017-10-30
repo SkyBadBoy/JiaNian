@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadActivityMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+     
+<resultMap type="wtb.core.model.Activity" id="ClassResultMap">
+	<result property="ID" column="Activity_ID"/>
+	<result property="PKID" column="Activity_ID"/>
+	<result property="Title" column="Activity_Title"/>
+	<result property="Content" column="Activity_Content"/>
+	<result property="ImageID" column="Activity_ImageID"/>
+	<result property="CreateTime" column="Activity_CreateTime"/>
+	
+	<result property="ModifyTime" column="Activity_ModifyTime"/>
+	<result property="Status" column="Activity_Status"/>
+	<result property="Hot" column="Activity_Hot"/>
+	<result property="IsHot" column="Activity_IsHot"/>
+	
+	<result property="Weight" column="Activity_Weight"/>
+	<result property="WeChatID" column="Activity_WeChatID"/>
+	<result property="Praise" column="Activity_Praise"/>
+	<result property="EndTime" column="Activity_EndTime"/>
+	
+	<result property="Sponsor" column="Activity_Sponsor"/>
+	<result property="SBrief" column="Activity_SBrief"/>
+	<result property="SImage" column="Activity_SImage"/>
+	
+	<result property="ApplyCount" column="Activity_ApplyCount"/>
+	<result property="ApplyLimit" column="Activity_ApplyLimit"/>
+	<result property="ApplyMoney" column="Activity_ApplyMoney"/>
+	<result property="PayType" column="Activity_PayType"/>
+
+	<association property="SPicture" column="Activity_SImage"
+			select="read.core.data.ReadProdPictureMapper.getPictureByIDList" />
+<association property="Image" column="Activity_ImageID"
+			select="read.core.data.ReadProdPictureMapper.getPictureByIDList" />
+<association property="Pictures" column="Activity_ID"
+			select="read.core.data.ReadProdPictureMapper.getPictureByProductIDList" />
+<association property="WeChat" column="Activity_WeChatID"
+			select="read.core.data.ReadWeChatPublicMapper.getWeChatPublicForIDList" />
+
+
+</resultMap>
+<sql id="sql">
+		Activity_ID,
+  		Activity_Title,
+		Activity_Content,
+		Activity_ImageID,
+		Activity_CreateTime,
+		Activity_ModifyTime,
+		Activity_Status,
+		Activity_Hot,
+		case Activity_Hot when 1 then '是' else '否'end as Activity_IsHot,
+		Activity_Weight,
+		Activity_WeChatID,
+		Activity_Praise,
+		Activity_EndTime,
+		Activity_Sponsor,
+		Activity_SBrief,
+		Activity_SImage,
+		Activity_ApplyCount,
+		Activity_ApplyLimit,
+		Activity_ApplyMoney,
+		Activity_PayType
+</sql>
+<sql id="where">
+		1=1
+			<if test="ID != null">
+					and Activity_ID = #{ID}
+				</if>
+				<if test="WeChatID != null">
+					and Activity_WeChatID = #{WeChatID}
+				</if>
+				<if test="Hot != null">
+					and Activity_Hot = #{Hot}
+				</if>
+				<if test="AreaID != null">
+					and Activity_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_AreaID=#{AreaID})
+				</if>
+				<if test="Status != null">
+					and Activity_Status = #{Status}
+				</if>
+				
+				<if test="Title != null">
+					and Activity_Title like CONCAT(CONCAT('%', #{Title,
+				jdbcType=VARCHAR}),'%')
+					
+				</if>
+				
+				<if test="IsEffect">
+					and datediff(now(),Activity_EndTime)&lt;=0
+				</if>
+				<if test="IsTimeOut">
+					and datediff(now(),Activity_EndTime)&gt;0
+				</if>
+				<if test="StudentApplyed">
+					and (select Count(1) from wtb_ActivityPart where ActivityPart_StudentID=#{StudentApplyed} and ActivityPart_ActivityID=Activity_ID)&gt;0
+				</if>
+				<if test="StudentNotApplyed">
+					and (select Count(1) from wtb_ActivityPart where ActivityPart_StudentID=#{StudentNotApplyed} and ActivityPart_ActivityID=Activity_ID)&lt;=0
+				</if>
+				<if test="WeChatPublicID">
+					and (Activity_WeChatID=0 or Activity_WeChatID=#{WeChatPublicID})
+				</if>
+				<if test="PayType!=null">
+					and Activity_PayType = #{ayType}
+				</if>
+				<if test="Rand != null">
+					and #{Rand} = #{Rand}
+				</if>
+</sql>
+<select id="getActivityList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+	<include refid="sql"></include>
+		FROM wtb_Activity
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by Activity_Hot desc,Activity_ModifyTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getActivityCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Activity
+		<where>
+			<include refid="where"></include>
+		</where>
+		
+</select>
+<select id="getActivityByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		case Activity_Hot when 1 then '是' else '否'end as Activity_IsHot,
+		FROM wtb_Activity
+		<where>
+			Activity_Status=1
+				<include refid="where"></include>
+		</where>
+		order by Activity_Weight desc
+</select>
+
+
+</mapper>
+

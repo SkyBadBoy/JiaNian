@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadErrorStatMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.ErrorStat" id="ClassResultMap">
+	<result property="ID" column="ErrorStat_ID"/> 
+	<result property="PKID" column="ErrorStat_ID"/> 
+	<result property="ClassName" column="ErrorStat_ClassName"/>
+	<result property="Memo" column="ErrorStat_Memo"/>
+	<result property="Status" column="ErrorStat_Status"/>
+	<result property="Type" column="ErrorStat_Type"/>
+	<result property="CreateTime" column="ErrorStat_CreateTime"/>
+	<result property="ModifyTime" column="ErrorStat_ModifyTime"/>
+	<result property="Count" column="ErrorStat_Count"/>
+	<result property="TotalCount" column="ErrorStat_TotalCount"/>
+	<result property="SendTime" column="ErrorStat_SendTime"/>
+</resultMap>
+<sql id="param">
+ErrorStat_ID,
+ErrorStat_ClassName,
+ErrorStat_CreateTime,
+ErrorStat_ModifyTime,
+ErrorStat_Memo,
+ErrorStat_Status,
+ErrorStat_Type,
+ErrorStat_TotalCount,
+ErrorStat_Count,
+ErrorStat_SendTime
+
+</sql>
+<sql id="where">
+<if test="Type!=null">
+			and  ErrorStat_Type=#{Type}
+		</if>
+		<if test="Status!=null">
+			and  ErrorStat_Status=#{Status}
+		</if>
+		<if test="ClassName!=null">
+			and  ErrorStat_ClassName=#{ClassName}
+		</if>
+		<if test="Status==null">
+			and ErrorStat_Status!=88
+		</if>
+		<if test="ID!=null">
+			and  ErrorStat_ID=#{ID}
+		</if>
+</sql>
+<select id="getErrorStatList" parameterType="map" resultMap="ClassResultMap">
+	SELECT 
+		<include refid="param"></include>
+	FROM wtb_ErrorStats 
+	<where>
+		1=1 
+		<include refid="where"></include>
+	</where>
+	ORDER BY ErrorStat_Status DESC,ErrorStat_CreateTime DESC
+</select>
+<select id="getErrorStatCount" parameterType="map" resultType="int">
+	select COUNT(1) from wtb_ErrorStats
+		<where>
+		1=1 
+		<include refid="param"></include>
+	</where>
+</select>
+
+</mapper>

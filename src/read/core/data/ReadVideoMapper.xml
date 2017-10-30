@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadVideoMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Video" id="ClassResultMap">
+	<result property="ID" column="Video_ID"/>
+	<result property="PKID" column="Video_ID"/>
+	<result property="Title" column="Video_Title"/>
+	<result property="Content" column="Video_Content"/>
+	<result property="ImageID" column="Video_ImageID"/>
+	<result property="CreateTime" column="Video_CreateTime"/>
+	<result property="CreateDate" column="Video_CreateTime"/>
+	<result property="Hot" column="Video_Hot"/>
+	<result property="ModifyTime" column="Video_ModifyTime"/>
+	<result property="Status" column="Video_Status"/>
+	<result property="Weight" column="Video_Weight"/>
+	<result property="WeChatID" column="Video_WeChatID"/>
+	<result property="Praise" column="Video_Praise"/>
+	<result property="VID" column="Video_VID"/>
+	<result property="Url" column="Video_Url"/>
+	<result property="ClickCount" column="Video_ClickCount"/>
+	<result property="AreaID" column="Video_AreaID"/>
+	<result property="UserID" column="Video_UserID"/>
+	<result property="VoteCount" column="Video_VoteCount"/>
+	<result property="VoteID" column="Video_VoteID"/>
+	<result property="LikeCount" column="Video_LikeCount"/>
+	<result property="IsActivity" column="Video_IsActivity"/>
+	<result property="UserType" column="Video_UserType"/>
+	<result property="AreaName" column="Video_AreaName"/>
+	<result property="CommentCount" column="Video_CommentCount"/>
+	<result property="Type" column="Video_Type"/>
+	<result property="BelongID" column="Video_BelongID"/>
+	<result property="FileSize" column="Video_FileSize"/>
+	<result property="FileTime" column="Video_FileTime"/>
+	<result property="Author" column="StudentName"  typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<association property="Student.Name" column="StudentName" javaType="wtb.core.model.Students" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+<association property="Image" column="Video_ImageID"
+			select="read.core.data.ReadProdPictureMapper.getPictureByIDList" />
+<association property="BaseInfo" column="Video_Status"
+			select="read.core.data.ReadBaseInfoMapper.getBaseInfoList" />
+</resultMap>
+<resultMap type="wtb.core.model.Video" id="RankingMap">
+	<result property="ID" column="Video_ID"/>
+	<result property="PKID" column="Video_ID"/>
+	<result property="Title" column="Video_Title"/>
+	<result property="Level" column="Video_Level"/>
+	<result property="AreaID" column="Video_AreaID"/>
+	<result property="UserID" column="Video_UserID"/>
+	<result property="Count" column="Video_Count"/>
+	<result property="Day" column="Video_Day"/>
+	<result property="Month" column="Video_Month"/>
+	<result property="Year" column="Video_Year"/>
+	<result property="FileSize" column="Video_FileSize"/>
+	<result property="FileTime" column="Video_FileTime"/>
+	<association property="SRegion" column="Video_AreaID" select="read.core.data.ReadRegionMapper.getRegionByIDList"/>
+	<association property="Student" column="Video_UserID" select="read.core.data.ReadStudentsMapper.getStudentsByIDList"/>
+</resultMap>
+<sql id="params">
+	Video_ID,
+ 	Video_Title,
+	Video_Content,
+	Video_ImageID,
+	Video_CreateTime,
+	Video_ModifyTime,
+	Video_Status,
+	Video_Weight,
+	Video_WeChatID,
+	Video_Praise,
+	Video_VID,
+	Video_Url,
+	Video_AreaID,
+	Video_UserID,
+	Video_VoteCount,
+	Video_VoteID,
+	Video_LikeCount,
+	Video_IsActivity,
+	Video_UserType,
+	Video_AreaName,
+	Video_ClickCount,
+	Video_Hot,
+	Video_CommentCount,
+	Video_Type,
+	Video_BelongID,
+	Video_FileSize,
+	Video_FileTime
+</sql>
+<sql id="where">
+	<if test="ID != null">
+		and Video_ID = #{ID}
+	</if>
+	<if test="AreaID != null and Supper==null">
+		and Video_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_AreaID=#{AreaID})
+	</if>
+	<if test="AreaID != null and Supper!=null">
+		and (Video_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_AreaID=#{AreaID}) or Video_WeChatID=0)
+	</if>
+	<if test="WeChatID != null">
+		and Video_WeChatID =#{WeChatID}
+	</if>
+	<if test="Status != null">
+		and Video_Status = #{Status}
+	</if>
+	<if test="Hot != null">
+		and Video_Hot = #{Hot}
+	</if>
+	<if test="BelongID != null">
+		and Video_BelongID = #{BelongID}
+	</if>
+	<if test="Sina != null">
+			and #{Sina} = #{Sina}
+	</if>
+	<if test="startTime!=null and endTime!=null">
+		and Video_CreateTime  between  #{startTime} and #{endTime}
+	</if>
+	<if test="Title != null">
+		and Video_Title like CONCAT(CONCAT('%', #{Title,
+		jdbcType=VARCHAR}),'%')
+		
+	</if>
+</sql>
+<select id="getVideoList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="params"></include>,
+		IFNULL((select Students_Name from wtb_Students where  Students_ID=Video_UserID),"") as StudentName
+		FROM wtb_Video
+		<where>
+			1=1
+				<include refid="where"></include>
+		</where>
+		order by 
+		<if test="HotSoft != null">
+			Video_Hot desc,
+		</if>
+		<if test="ClickCountOrder != null">
+			Video_ClickCount desc,
+		</if>
+		
+		Video_CreateTime desc,Video_LikeCount desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getVideoCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Video
+		<where>
+			1=1
+			<include refid="where"></include>
+				
+		</where>
+		
+</select>
+<select id="getVideoByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="params"></include>
+		FROM wtb_Video
+		<where>
+			Video_Status=1
+				<if test="ID != null">
+					and Video_ID = #{ID}
+				</if>
+				
+		</where>
+		order by Video_Weight desc
+		
+</select>
+<select id="getVideoSchoolRankingList" parameterType="map" resultMap="RankingMap">
+select * FROM  
+ (  
+     SELECT A.*,@curRank := @curRank + 1 as Video_Level
+     FROM     
+     (    
+      SELECT Video_AreaID,Count(*) as Video_Count FROM wtb_Video
+		<where>
+			Video_Status != 88 AND
+			Video_AreaID != 0
+		<if test="startTime!=null and endTime!=null">
+			and Video_CreateTime  between  #{startTime} and #{endTime}
+		</if>
+		<if test="Month!=null and Year!=null">
+			and Month(Video_CreateTime)=#{Month} and   Year(Video_CreateTime)=#{Year}
+		</if>
+		<if test="Today!=null">
+			and TO_DAYS(`Video_CreateTime`) = TO_DAYS(NOW())
+		</if>
+		<if test="Month!=null">
+		 	and date_format(`Video_CreateTime`,'%Y-%m')=date_format(now(),'%Y-%m')
+		 </if>
+		 <if test="AreaID!=null">
+		 	and Video_AreaID=#{AreaID}
+		 </if>
+		</where>
+	
+		GROUP BY
+		Video_AreaID
+		ORDER BY
+			Count(*) desc
+   
+     ) A ,(SELECT @curRank:=0) B   
+ ) M  
+  ORDER BY Video_Level 
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+	</if>
+</select>
+
+
+<select id="getVideoReadRankingList" parameterType="map" resultMap="RankingMap">
+select * FROM  
+ (  
+     SELECT A.*,@curRank := @curRank + 1 as Video_Level
+     FROM     
+     (    
+      SELECT Video_ID,Video_Title,Video_UserID, 
+	<if test="startTime!=null and endTime!=null">
+			(select count(1) from wtb_ClickList where ClickList_BeLongID= Video_ID and ClickList_CreateTime between #{startTime} and #{endTime}  )
+	</if>
+	<if test="startTime==null or endTime==null">
+		Video_ClickCount
+	</if>
+ as Video_Count FROM wtb_Video 
+<where>
+	wtb_Video.Video_Status != 88 AND wtb_Video.Video_UserID != 0 AND wtb_Video.Video_UserID IS NOT NULL
+	<if test="startTime!=null and endTime!=null">
+			and wtb_Video.Video_CreateTime  between  #{startTime} and #{endTime}
+	</if>
+	<if test="Month!=null and Year!=null">
+			and Month(Video_CreateTime)=#{Month} and   Year(Video_CreateTime)=#{Year}
+		</if>
+		<if test="Today!=null">
+			and TO_DAYS(`Video_CreateTime`) = TO_DAYS(NOW())
+		</if>
+		<if test="Month!=null">
+		 	and date_format(`Video_CreateTime`,'%Y-%m')=date_format(now(),'%Y-%m')
+		 </if>
+		  <if test="AreaID!=null">
+		 	and Video_AreaID=#{AreaID}
+		 </if>
+</where>
+order by Video_Count desc
+   
+     ) A ,(SELECT @curRank:=0) B   
+ ) M  
+ ORDER BY Video_Level 
+	
+	<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+	</if>
+	
+</select>
+
+<select id="getVideoRankingList" parameterType="map" resultMap="RankingMap">
+select * FROM  
+ (  
+     SELECT A.*,@curRank := @curRank + 1 as Video_Level
+     FROM     
+     (    
+      SELECT Video_UserID, COUNT(*) as Video_Count FROM wtb_Video 
+<where>
+	wtb_Video.Video_Status != 88 AND wtb_Video.Video_UserID != 0 AND wtb_Video.Video_UserID IS NOT NULL
+	<if test="startTime!=null and endTime!=null">
+			and wtb_Video.Video_CreateTime  between  #{startTime} and #{endTime}
+	</if>
+	<if test="Month!=null and Year!=null">
+			and Month(Video_CreateTime)=#{Month} and   Year(Video_CreateTime)=#{Year}
+		</if>
+		<if test="Today!=null">
+			and TO_DAYS(`Video_CreateTime`) = TO_DAYS(NOW())
+		</if>
+		<if test="Month!=null">
+		 	and date_format(`Video_CreateTime`,'%Y-%m')=date_format(now(),'%Y-%m')
+		 </if>
+		  <if test="AreaID!=null">
+		 	and Video_AreaID=#{AreaID}
+		 </if>
+
+		 	and EXISTS (select Students_ID from wtb_Students where Students_ID=Video_UserID)
+
+</where>
+GROUP BY
+Video_UserID
+order by COUNT(*) desc
+   
+     ) A ,(SELECT @curRank:=0) B   
+ ) M  
+ <where>
+ <if test="RankUsersID != null">
+	and Video_UserID =#{RankUsersID}
+</if>
+</where>
+ ORDER BY Video_Level 
+	
+	<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+	</if>
+	
+</select>
+</mapper>
+

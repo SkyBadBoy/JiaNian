@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadActivityPartMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.ActivityPart" id="ClassResultMap">
+	<result property="ID" column="ActivityPart_ID"/>
+	<result property="PKID" column="ActivityPart_ID"/>
+	<result property="StudentID" column="ActivityPart_StudentID"/>
+	<result property="ActivityID" column="ActivityPart_ActivityID"/>
+	<result property="Content" column="ActivityPart_Content"/>
+	<result property="CreateTime" column="ActivityPart_CreateTime"/>
+	<result property="ModifyTime" column="ActivityPart_ModifyTime"/>
+	<result property="Status" column="ActivityPart_Status"/>
+
+
+<association property="Student" column="ActivityPart_StudentID"
+			select="read.core.data.ReadStudentsMapper.getStudentsByIDList" />
+
+<association property="BaseInfo" column="ActivityPart_Status" select="read.core.data.ReadBaseInfoMapper.getBaseInfoList"/>
+</resultMap>
+<sql id="sql">
+    	ActivityPart_ID,
+		ActivityPart_Content,
+		ActivityPart_StudentID,
+		ActivityPart_CreateTime,
+		ActivityPart_ModifyTime,
+		ActivityPart_Status,
+		ActivityPart_ActivityID
+</sql>
+<sql id="where">
+    	1=1 and ActivityPart_Status != 88
+				<if test="ID != null">
+					and ActivityPart_ID = #{ID}
+				</if>
+				<if test="StudentID != null">
+					and ActivityPart_StudentID = #{StudentID}
+				</if>
+				<if test="ActivityID != null">
+					and ActivityPart_ActivityID = #{ActivityID}
+				</if>
+				<if test="Content != null">
+					and ActivityPart_Content = #{Content}
+				</if>
+				<if test="Status != null">
+					and ActivityPart_Status = #{Status}
+				</if>
+				<if test="Sina != null">
+					and #{Sina} = #{Sina}
+				</if>
+</sql>
+<select id="getActivityPartList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_ActivityPart
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by ActivityPart_ModifyTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getActivityPartCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_ActivityPart
+		<where>
+			<include refid="where"></include>
+				
+		</where>
+		
+</select>
+<select id="getActivityPartByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_ActivityPart
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by ActivityPart_CreateTime desc
+		
+</select>
+<insert id="addActivityPart" parameterType="wtb.core.model.ActivityPart" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_ActivityPart (
+		<include refid="sql"></include>
+		) VALUES (
+			#{ID},  #{Content}, #{StudentID},now(),now(),#{Status}
+			,#{ActivityID}
+		)
+</insert>
+<update id="updateActivityPart" parameterType="wtb.core.model.ActivityPart">
+	UPDATE wtb_ActivityPart 
+		SET
+		ActivityPart_ID=#{ID},
+		ActivityPart_Content=#{Content},
+		ActivityPart_StudentID=#{StudentID},
+		ActivityPart_ModifyTime=now(),
+		ActivityPart_Status=#{Status},
+		ActivityPart_ActivityID=#{ActivityID}
+		
+			where ActivityPart_ID = #{ID}
+</update>
+<delete id="deleteActivityPart" parameterType="wtb.core.model.ActivityPart">
+	update  wtb_ActivityPart set ActivityPart_Status=88
+			where
+				 ActivityPart_ID = #{ID}
+			
+</delete>
+<update id="enabledActivityPart" parameterType="wtb.core.model.ActivityPart">
+	update  wtb_ActivityPart set ActivityPart_Status=1
+			where
+				 ActivityPart_ID = #{ID}
+			
+</update>
+<update id="confirmApplyActivityPart" parameterType="wtb.core.model.ActivityPart">
+	update  wtb_ActivityPart set ActivityPart_Content=#{Content}
+			where
+				 ActivityPart_ID = #{ID}
+			
+</update>
+</mapper>
+

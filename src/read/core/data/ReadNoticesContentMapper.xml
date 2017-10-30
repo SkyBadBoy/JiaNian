@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadNoticesContentMapper"> 
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.NoticesContent" id="ClassResultMap">
+	<result property="ID" column="Content_ID"/>
+	<result property="PKID" column="Content_ID"/>
+	<result property="Content" column="Content_Content" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="CreateTime" column="Content_CreateTime"/>
+	<result property="ModifyTime" column="Content_ModifyTime"/>
+	<result property="Status" column="Content_Status"/>
+	<result property="Num" column="Content_Num"/>
+	<result property="SrcID" column="Content_SrcID"/>
+
+</resultMap>
+<sql id="params">
+	Content_ID,
+	ifnull(Content_Content,'') as Content_Content,
+	Content_CreateTime,
+	Content_ModifyTime,
+	Content_Status,
+	Content_Memo,
+	Content_Num,
+	Content_SrcID
+</sql>
+<sql id="where">
+	<if test="ID!=null">
+	   and	Content_ID=#{ID}
+	</if>
+	<if  test="Status!=null">
+	   and	Content_Status=#{Status}
+	</if>	
+	<if test="SrcID!=null">
+	   and	Content_SrcID=#{SrcID}
+	</if>		
+</sql>
+<select id="getReadContentList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="params"></include>
+		FROM wtb_NoticesContent
+		<where>
+			1=1 
+			<include refid="where"></include>
+		</where>
+				order by Content_Num  desc
+			<if test="limit != null and start !=null ">
+				 limit ${start},${limit} 
+			</if>
+</select>
+
+
+<select id="getContentByID" parameterType="long" resultMap="ClassResultMap">
+	SELECT
+		<include refid="params"></include>
+		FROM wtb_NoticesContent
+		<where>
+				<if test="_parameter != null">
+					 Content_ID = #{_parameter}
+				</if>
+		</where>
+</select>
+</mapper>
+

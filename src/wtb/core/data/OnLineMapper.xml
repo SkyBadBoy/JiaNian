@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.OnLineMapper">
+<sql id="where">
+ <if test="iD != null">
+                AND OnLine_ID = #{iD}
+            </if>
+            <if test="session != null">
+                AND OnLine_Session = #{session}
+            </if>
+            <if test="studentID != null">
+                AND OnLine_StudentID = #{studentID}
+            </if>
+            <if test="toDay != null">
+                AND year(OnLine_ModifyTime)=year(now()) and month(OnLine_ModifyTime)=month(now()) and day(OnLine_ModifyTime)=day(now())
+            </if>
+            <if test="toDayNew != null">
+                AND year(OnLine_CreateTime)=year(now()) and month(OnLine_CreateTime)=month(now()) and day(OnLine_CreateTime)=day(now())
+            </if>
+            <if test="status != null">
+                AND OnLine_Status = #{status}
+            </if>
+</sql>
+    <select id="findOnLine" parameterType="wtb.core.model.OnLine" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM wtb_Onlines
+         <where>
+            OnLine_Deleted = 0
+           <include refid="where"></include>
+        </where>
+    </select>
+
+    <select id="searchOnLine" parameterType="wtb.core.model.OnLine" resultMap="ClassResultMap">
+        SELECT * FROM wtb_Onlines
+        WHERE OnLine_ID = #{iD} AND OnLine_Deleted = 0
+    </select>
+
+    <select id="queryOnLine" parameterType="map" resultMap="ClassResultMap">
+        SELECT
+        OnLine_ID, OnLine_Session, OnLine_StudentID, OnLine_CreateTime,
+        OnLine_ModifyTime, OnLine_Version, OnLine_Status, OnLine_Deleted
+        FROM wtb_Onlines
+
+        <where>
+            OnLine_Deleted = 0
+           <include refid="where"></include>
+        </where>
+    </select>
+
+    <insert id="addOnLine" parameterType="wtb.core.model.OnLine" keyProperty="OnLineID" useGeneratedKeys="true">
+        INSERT INTO wtb_Onlines (
+        OnLine_ID, OnLine_Session, OnLine_StudentID, OnLine_CreateTime,
+        OnLine_ModifyTime, OnLine_Version, OnLine_Status, OnLine_Deleted
+        ) VALUES (
+        #{iD}, #{session}, #{studentID}, NOW(),
+        NOW(), 0, #{status}, 0
+        )
+    </insert>
+
+    <update id="changeOnLine" parameterType="wtb.core.model.OnLine">
+        UPDATE wtb_Onlines SET
+        OnLine_Session = #{session}, OnLine_StudentID = #{studentID},
+        OnLine_CreateTime = #{createTime}, OnLine_ModifyTime = NOW(),
+        OnLine_Version = OnLine_Version + 1, OnLine_Status = #{status},
+        OnLine_Deleted = #{deleted}
+        WHERE OnLine_ID = #{iD} AND OnLine_Deleted = 0
+    </update>
+
+    <delete id="removeOnLine" parameterType="wtb.core.model.OnLine">
+        UPDATE wtb_Onlines SET
+        OnLine_Deleted = 1, OnLine_ModifyTime = NOW(),
+        OnLine_Version = OnLine_Version + 1
+        WHERE OnLine_ID = #{iD} AND OnLine_Deleted = 0
+    </delete>
+
+    <resultMap type="wtb.core.model.OnLine" id="ClassResultMap">
+        <result property="iD" column="OnLine_ID"/>
+        <result property="session" column="OnLine_Session"/>
+        <result property="studentID" column="OnLine_StudentID"/>
+        <result property="createTime" column="OnLine_CreateTime"/>
+        <result property="modifyTime" column="OnLine_ModifyTime"/>
+        <result property="version" column="OnLine_Version"/>
+        <result property="status" column="OnLine_Status"/>
+        <result property="deleted" column="OnLine_Deleted"/>
+    </resultMap>
+</mapper>

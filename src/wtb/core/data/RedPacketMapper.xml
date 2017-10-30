@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="wtb.core.data.RedPacketMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.RedPacket" >
+    <id column="redpacket_id" property="ID" jdbcType="BIGINT" />
+	<result column="redpacket_id" property="PKID" jdbcType="BIGINT"/>
+    <result column="redpacket_userid" property="redpacketUserid" jdbcType="BIGINT" />
+    <result column="redpacket_source" property="redpacketSource" jdbcType="INTEGER" />
+    <result column="redpacket_receiveid" property="redpacketReceiveid" jdbcType="BIGINT" />
+    <result column="redpacket_lotterynumber" property="redpacketLotterynumber" jdbcType="INTEGER" />
+    <result column="redpacket_belongid" property="redpacketBelongid" jdbcType="BIGINT" />
+    <result column="redpacket_type" property="redpacketType" jdbcType="INTEGER" />
+    <result column="redpacket_status" property="redpacketStatus" jdbcType="INTEGER" />
+    <result column="redpacket_delete" property="redpacketDelete" jdbcType="INTEGER" />
+    <result column="redpacket_redundancy" property="redpacketRedundancy" jdbcType="VARCHAR" />
+    <result column="redpacket_createtime" property="redpacketCreatetime" jdbcType="TIMESTAMP" />
+    <result column="redpacket_modifytime" property="redpacketModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    redpacket_id, redpacket_userid, redpacket_source, redpacket_receiveid, redpacket_lotterynumber, 
+    redpacket_belongid, redpacket_type, redpacket_status, redpacket_delete, redpacket_redundancy, 
+    redpacket_createtime, redpacket_modifytime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_redpacket
+    where redpacket_id = #{ID,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wtb_redpacket
+    where redpacket_id = #{ID,jdbcType=BIGINT}
+  </delete>
+  
+  <!-- by Sheryl -->
+  <insert id="AddRedPacketMessage" parameterType="wtb.core.model.RedPacket" >
+    insert into wtb_redpacket (redpacket_id, redpacket_userid, redpacket_source, 
+      redpacket_receiveid, redpacket_lotterynumber, 
+      redpacket_belongid, redpacket_type, redpacket_status, 
+      redpacket_delete, redpacket_redundancy, redpacket_createtime, 
+      redpacket_modifytime)
+    values (#{ID,jdbcType=BIGINT}, #{redpacketUserid,jdbcType=BIGINT}, #{redpacketSource,jdbcType=INTEGER}, 
+      #{redpacketReceiveid,jdbcType=BIGINT}, #{redpacketLotterynumber,jdbcType=INTEGER}, 
+      #{redpacketBelongid,jdbcType=BIGINT}, #{redpacketType,jdbcType=INTEGER}, #{redpacketStatus,jdbcType=INTEGER}, 
+      0, #{redpacketRedundancy,jdbcType=VARCHAR}, now(), 
+      now())
+  </insert>
+  <update id="ChangeBelongUser" parameterType="map" >
+    update wtb_redpacket
+    <set >
+      redpacket_belongid = #{belongId,jdbcType=BIGINT}
+    </set>
+    where redpacket_id = #{rpID,jdbcType=BIGINT} 
+    AND redpacket_status = 1 AND redpacket_delete = 0
+    LIMIT 1
+  </update>
+  <update id="ChangeStatus" parameterType="java.lang.Long" >
+    update wtb_redpacket
+    <set >
+      redpacket_status = 2
+    </set>
+    where redpacket_id = #{rpID,jdbcType=BIGINT} 
+    AND redpacket_status = 1 AND redpacket_delete = 0
+    LIMIT 1
+  </update>
+  
+  
+  <insert id="insert" parameterType="wtb.core.model.RedPacket" >
+    insert into wtb_redpacket (redpacket_id, redpacket_userid, redpacket_source, 
+      redpacket_receiveid, redpacket_lotterynumber, 
+      redpacket_belongid, redpacket_type, redpacket_status, 
+      redpacket_delete, redpacket_redundancy, redpacket_createtime, 
+      redpacket_modifytime)
+    values (#{ID,jdbcType=BIGINT}, #{redpacketUserid,jdbcType=BIGINT}, #{redpacketSource,jdbcType=INTEGER}, 
+      #{redpacketReceiveid,jdbcType=BIGINT}, #{redpacketLotterynumber,jdbcType=INTEGER}, 
+      #{redpacketBelongid,jdbcType=BIGINT}, #{redpacketType,jdbcType=INTEGER}, #{redpacketStatus,jdbcType=INTEGER}, 
+      #{redpacketDelete,jdbcType=INTEGER}, #{redpacketRedundancy,jdbcType=VARCHAR}, #{redpacketCreatetime,jdbcType=TIMESTAMP}, 
+      #{redpacketModifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="wtb.core.model.RedPacket" >
+    insert into wtb_redpacket
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ID != null" >
+        redpacket_id,
+      </if>
+      <if test="redpacketUserid != null" >
+        redpacket_userid,
+      </if>
+      <if test="redpacketSource != null" >
+        redpacket_source,
+      </if>
+      <if test="redpacketReceiveid != null" >
+        redpacket_receiveid,
+      </if>
+      <if test="redpacketLotterynumber != null" >
+        redpacket_lotterynumber,
+      </if>
+      <if test="redpacketBelongid != null" >
+        redpacket_belongid,
+      </if>
+      <if test="redpacketType != null" >
+        redpacket_type,
+      </if>
+      <if test="redpacketStatus != null" >
+        redpacket_status,
+      </if>
+      <if test="redpacketDelete != null" >
+        redpacket_delete,
+      </if>
+      <if test="redpacketRedundancy != null" >
+        redpacket_redundancy,
+      </if>
+      <if test="redpacketCreatetime != null" >
+        redpacket_createtime,
+      </if>
+      <if test="redpacketModifytime != null" >
+        redpacket_modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ID != null" >
+        #{ID,jdbcType=BIGINT},
+      </if>
+      <if test="redpacketUserid != null" >
+        #{redpacketUserid,jdbcType=BIGINT},
+      </if>
+      <if test="redpacketSource != null" >
+        #{redpacketSource,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketReceiveid != null" >
+        #{redpacketReceiveid,jdbcType=BIGINT},
+      </if>
+      <if test="redpacketLotterynumber != null" >
+        #{redpacketLotterynumber,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketBelongid != null" >
+        #{redpacketBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="redpacketType != null" >
+        #{redpacketType,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketStatus != null" >
+        #{redpacketStatus,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketDelete != null" >
+        #{redpacketDelete,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketRedundancy != null" >
+        #{redpacketRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="redpacketCreatetime != null" >
+        #{redpacketCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="redpacketModifytime != null" >
+        #{redpacketModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="wtb.core.model.RedPacket" >
+    update wtb_redpacket
+    <set >
+      <if test="redpacketUserid != null" >
+        redpacket_userid = #{redpacketUserid,jdbcType=BIGINT},
+      </if>
+      <if test="redpacketSource != null" >
+        redpacket_source = #{redpacketSource,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketReceiveid != null" >
+        redpacket_receiveid = #{redpacketReceiveid,jdbcType=BIGINT},
+      </if>
+      <if test="redpacketLotterynumber != null" >
+        redpacket_lotterynumber = #{redpacketLotterynumber,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketBelongid != null" >
+        redpacket_belongid = #{redpacketBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="redpacketType != null" >
+        redpacket_type = #{redpacketType,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketStatus != null" >
+        redpacket_status = #{redpacketStatus,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketDelete != null" >
+        redpacket_delete = #{redpacketDelete,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketRedundancy != null" >
+        redpacket_redundancy = #{redpacketRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="redpacketCreatetime != null" >
+        redpacket_createtime = #{redpacketCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="redpacketModifytime != null" >
+        redpacket_modifytime = #{redpacketModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where redpacket_id = #{ID,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="wtb.core.model.RedPacket" >
+    update wtb_redpacket
+    set redpacket_userid = #{redpacketUserid,jdbcType=BIGINT},
+      redpacket_source = #{redpacketSource,jdbcType=INTEGER},
+      redpacket_receiveid = #{redpacketReceiveid,jdbcType=BIGINT},
+      redpacket_lotterynumber = #{redpacketLotterynumber,jdbcType=INTEGER},
+      redpacket_belongid = #{redpacketBelongid,jdbcType=BIGINT},
+      redpacket_type = #{redpacketType,jdbcType=INTEGER},
+      redpacket_status = #{redpacketStatus,jdbcType=INTEGER},
+      redpacket_delete = #{redpacketDelete,jdbcType=INTEGER},
+      redpacket_redundancy = #{redpacketRedundancy,jdbcType=VARCHAR},
+      redpacket_createtime = #{redpacketCreatetime,jdbcType=TIMESTAMP},
+      redpacket_modifytime = #{redpacketModifytime,jdbcType=TIMESTAMP}
+    where redpacket_id = #{ID,jdbcType=BIGINT}
+  </update>
+</mapper>

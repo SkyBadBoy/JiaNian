@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadWeMoneyMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+     
+<resultMap type="wtb.core.model.WeMoney" id="ClassResultMap">
+	<result property="ID" column="WeMoney_ID"/>
+	<result property="PKID" column="WeMoney_ID"/>
+	<result property="WeMoney" column="WeMoney_WeMoney"/>
+	<result property="Count" column="WeMoney_WeMoney"/>
+	<result property="CreateTime" column="WeMoney_CreateTime"/>
+	<result property="ModifyTime" column="WeMoney_ModifyTime"/>
+	<result property="Status" column="WeMoney_Status"/>
+	<result property="UserID" column="WeMoney_UserID"/>
+	<result property="Deleted" column="WeMoney_Deleted"/>
+	<result property="ResidualIntegral" column="WeMoney_ResidualIntegral"/>
+	<association property="Student" column="WeMoney_UserID" select="read.core.data.ReadStudentsMapper.getStudentsByIDList"/>
+
+</resultMap> 
+<resultMap type="wtb.core.model.WeMoney" id="ClassResultMapByID">
+	<result property="ID" column="WeMoney_ID"/>
+	<result property="PKID" column="WeMoney_ID"/>
+	<result property="WeMoney" column="WeMoney_WeMoney"/>
+	<result property="Count" column="WeMoney_WeMoney"/>
+	<result property="CreateTime" column="WeMoney_CreateTime"/>
+	<result property="ModifyTime" column="WeMoney_ModifyTime"/>
+	<result property="Status" column="WeMoney_Status"/>
+	<result property="UserID" column="WeMoney_UserID"/>
+	<result property="Deleted" column="WeMoney_Deleted"/>
+	<result property="ResidualIntegral" column="WeMoney_ResidualIntegral"/>
+</resultMap> 
+
+<select id="getWeMoneyList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		WeMoney_ID,
+		WeMoney_WeMoney,
+		WeMoney_Status,
+		WeMoney_CreateTime,
+		WeMoney_ModifyTime,
+		WeMoney_UserID,
+		WeMoney_Deleted,
+		WeMoney_ResidualIntegral
+		FROM wtb_WeMoney
+		<where>
+			1=1 and WeMoney_Status=1
+			<if test="ID != null">
+					and WeMoney_ID = #{ID}
+				</if>
+				<if test="UserID != null">
+					and WeMoney_UserID = #{UserID}
+				</if>
+				<if test="Status != null">
+					and WeMoney_Status = #{Status}
+				</if>
+				<if test="startTime!=null and endTime!=null">
+					and WeMoney_ModifyTime  between  #{startTime} and #{endTime}
+				</if>
+				<if test="Sina !=null">
+					and #{Sina} = #{Sina}
+				</if>
+		</where>
+		<if test="orderWeMoney==null">
+			order by WeMoney_CreateTime desc
+		</if>
+		<if test="orderWeMoney!=null">
+			order by wtb_WeMoney.WeMoney_WeMoney DESC
+		</if>
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getWeMoneyCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_WeMoney
+		<where>
+		WeMoney_Status=1
+			<if test="ID != null">
+					and WeMoney_ID = #{ID}
+				</if>
+				<if test="UserID != null">
+					and WeMoney_UserID = #{UserID}
+				</if>
+				<if test="Status != null">
+					and WeMoney_Status = #{Status}
+				</if>
+				<if test="startTime!=null and endTime!=null">
+					and WeMoney_ModifyTime  between  #{startTime} and #{endTime}
+				</if>
+		</where>
+		
+</select>
+<select id="getWeMoneyByIDList" parameterType="map" resultMap="ClassResultMapByID">
+	SELECT
+		WeMoney_ID,
+		WeMoney_WeMoney,
+		WeMoney_Status,
+		WeMoney_CreateTime,
+		WeMoney_ModifyTime,
+		WeMoney_UserID,
+		WeMoney_Deleted,
+		WeMoney_ResidualIntegral
+		FROM wtb_WeMoney
+		<where>
+			WeMoney_Status=1
+				<if test="ID != null">
+					and WeMoney_ID = #{ID}
+				</if>
+				<if test="UserID != null">
+					and WeMoney_UserID = #{UserID}
+				</if>
+				<if test="Sina != null">
+					and #{Sina} = #{Sina}
+				</if>
+		</where>
+		order by WeMoney_CreateTime desc
+		
+</select>
+</mapper>
+

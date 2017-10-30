@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="read.core.data.ReadLotteryChanceMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.LotteryChance" >
+    <id column="chance_id" property="ID" jdbcType="BIGINT" />
+	<result column="chance_id" property="PKID" jdbcType="BIGINT"/>
+    <result column="chance_userid" property="chanceUserid" jdbcType="BIGINT" />
+    <result column="chance_belongid" property="chanceBelongid" jdbcType="INTEGER" />
+    <result column="chance_type" property="chanceType" jdbcType="INTEGER" />
+    <result column="chance_delete" property="chanceDelete" jdbcType="INTEGER" />
+    <result column="chance_redundancy" property="chanceRedundancy" jdbcType="VARCHAR" />
+    <result column="chance_createtime" property="chanceCreatetime" jdbcType="TIMESTAMP" />
+    <result column="chance_modifytime" property="chanceModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    chance_id, chance_userid, chance_belongid, chance_type, chance_delete, chance_redundancy, 
+    chance_createtime, chance_modifytime
+  </sql>
+  
+  <!-- by Sheryl -->
+  <select id="QueryCount" resultType="java.lang.Integer" parameterType="map" >
+    SELECT 
+    		COUNT(*)
+    from wtb_lotterychance
+    		WHERE chance_userid = #{ID,jdbcType=BIGINT}
+   		AND date_format(chance_createtime, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+   		AND chance_type = #{type,jdbcType=INTEGER} LIMIT 1
+  </select>
+  <select id="QueryBelong" resultType="java.lang.Integer" parameterType="map" >
+    SELECT 
+    		chance_belongid
+    from wtb_lotterychance
+    		WHERE chance_userid = #{ID,jdbcType=BIGINT}
+   		AND date_format(chance_createtime, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+   		AND chance_type = #{type,jdbcType=INTEGER} LIMIT 1
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_lotterychance
+    where chance_id = #{ID,jdbcType=BIGINT}
+  </select>
+  
+</mapper>

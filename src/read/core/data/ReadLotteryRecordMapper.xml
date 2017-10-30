@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="read.core.data.ReadLotteryRecordMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.LotteryRecord" >
+    <id column="record_id" property="ID" jdbcType="BIGINT" />
+	<result column="record_id" property="PKID" jdbcType="BIGINT"/>
+    <result column="record_userid" property="recordUserid" jdbcType="BIGINT" />
+    <result column="record_belongid" property="recordBelongid" jdbcType="BIGINT" />
+    <result column="record_type" property="recordType" jdbcType="INTEGER" />
+    <result column="record_delete" property="recordDelete" jdbcType="INTEGER" />
+    <result column="record_status" property="recordStatus" jdbcType="INTEGER" />
+    <result column="record_redundancy" property="recordRedundancy" jdbcType="VARCHAR" />
+    <result column="record_createtime" property="recordCreatetime"  />
+    <result column="record_modifytime" property="recordModifytime"  />
+    <association property="student" column="record_userid" select="read.core.data.ReadStudentsMapper.getStudentsByIDList"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    record_id, record_userid, record_belongid, record_type, record_delete, record_status, record_redundancy, 
+    record_createtime, record_modifytime
+  </sql>
+  
+  <!-- by Sheryl -->
+  <select id="QueryRecordAll" resultMap="BaseResultMap" parameterType="map">
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_lotteryrecord
+    WHERE record_status > 0
+    ORDER BY record_createtime DESC
+    LIMIT #{start},#{size}
+  </select>
+  
+  <select id="QueryMyAll" resultMap="BaseResultMap" parameterType="map">
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_lotteryrecord
+    WHERE record_status > 0 AND record_userid = #{ID,jdbcType=BIGINT}
+    ORDER BY record_createtime DESC
+    LIMIT #{start},#{size}
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_lotteryrecord
+    where record_id = #{ID,jdbcType=BIGINT}
+  </select>
+ 
+</mapper>

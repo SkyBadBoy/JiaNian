@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.CommentMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<insert id="addComment" parameterType="wtb.core.model.Comment" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Comment (
+			Comment_ID,
+  		Comment_UserID,
+		Comment_NoticesID,
+		Comment_CreateTime,
+		Comment_Content,
+		Comment_Status,
+		Comment_Type
+		) VALUES (
+			#{ID}, #{UserID}, #{NoticesID}, #{CreateTime},#{Content},#{Status},#{Type}
+		)
+</insert>
+<delete id="deleteComment" parameterType="wtb.core.model.Comment">
+	update  wtb_Comment set Comment_Status=88
+			where
+				 Comment_ID = #{ID}
+</delete>
+</mapper>
+

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadQuestionLimitMapper">
+<resultMap type="wtb.core.model.QuestionLimit" id="ClassResultMap">
+        <result property="ID" column="QuestionLimit_ID"/>
+        <result property="CreateTime" column="QuestionLimit_CreateTime"/>
+        <result property="ModifyTime" column="QuestionLimit_ModifyTime"/>
+        <result property="Version" column="QuestionLimit_Version"/>
+        <result property="Status" column="QuestionLimit_Status"/>
+        <result property="Memo" column="QuestionLimit_Memo"/>
+        <result property="StudentID" column="QuestionLimit_StudentID"/>
+        <result property="LimitNumber" column="QuestionLimit_LimitNumber"/>
+        <result property="LimitTime" column="QuestionLimit_LimitTime"/>
+        <result property="Type" column="QuestionLimit_Type"/>
+        <result property="LimitNo" column="QuestionLimit_LimitNo"/>
+    </resultMap>
+    
+    <sql id="param">
+    
+    	QuestionLimit_ID,
+		QuestionLimit_Status,
+		QuestionLimit_Memo,
+		QuestionLimit_CreateTime,
+		QuestionLimit_ModifyTIme,
+		QuestionLimit_Version,
+		QuestionLimit_StudentID,
+		QuestionLimit_LimitNumber,
+		QuestionLimit_LimitTime,
+		QuestionLimit_Type,
+		QuestionLimit_LimitNo
+    
+    </sql>
+    <sql id="where">
+     <if test="ID != null">
+                AND QuestionLimit_ID = #{ID}
+            </if>
+            <if test="Type != null">
+                AND QuestionLimit_Type = #{Type}
+            </if>
+            <if test="StudentID != null">
+                AND QuestionLimit_StudentID = #{StudentID}
+            </if>
+            <if test="LimitNo != null">
+                AND QuestionLimit_LimitNo = #{LimitNo}
+            </if>
+             <if test="LimitNumber != null">
+                AND QuestionLimit_LimitNumber &lt;= #{LimitNumber}
+            </if>
+             <if test="LimitTime != null">
+                AND datediff(now(),QuestionLimit_LimitTime)&lt;=0
+            </if>
+            <if test="Status == null">
+                AND QuestionLimit_Status = 1
+            </if>
+            <if test="Status != null">
+                AND QuestionLimit_Status = #{Status}
+            </if>
+            <if test="Sina != null">
+                AND #{Sina} = #{Sina}
+            </if>
+    </sql>
+    <select id="findQuestionLimit" parameterType="wtb.core.model.QuestionLimit" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM wtb_QuestionLimits
+        <where>
+        1=1
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <select id="searchQuestionLimit" parameterType="wtb.core.model.QuestionLimit" resultMap="ClassResultMap">
+        SELECT 
+        <include refid="param"></include>
+         FROM wtb_QuestionLimits
+        WHERE QuestionLimit_ID = #{ID}
+    </select>
+
+    <select id="queryQuestionLimit" parameterType="map" resultMap="ClassResultMap">
+        SELECT
+        <include refid="param"></include>
+        FROM wtb_QuestionLimits
+
+        <where>
+        1=1
+          <include refid="where"></include>
+           
+        </where>
+        <if test="limit != null and start !=null ">
+	        limit ${start},${limit} 
+		</if>
+    </select>
+
+    
+</mapper>

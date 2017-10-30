@@ -1,0 +1,150 @@
+div.add_frame{
+	border: 1px solid #CCCCCC;
+	border-radius:4px;
+	height: 470px;
+}
+div.new_rule_header{
+	background-color: #CCCCCC;
+	opacity: 0.7;
+	height: 30px;
+	padding: 10px;
+	font-size: 120%;
+}
+div.rule_detail{
+	width: 100%;
+	height: 100%;
+}
+div.rule_detail div.content{
+	margin: 2%;
+	font-size: 110%;
+}
+div.bottom_hr{
+	width: 100%;
+	height: 2px;
+	background-color: #000000;
+	opacity: 0.2;
+	margin: 5px 0;
+}
+.set_menu_class{
+	float: left;
+	margin: 5px 0;
+	height: 40px;
+	font-size: 130%;	
+	border: 1px solid #CCCCCC;
+	border-radius: 2px;
+	margin-left: 5%;
+}
+#reply_type{
+	margin: 5px 0;
+	height: 30px;
+	font-size: 110%;	
+	border: 1px solid #CCCCCC;
+	border-radius: 2px;
+	margin-left: 5%;
+}
+
+input{
+	font-size: 110%;
+	float: right;
+	border: 0px;
+	width: 90%;
+}
+div[id^="content_"]{
+	height: 100%;
+	width: 100%;
+}
+div#content_music,div#content_mutil{
+	margin-top: 20px;
+	font-size: 110%;
+}
+div#content_music p,div#content_mutil p{
+	padding-left: 0;
+	margin-top: 10px;
+	left: 0;
+	width: 100%;
+	border-bottom: 1px solid #CCCCCC;
+}
+textarea{
+	width: 100%;
+	height: 250px;
+	border-color: #C0BFC5;
+	border-radius: 5px;
+}
+.check_content,.save_muti,.save_db{
+	width: 120px;
+	margin-top: 10px;
+	color: white;
+	font-size: 110%;
+	outline: 0;
+	border-radius: 2px;
+}
+.check_content{
+	background-color: #6BBE6E;
+	border-color: #6BBE6E;
+}
+.save_muti{
+	background-color: #00A0F3;
+	border-color: #00A0F3;
+}
+.save_db{
+	border-color: #D43D3D;
+	background-color: #D43D3D;
+}
+div.menu_cotaner{
+	margin: 10px;
+	height: 500px;
+	border: 1px solid #CCCCCC;
+	border-radius: 5px;
+}
+.menu_preview{
+	display: inline-table;
+	border-right: 1px solid #CCCCCC;
+	height: 90%;
+	width: 30%;
+	margin: 0;
+	padding: 0;
+}
+.menu_preview .menu_detail{
+	margin: 5px 0;
+	height:92%;
+	overflow-y: scroll;
+}
+.menu_head{
+	height: 40px;
+	width: 100%;
+	background-color:#CCCCCC;
+}
+.menu_head input{
+	height: 40px;
+	width: 100%;
+	background-color: #CCCCCC;
+}
+.button_set{
+	display: inline-table;
+	margin-left: 20px;
+	height: 89%;
+	width: 65%;
+	text-align: center;
+}
+.button_set input,select{
+	float: left;
+	margin: 5px 0;
+	height: 40px;
+	font-size: 130%;	
+	border: 1px solid #CCCCCC;
+	border-radius: 2px;
+	margin-left: 5%;
+}
+
+#add_sub_menu{
+	float: left;
+	margin-left: 5%;
+}
+#add_sub_menu_btn{
+	float: left;
+	margin-left: 5%;
+}
+#add_sub_menu_end{
+	float: left;
+	margin-left: 5%;
+}

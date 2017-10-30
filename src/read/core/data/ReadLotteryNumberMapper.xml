@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="read.core.data.ReadLotteryNumberMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.LotteryNumber" >
+    <id column="lottery_id" property="ID" jdbcType="BIGINT" />
+	<result column="lottery_id" property="PKID" jdbcType="BIGINT"/>
+    <result column="lottery_userid" property="lotteryUserid" jdbcType="BIGINT" />
+    <result column="lottery_number" property="lotteryNumber" jdbcType="BIGINT" />
+    <result column="lottery_delete" property="lotteryDelete" jdbcType="INTEGER" />
+    <result column="lottery_status" property="lotteryStatus" jdbcType="INTEGER" />
+    <result column="lottery_redundancy" property="lotteryRedundancy" jdbcType="VARCHAR" />
+    <result column="lottery_createtime" property="lotteryCreatetime" jdbcType="TIMESTAMP" />
+    <result column="lottery_modifytime" property="lotteryModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    lottery_id, lottery_userid, lottery_number, lottery_delete, lottery_status, lottery_redundancy, 
+    lottery_createtime, lottery_modifytime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_lotterynumber
+    where lottery_id = #{ID,jdbcType=BIGINT}
+  </select>
+  
+</mapper>

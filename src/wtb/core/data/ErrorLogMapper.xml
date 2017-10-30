@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.ErrorLogMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.ErrorLog" id="ClassResultMap">
+	<result property="ID" column="Error_ID"/>
+	<result property="PKID" column="Error_ID"/>
+	<result property="UserID" column="Error_UserID"/>
+	<result property="Name" column="Error_Name"/>
+	<result property="ClassName" column="Error_ClassName"/>
+	<result property="Message" column="Error_Message"/>
+	<result property="CreateTime" column="Error_CreateTime"/>
+	<result property="Status" column="Error_Status"/>
+	<result property="IsStatus" column="Error_IsStatus"/>
+	
+</resultMap>
+
+<resultMap type="wtb.core.model.ErrorLog" id="ViewDataMap">
+	<result property="ClassName" column="Error_ClassName"/>
+	<result property="Count" column="Error_Count"/>
+</resultMap>
+<!-- -->
+<resultMap type="wtb.core.model.ErrorLog" id="ChartLineDataMap">
+	<result property="ClassName" column="Error_ClassName"/>
+	<result property="DateDay" column="Error_DateDay"/>
+	<result property="DateDayHour" column="Error_DateDayHour"/>
+	<result property="Year" column="Error_Year"/>
+	<result property="Month" column="Error_Month"/>
+	<result property="Day" column="Error_Day"/>
+	<result property="Count" column="Error_Count"/>
+</resultMap>
+
+
+<select id="getErrorLogIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT 
+	Error_ID, 
+	Error_UserID, 
+	Error_Name, 
+	Error_ClassName,
+	Error_Message, 
+	Error_CreateTime,
+	Error_Status,
+	case Error_Status when 7 then '未通知' when 1 then '正在通知' when 88 then '已解决'end as Error_IsStatus
+	FROM wtb_errorlog 
+	<where>
+		1=1
+			<if test="_parameter != null">
+					and Error_ID = #{_parameter}
+			</if>
+				
+	</where>
+	order by Error_Status ASC,Error_CreateTime desc
+	<if test="limit != null and start !=null ">
+		limit ${start},${limit} 
+	</if>
+</select>
+
+<select id="getErrorLogList" parameterType="map" resultMap="ClassResultMap">
+	SELECT 
+	Error_ID, 
+	Error_UserID, 
+	Error_Name, 
+	Error_ClassName,
+	Error_Message, 
+	Error_CreateTime,
+	Error_Status,
+	case Error_Status when 7 then '未通知' when 1 then '正在通知' when 88 then '已解决'end as Error_IsStatus
+	FROM wtb_errorlog 
+	<where>
+	1=1 and Error_Status!=88
+		<if test="ID!=null">
+			and Error_ID=#{ID}
+		</if>
+		<if test="ClassName!=null">
+			and Error_ClassName=#{ClassName}
+		</if>
+		<if test="Status!=null">
+			and Error_Status=#{Status}
+		</if>
+				
+	</where>
+		order by Error_Status ASC,Error_CreateTime desc
+	<if test="limit != null and start !=null ">
+		limit ${start},${limit} 
+	</if>
+</select>
+
+<select id="getErrorLogCount" parameterType="map" resultType="int">
+	select COUNT(1) from wtb_errorlog
+	<where>
+		1=1 
+		<if test="ID!=null">
+		and	Error_ID=#{ID}
+		</if>
+		<if test="UserID!=null">
+		and 	Error_UserID=#{UserID}
+		</if>
+		<if test="ClassName!=null">
+		and 	Error_ClassName=#{ClassName}
+		</if>
+		<if test="Status!=null">
+			and Error_Status=#{Status}
+		</if>
+	</where>
+</select>
+
+<select id="getViewData" parameterType="map" resultMap="ViewDataMap">
+	SELECT 
+		count(*) as Error_Count,
+		Error_ClassName 
+	FROM wtb_errorlog
+	<where>
+		
+		<if test="data!=null">
+			to_days(Error_CreateTime) = to_days(now())
+		</if>
+		<if test="data==null">
+			year(Error_CreateTime) = year(now()) and month(Error_CreateTime) = month(now())
+		</if>
+	</where>
+	group by Error_ClassName
+	
+</select>
+<insert id="addErrorLog" parameterType="wtb.core.model.ErrorLog" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_errorlog(
+		Error_ID,
+		Error_UserID,
+		Error_Name,
+		Error_ClassName,
+		Error_Message,
+		Error_CreateTime,
+		Error_Status
+	)VALUES(
+		#{ID},#{UserID},#{Name},#{ClassName},#{Message},now(),#{Status}
+	)
+</insert>
+
+<delete id="deleteErrorLog" parameterType="wtb.core.model.ErrorLog" >
+	update  wtb_errorlog set Error_Status=88
+			where
+				 Error_ID = #{ID}
+</delete>
+<update id="noticeErrorLog" parameterType="wtb.core.model.ErrorLog" >
+	update  wtb_errorlog set Error_Status=1
+			where
+				 Error_ID = #{ID}
+</update>
+
+<select id="getChartLineList" parameterType="map" resultMap="ChartLineDataMap"> 
+	SELECT 
+		Error_ClassName,
+		<if test="DateDay!=null">
+			date(`Error_CreateTime`) as DateDay <!-- 查询dateday -->
+		</if>
+	 	<if test="DateDayHour!=null">
+			 DATE_FORMAT(`Error_CreateTime`,'%Y-%m-%d %H:00:00') as DateDayHour <!-- 查询DateDayHour  DateDayAll-->
+		</if>
+		<if test="DateDayAll!=null">
+			,count(*) as Error_Count <!-- 查询DataDayAll --> 
+		</if>
+			<if test="StartTime!=null and EndTime!=null">
+			FROM ( SELECT * FROM `wtb_errorlog` WHERE `Error_CreateTime` between #{StartTime} and #{EndTime} ORDER BY `Error_CreateTime` DESC) as t
+	  		</if>
+	  	<where>
+			1=1
+			<if test="DateDayHourWhere!=null">
+				and  DATE_FORMAT(`Error_CreateTime`,'%Y-%m-%d')=#{DateDayHourWhere} <!-- 查询DateDayHour -->
+			</if>
+			<if test="DateDayAllWhere!=null">
+				and  DATE_FORMAT(`Error_CreateTime`,'%Y-%m-%d %H:00:00')=#{DateDayAllWhere} <!-- 查询DataDayAll --> 
+			</if>
+		</where>
+		<if test="DateDayGroup!=null">
+			group by date(`Error_CreateTime`)<!-- 查询dateday -->
+		</if>
+		<if test="DateDayHourGroup!=null">
+			group by DATE_FORMAT(`Error_CreateTime`,'%Y-%m-%d %H:00:00') order by Error_CreateTime <!-- 查询DateDayHour -->
+		</if>
+		<if test="DateDayAllGroup!=null">
+			 group by Error_ClassName order by Error_Count desc limit 1
+		</if>
+</select>
+ <select id="getChartLineStat" parameterType="map" resultMap="ChartLineDataMap"> 
+ 
+ select Error_ClassName,YEAR(Error_CreateTime) as Error_Year
+,month(Error_CreateTime) as Error_Month
+,day(Error_CreateTime) as Error_Day,count(1) as Error_Count from wtb_errorlog where Error_CreateTime between #{StartTime} and #{EndTime}
+group by  Error_ClassName,YEAR(Error_CreateTime)
+,month(Error_CreateTime)
+,day(Error_CreateTime)
+ order by YEAR(Error_CreateTime),month(Error_CreateTime),day(Error_CreateTime)
+</select>
+</mapper>

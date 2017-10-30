@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.VerifyRecordMapper">
+    <select id="findVerifyRecord" parameterType="wtb.core.model.VerifyRecord" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM wtb_VerifyRecords
+        WHERE VerifyRecord_ID = #{iD} AND VerifyRecord_Deleted = 0
+    </select>
+
+    <select id="searchVerifyRecord" parameterType="wtb.core.model.VerifyRecord" resultMap="ClassResultMap">
+        SELECT * FROM wtb_VerifyRecords
+        WHERE VerifyRecord_ID = #{iD} AND VerifyRecord_Deleted = 0
+    </select>
+
+    <select id="queryVerifyRecord" parameterType="map" resultMap="ClassResultMap">
+        SELECT
+        VerifyRecord_ID, VerifyRecord_StudentID, VerifyRecord_Phone, VerifyRecord_CheckNumber,
+        VerifyRecord_CreateTime, VerifyRecord_ModifyTime, VerifyRecord_DisableTime, VerifyRecord_EnableTime
+        VerifyRecord_PreviousID, VerifyRecord_Version, VerifyRecord_Status, VerifyRecord_Deleted
+        FROM wtb_VerifyRecords
+        <where>
+            VerifyRecord_Deleted = 0
+            <if test="iD != null">
+                AND VerifyRecord_ID = #{iD}
+            </if>
+            <if test="userID != null">
+                AND VerifyRecord_StudentID = #{studentID}
+            </if>
+            <if test="phone != null">
+                AND VerifyRecord_Phone = #{phone}
+            </if>
+            <if test="checkNumber != null">
+                AND VerifyRecord_CheckNumber = #{checkNumber}
+            </if>
+            <if test="createTime != null">
+                AND VerifyRecord_CreateTime = #{createTime}
+            </if>
+            <if test="modifyTime != null">
+                AND VerifyRecord_ModifyTime = #{modifyTime}
+            </if>
+            <if test="disableTime != null">
+                AND VerifyRecord_DisableTime = #{disableTime}
+            </if>
+            <if test="enableTime != null">
+                AND VerifyRecord_EnableTime = #{enableTime}
+            </if>
+            <if test="previousID != null">
+                AND VerifyRecord_PreviousID = #{previousID}
+            </if>
+            <if test="version != null">
+                AND VerifyRecord_Version = #{version}
+            </if>
+            <if test="status != null">
+                AND VerifyRecord_Status = #{status}
+            </if>
+        </where>
+        order by VerifyRecord_ModifyTime desc
+        <if test="limit != null and start!=null">
+            limit #{start},#{limit}
+        </if>
+
+    </select>
+
+    <insert id="addVerifyRecord" parameterType="wtb.core.model.VerifyRecord" keyProperty="verifyRecordID"
+            useGeneratedKeys="true">
+        INSERT INTO wtb_VerifyRecords (
+        VerifyRecord_ID, VerifyRecord_StudentID, VerifyRecord_Phone, VerifyRecord_CheckNumber,
+        VerifyRecord_CreateTime, VerifyRecord_ModifyTime, VerifyRecord_DisableTime, VerifyRecord_EnableTime,
+        VerifyRecord_PreviousID, VerifyRecord_Version, VerifyRecord_Status, VerifyRecord_Deleted
+        ) VALUES (
+        #{iD}, #{studentID}, #{phone}, #{checkNumber},
+        NOW(), NOW(), #{disableTime}, #{enableTime},
+        0, 0, #{status}, 0
+        )
+    </insert>
+
+    <update id="changeVerifyRecord" parameterType="wtb.core.model.VerifyRecord">
+        UPDATE wtb_VerifyRecords SET
+        VerifyRecord_StudentID = #{studentID}, VerifyRecord_Phone = #{phone},
+        VerifyRecord_CheckNumber = #{checkNumber}, VerifyRecord_CreateTime = #{createTime},
+        VerifyRecord_ModifyTime = NOW(), VerifyRecord_PreviousID = #{previousID},
+        VerifyRecord_Version = VerifyRecord_Version + 1, VerifyRecord_Status = #{status},
+        VerifyRecord_Deleted = #{deleted}
+        WHERE VerifyRecord_ID = #{iD} AND VerifyRecord_Deleted = 0
+    </update>
+
+    <delete id="removeVerifyRecord" parameterType="wtb.core.model.VerifyRecord">
+        UPDATE wtb_VerifyRecords SET
+        VerifyRecord_Deleted = 1, VerifyRecord_ModifyTime = NOW(),
+        VerifyRecord_Version = VerifyRecord_Version + 1
+        WHERE VerifyRecord_ID = #{iD} AND VerifyRecord_Deleted = 0
+    </delete>
+
+    <delete id="closeVerifyRecord" parameterType="wtb.core.model.VerifyRecord">
+        UPDATE wtb_VerifyRecords SET
+        VerifyRecord_Deleted = 1, VerifyRecord_ModifyTime = NOW(),
+        VerifyRecord_Version = VerifyRecord_Version + 1, VerifyRecord_Status = #{status}
+        WHERE VerifyRecord_ID = #{iD} AND VerifyRecord_Deleted = 0
+    </delete>
+
+    <resultMap type="wtb.core.model.VerifyRecord" id="ClassResultMap">
+        <result property="iD" column="VerifyRecord_ID"/>
+        <result property="studentID" column="VerifyRecord_StudentID"/>
+        <result property="phone" column="VerifyRecord_Phone"/>
+        <result property="checkNumber" column="VerifyRecord_CheckNumber"/>
+        <result property="createTime" column="VerifyRecord_CreateTime"/>
+        <result property="modifyTime" column="VerifyRecord_ModifyTime"/>
+        <result property="disableTime" column="VerifyRecord_DisableTime"/>
+        <result property="enableTime" column="VerifyRecord_EnableTime"/>
+        <result property="previousID" column="VerifyRecord_PreviousID"/>
+        <result property="version" column="VerifyRecord_Version"/>
+        <result property="status" column="VerifyRecord_Status"/>
+        <result property="deleted" column="VerifyRecord_Deleted"/>
+    </resultMap>
+</mapper>

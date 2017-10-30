@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadWeChatPublicMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+	<resultMap type="wtb.core.model.WeChatPublicSimple" id="SimpleClassResultMap">
+		<result property="ID" column="WeChatPublic_ID" />
+		<result property="PKID" column="WeChatPublic_ID" />
+		<result property="WeChat" column="WeChatPublic_WeChat" />
+		<result property="Company" column="WeChatPublic_Company" />
+		<result property="OrgName" column="WeChatPublic_OrgName" />
+	</resultMap>
+	<resultMap type="wtb.core.model.WeChatPublic" id="ClassResultMap">
+		<result property="ID" column="WeChatPublic_ID" />
+		<result property="PKID" column="WeChatPublic_ID" />
+		<result property="WeChat" column="WeChatPublic_WeChat" />
+		<result property="Company" column="WeChatPublic_Company" />
+		<result property="Content" column="WeChatPublic_Content" />
+		<result property="CreateTime" column="WeChatPublic_CreateTime" />
+		<result property="ModifyTime" column="WeChatPublic_ModifyTime" />
+		<result property="WebSiteURL" column="WeChatPublic_WebSiteURL" />
+		<result property="Status" column="WeChatPublic_Status" />
+		<result property="QRCodeURLID" column="WeChatPublic_QRCodeURLID" />
+		<result property="LogoID" column="WeChatPublic_LogoID" />
+		<result property="ContactPerson" column="WeChatPublic_ContactPerson" />
+		<result property="ContactPhone" column="WeChatPublic_ContactPhone" />
+		<result property="Organizational" column="WeChatPublic_Organizational" />
+		<result property="BusinessLicense" column="WeChatPublic_BusinessLicense" />
+		<result property="EMail" column="WeChatPublic_EMail" />
+		<result property="PublicType" column="WeChatPublic_PublicType" />
+		<result property="RegisterSubject" column="WeChatPublic_RegisterSubject" />
+		<result property="OrgName" column="WeChatPublic_OrgName" />
+		<result property="BannerID" column="WeChatPublic_BannerID" />
+		<result property="Memo" column="WeChatPublic_Memo" />
+		<result property="Address" column="WeChatPublic_Address" />
+		<result property="Lng" column="WeChatPublic_Lng" />
+		<result property="Lat" column="WeChatPublic_Lat" />
+		<result property="AreaID" column="WeChatPublic_AreaID" />
+		<result property="Bind" column="WeChatPublic_Bind" />
+		<result property="IsBind" column="WeChatPublic_IsBind" />
+		
+		<result property="Weight" column="WeChatPublic_Weight" />
+		<result property="ClickCount" column="WeChatPublic_ClickCount" />
+		<result property="Praise" column="WeChatPublic_Praise" />
+
+		<association property="Banner" column="WeChatPublic_BannerID"
+			select="read.core.data.ReadProdPictureMapper.getPictureByIDList" />
+
+		<association property="Logo" column="WeChatPublic_LogoID"
+			select="read.core.data.ReadProdPictureMapper.getPictureByIDList" />
+
+		<association property="QRCodeURL" column="WeChatPublic_QRCodeURLID"
+			select="read.core.data.ReadProdPictureMapper.getPictureByIDList" />
+		<association property="Area" column="WeChatPublic_AreaID" select="read.core.data.ReadRegionMapper.getRegionByIDList" />
+		<association property="NoticeCount" column="WeChatPublic_AreaID" select="read.core.data.ReadNoticesMapper.getNoticesCountByAreaID" />
+		<association property="StudentCount" column="WeChatPublic_AreaID" select="read.core.data.ReadStudentsMapper.getStudentsCountByAreaID" />
+	</resultMap>
+	
+	
+	<sql id="params">
+		WeChatPublic_ID ,
+		WeChatPublic_WeChat ,
+		WeChatPublic_Company ,
+		WeChatPublic_Content ,
+		WeChatPublic_CreateTime ,
+		WeChatPublic_ModifyTime ,
+		WeChatPublic_WebSiteURL ,
+		WeChatPublic_Status,
+		WeChatPublic_QRCodeURLID ,
+		WeChatPublic_LogoID,
+		WeChatPublic_ContactPerson,
+		WeChatPublic_ContactPhone,
+		WeChatPublic_Organizational,
+		WeChatPublic_BusinessLicense,
+		WeChatPublic_EMail,
+		WeChatPublic_PublicType,
+		WeChatPublic_RegisterSubject,
+		WeChatPublic_OrgName,
+		WeChatPublic_Memo,
+		WeChatPublic_BannerID,
+		WeChatPublic_Address,
+		WeChatPublic_Lng,
+		WeChatPublic_Lat,
+		WeChatPublic_AreaID,
+		WeChatPublic_Weight,
+		WeChatPublic_ClickCount,
+		WeChatPublic_Praise,
+		WeChatPublic_Bind
+	</sql>
+	<sql id="where">
+			and WeChatPublic_AreaID is not null and WeChatPublic_AreaID in(SELECT REGION_ID FROM wtb_Region  )
+			<if test="ID != null">
+				and WeChatPublic_ID = #{ID}
+			</if>
+			<if test="WeChat != null">
+				and WeChatPublic_WeChat like CONCAT(CONCAT('%', #{WeChat,
+				jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="Company != null">
+				and WeChatPublic_Company like CONCAT(CONCAT('%',
+				#{Company,
+				jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="Content != null">
+				and WeChatPublic_Content = #{Content}
+			</if>
+			<if test="CreateTime != null">
+				and WeChatPublic_CreateTime = #{CreateTime}
+			</if>
+			<if test="ModifyTime != null">
+				and WeChatPublic_ModifyTime = #{ModifyTime}
+			</if>
+			<if test="Status != null">
+				and WeChatPublic_Status = #{Status}
+			</if>
+			<if test="NoEqStatus != null">
+				and WeChatPublic_Status != #{NoEqStatus}
+			</if>
+			<if test="AreaID != null and UnitAreaID != null">
+				and (WeChatPublic_AreaID = #{AreaID} || WeChatPublic_AreaID = #{UnitAreaID})
+			</if>
+			<if test="AreaID != null and UnitAreaID == null">
+				and WeChatPublic_AreaID = #{AreaID}
+			</if>
+			<if test="Bind != null">
+				and WeChatPublic_Bind = #{Bind}
+			</if>
+			 <if test="Rand != null">
+					and #{Rand} =#{Rand}
+			</if>
+			
+			 <if test="AreaID != null">
+					and WeChatPublic_AreaID =#{AreaID}
+			</if>
+			 <if test="query != null">
+					and WeChatPublic_AreaID in (SELECT wtb_Region.REGION_ID FROM wtb_Region WHERE wtb_Region.PARENT_ID = #{query})
+			</if>
+	</sql>
+	
+	<select id="getSimpleWeChatPublicList" parameterType="long" resultMap="SimpleClassResultMap">
+		SELECT
+		WeChatPublic_ID ,
+		WeChatPublic_WeChat ,
+		WeChatPublic_Company ,
+		WeChatPublic_OrgName
+		FROM wtb_WeChatPublic
+		<where>
+			1=1
+			<if test="_parameter != null">
+				and WeChatPublic_ID = #{_parameter}
+			</if>
+		</where>
+
+	</select>
+	
+	<select id="getWeChatPublicList" parameterType="map" resultMap="ClassResultMap">
+		SELECT
+		<include refid="params"></include>,
+		case WeChatPublic_Bind when 1 then '已嫁接' else  '未嫁接' end as WeChatPublic_IsBind
+		FROM wtb_WeChatPublic
+		<where>
+			1=1
+			<include refid="where"></include>
+		</where>
+		order by WeChatPublic_Bind desc ,WeChatPublic_CreateTime 
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+				</if>
+	</select>
+	<select id="getWeChatPublicNormalCount" parameterType="map"
+		resultType="int" >
+		SELECT
+		count(1)as Count
+		FROM wtb_WeChatPublic
+		<where>
+			1=1
+			<include refid="where"></include>
+		</where>
+	</select>
+<!-- 获取当前所有有效的商家  -->
+<select id="getWeChatPublicForEffList" parameterType="map"
+		resultMap="ClassResultMap">
+		SELECT
+		<include refid="params"></include>
+		FROM wtb_WeChatPublic
+		<where>
+				 WeChatPublic_Status !=88
+				<include refid="where"></include>
+		</where>
+		order by WeChatPublic_ClickCount desc ,WeChatPublic_Weight desc
+		<if test="limit != null and start !=null ">
+	        limit ${start},${limit} 
+		</if>
+	</select>
+
+
+	<select id="getWeChatPublicForIDList" parameterType="map"
+		resultMap="ClassResultMap">
+		SELECT
+		<include refid="params"></include>
+		FROM wtb_WeChatPublic
+		<where>
+			1=1
+			<if test="_parameter != null">
+				and WeChatPublic_ID = #{_parameter}
+			</if>
+		</where>
+		order by WeChatPublic_ClickCount desc ,WeChatPublic_Weight desc
+	</select>
+
+
+<resultMap type="wtb.core.model.WeChatStatInfo" id="ClassCountResultMap">
+		<result property="WeChatDayForDay" column="Count" />
+	</resultMap>
+<select id="getWeChatPublicForDaysList" parameterType="map"
+		resultMap="ClassCountResultMap">
+		SELECT
+		Count(1) as Count
+		FROM wtb_WeChatPublic
+		<where>
+			1=1
+			<if test="Days != null">
+				and  to_days(now()) - to_days(WeChatPublic_CreateTime)&lt;= #{Days}
+			</if>
+			<if test="ThisMonth != null">
+			and  year(WeChatPublic_CreateTime)=year(now()) and month(WeChatPublic_CreateTime)=month(now()) 
+		</if>
+			<if test="Status != null">
+				and WeChatPublic_Status &gt;= #{Status}
+			</if>
+			<if test="AreaID != null">
+				and WeChatPublic_AreaID = #{AreaID}
+			</if>
+		</where>
+	</select>
+<select id="getWeChatPublicCount" parameterType="map"
+		resultMap="ClassCountResultMap" >
+		SELECT
+		count(1)as Count
+		FROM wtb_WeChatPublic
+		<where>
+			1=1
+			<if test="Status != null">
+				and WeChatPublic_Status &gt;= #{Status}
+			</if>
+			<if test="ID != null">
+				and WeChatPublic_ID = #{ID}
+			</if>
+			<if test="WeChat != null">
+				and WeChatPublic_WeChat like CONCAT(CONCAT('%', #{WeChat,
+				jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="Company != null">
+				and WeChatPublic_Company like CONCAT(CONCAT('%',
+				#{Company,
+				jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="Content != null">
+				and WeChatPublic_Content = #{Content}
+			</if>
+			<if test="CreateTime != null">
+				and WeChatPublic_CreateTime = #{CreateTime}
+			</if>
+			<if test="ModifyTime != null">
+				and WeChatPublic_ModifyTime = #{ModifyTime}
+			</if>
+			<if test="NoEqStatus != null">
+				and WeChatPublic_Status != #{NoEqStatus}
+			</if>
+			<if test="AreaID != null">
+				and WeChatPublic_AreaID = #{AreaID}
+			</if>
+		</where>
+	</select>
+	<resultMap type="wtb.core.model.WeChatLastMonthStatInfo" id="ClassLastMonthResultMap">
+		<result property="Year" column="Create_Year" />
+		<result property="Month" column="Create_Month" />
+		<result property="Days" column="days" />
+		<result property="Count" column="count" />
+	</resultMap>
+	<select id="getWeChatLastMonthStat" parameterType="map"
+		resultMap="ClassLastMonthResultMap">
+	select year(WeChatPublic_CreateTime) as Create_Year, month(WeChatPublic_CreateTime) as Create_Month
+		,day(WeChatPublic_CreateTime) days
+
+	,count(1) count from wtb_WeChatPublic
+	 where 1=1 
+	 
+	 <if test="Month != null">
+		and month(WeChatPublic_CreateTime)=#{Month} 
+	</if>
+	 and year(WeChatPublic_CreateTime)=#{Year} and WeChatPublic_Status&gt;=1
+	 
+	 group by Create_Year,Create_Month,days
+	</select>
+
+
+
+</mapper>
+

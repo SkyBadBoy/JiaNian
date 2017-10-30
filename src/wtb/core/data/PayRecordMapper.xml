@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.PayRecordMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<sql id="sql">
+		PayRecord_ID,
+		PayRecord_UserID,
+		PayRecord_OrderID,
+		PayRecord_PayMethod,
+		PayRecord_PayReason,
+		PayRecord_Money,
+		PayRecord_Tarde,
+		PayRecord_CreateTime,
+		PayRecord_ModifyTime,
+		PayRecord_Version,
+		PayRecord_Status,
+		PayRecord_Deleted,
+		PayRecord_BeLongID,
+		PayRecord_Type
+
+</sql>
+<insert id="addPayRecord" parameterType="wtb.core.model.PayRecord" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_PayRecords (
+		<include refid="sql"></include>
+		) VALUES (
+			#{ID}, #{UserID}, #{OrderID}, #{PayMethod},#{PayReason},#{Money},#{Tarde},now(),now()
+			,#{Version},#{Status},#{Deleted},#{BeLongID},#{Type}
+		)
+</insert>
+<update id="updatePayRecord" parameterType="wtb.core.model.PayRecord">
+	UPDATE wtb_PayRecords 
+		SET
+		PayRecord_UserID=#{UserID},
+		PayRecord_OrderID=#{OrderID},
+		PayRecord_PayMethod=#{PayMethod},
+		PayRecord_PayReason=#{PayReason},
+		PayRecord_Money=#{Money},
+		PayRecord_Tarde=#{Tarde},
+		PayRecord_ModifyTime=now(),
+		PayRecord_Version=#{Version},
+		PayRecord_Status=#{Status},
+		PayRecord_Deleted=#{Deleted},
+		PayRecord_BeLongID=#{BeLongID},
+		PayRecord_Type = #{Type}
+			where PayRecord_ID = #{ID}
+</update>
+<delete id="deletePayRecord" parameterType="wtb.core.model.PayRecord">
+	update  wtb_PayRecords set PayRecord_Status=88
+			where
+				 PayRecord_ID = #{ID}
+			
+</delete>
+<update id="enabledPayRecord" parameterType="wtb.core.model.PayRecord">
+	update  wtb_PayRecords set PayRecord_Status=1
+			where
+				 PayRecord_ID = #{ID}
+			
+</update>
+
+</mapper>
+

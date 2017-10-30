@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadSignRecordMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.SignRecord" id="ClassResultMap">
+	<result property="ID" column="SignRecord_ID"/>
+	<result property="PKID" column="SignRecord_ID"/>
+	<result property="Memo" column="SignRecord_Memo"/>
+	<result property="CreateTime" column="SignRecord_CreateTime"/>
+	<result property="Day" column="SignRecord_Day"/>
+	<result property="Status" column="SignRecord_Status"/>
+	<result property="Month" column="SignRecord_Month"/>
+	<result property="Year" column="SignRecord_Year"/>
+	<result property="Deleted" column="SignRecord_Deleted"/>
+	<result property="UserID" column="SignRecord_UserID"/>
+	
+</resultMap>
+<select id="getSignRecordList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		SignRecord_ID,
+		SignRecord_CreateTime,
+		SignRecord_Day,
+		SignRecord_Month,
+		SignRecord_Year,
+		SignRecord_UserID,
+		SignRecord_Status,
+		SignRecord_Deleted,
+		SignRecord_Memo
+
+		FROM wtb_SignRecord
+		<where>
+			1=1
+			<if test="ID != null">
+				and SignRecord_ID = #{ID}
+			</if>
+			<if test="Day != null">
+				and SignRecord_Day = #{Day}
+			</if>
+			<if test="Month != null">
+				and SignRecord_Month = #{Month}
+			</if>
+			<if test="Year != null">
+				and SignRecord_Year =#{Year}
+			</if>
+			<if test="Status != null">
+				and SignRecord_Status = #{Status}
+			</if>
+			<if test="Deleted != null">
+				and SignRecord_Deleted =#{Deleted}
+			</if>
+			<if test="UserID != null">
+				and SignRecord_UserID =#{UserID}
+			</if>
+				
+		</where>
+		order by SignRecord_CreateTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getSignRecordCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_SignRecord
+		<where>
+			1=1
+			<if test="ID != null">
+				and SignRecord_ID = #{ID}
+			</if>
+			<if test="Day != null">
+				and SignRecord_Day = #{Day}
+			</if>
+			<if test="Month != null">
+				and SignRecord_Month = #{Month}
+			</if>
+			<if test="Year != null">
+				and SignRecord_Year =#{Year}
+			</if>
+			<if test="Status != null">
+				and SignRecord_Status = #{Status}
+			</if>
+			<if test="Deleted != null">
+				and SignRecord_Deleted =#{Deleted}
+			</if>
+			<if test="UserID != null">
+				and SignRecord_UserID =#{UserID}
+			</if>
+				
+		</where>
+		
+</select>
+<select id="getSignRecordByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		SignRecord_ID,
+		SignRecord_CreateTime,
+		SignRecord_Day,
+		SignRecord_Month,
+		SignRecord_Year,
+		SignRecord_UserID,
+		SignRecord_Status,
+		SignRecord_Deleted,
+		SignRecord_Memo
+
+		<where>
+			SignRecord_Status=1
+			<if test="ID != null">
+				and SignRecord_ID = #{ID}
+			</if>
+		</where>
+		order by SignRecord_CreateTime desc
+		
+</select>
+</mapper>
+

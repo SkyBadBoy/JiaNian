@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.AdvertMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Advert" id="ClassResultMap">
+	<result property="id" column="advert_id"/>
+	<result property="pkid" column="advert_id"/>
+	<result property="create_time" column="advert_create_time"/>
+	<result property="modify_time" column="advert_ModifyTime"/>
+	<result property="memo" column="advert_memo"/>
+	<result property="status" column="advert_status"/>
+	<result property="type" column="advert_type"/>
+	<result property="index" column="advert_index"/>
+	<result property="title" column="advert_title"/>
+	<result property="begin_time" column="advert_begin_time"/>
+	<result property="end_time" column="advert_end_time"/>
+	<result property="url" column="advert_url"/>
+	<result property="imageurl" column="advert_imageurl"/>
+	
+</resultMap>
+<sql id="param">
+	advert_id,
+	advert_create_time,
+	advert_modify_time,
+	advert_memo,
+	advert_status,
+	advert_type,
+	advert_index,
+	advert_title,
+	advert_begin_time,
+	advert_end_time,
+	advert_url,
+	advert_imageurl
+</sql>
+
+<insert id="addAdvert" parameterType="wtb.core.model.Advert" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_advert (
+
+ <include refid="param"></include>
+		) VALUES (
+			#{id},now(),now(), #{memo}, #{status},#{type},#{index},#{title},#{begin_time},#{end_time},#{url},#{imageurl}
+		)
+</insert>
+
+<update id="updateAdvert" parameterType="wtb.core.model.Advert">
+	UPDATE wtb_advert 
+		SET
+		advert_memo=#{memo}, 
+		advert_status=#{status},
+		advert_type=#{type},
+		advert_modify_time=now(),
+		advert_index=#{index},
+		advert_title=#{title},
+		advert_url=#{url},
+		advert_begin_time=#{begin_time},
+		advert_end_time=#{end_time},
+		advert_imageurl=#{imageurl}
+		where advert_ID = #{id}
+</update>
+<delete id="deleteAdvert" parameterType="wtb.core.model.Advert">
+	update  wtb_advert set advert_status=${status},advert_modify_time=now()
+			where
+				 advert_id = #{id}
+			
+</delete>
+</mapper>
+

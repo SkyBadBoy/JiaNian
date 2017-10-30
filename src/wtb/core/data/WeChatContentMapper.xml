@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeChatContentMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.WeChatContent" id="ClassResultMap">
+	<result property="ID" column="Content_ID"/>
+	<result property="PKID" column="Content_ID"/>
+	<result property="Key" column="Content_Key"/>
+	<result property="Content" column="Content_Context"/>
+	<result property="Type" column="Content_Type"/>
+	<result property="Title" column="Content_Title"/>
+	<result property="Description" column="Content_Description"/>
+	<result property="PicUrl" column="Content_PicUrl"/>
+	<result property="Url" column="Content_Url"/>
+	<result property="CreateTime" column="Content_CreateTime"/>
+	<result property="Rules" column="Content_Rules"/>
+	<result property="TempRules" column="Content_TempRules"/>
+	<result property="AppID" column="Content_AppID"/>
+	<result property="Status" column="Content_Status"/>
+	<result property="Author" column="Content_Author"/>
+	<result property="WID" column="Content_WID"/>
+	<result property="MediaId" column="Content_MediaId"/>
+	
+	<association property="BaseInfo" column="Content_Status"
+			select="wtb.core.data.BaseInfoMapper.getBaseInfoList" />
+</resultMap>
+<select id="getWeChatContentList" parameterType="map" resultMap="ClassResultMap">
+	select 
+	Content_ID,
+	Content_Key,
+	Content_Context,
+	Content_Type,
+	Content_Title,
+	Content_Description,
+	Content_PicUrl,
+	Content_Url,
+	Content_CreateTime,
+	Content_Rules,
+	case Content_Rules when "text" then '纯文本' when "image" then '纯图片' else '图文'end as Content_TempRules,
+	Content_AppID,
+	Content_Status,
+	Content_Author,
+	Content_WID,
+	Content_MediaId
+	from wtb_wechatcontent
+	<where>
+		1=1  
+		<if test="ID!=null">
+			and Content_ID=#{ID}	
+		</if>
+		<if test="Key!=null">
+			and Content_Key=#{Key}	
+		</if>
+		<if test="Type!=null">
+			and Content_Type=#{Type}	
+		</if>
+		<if test="Rules!=null">
+			and Content_Rules=#{Rules}	
+		</if>
+		<if test="Status!=null">
+			and Content_Status=#{Status} 	
+		</if>
+		<if test="Check !=null">
+					and Content_Key like CONCAT(CONCAT('%', #{Check,jdbcType=VARCHAR}),'%')
+					
+		</if>
+		<if test="IsKey!=null">
+			and Content_Key is not null	
+		</if>
+		<if test="WID!=null">
+			and Content_WID =#{WID}
+		</if>
+		
+		
+	</where>
+	order by Content_CreateTime desc
+	<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+	</if>
+</select>
+
+<select id="getWeChatContentCount" parameterType="map" resultType="int">
+	SELECT
+		COUNT(*)
+		FROM wtb_wechatcontent
+			<where>
+		1=1 
+		<if test="ID!=null">
+			and Content_ID=#{ID}	
+		</if>
+		<if test="Key!=null">
+			and Content_Key=#{Key}	
+		</if>
+		<if test="Type!=null">
+			and Content_Type=#{Type}	
+		</if>
+		<if test="Rules!=null">
+			and Content_Rules=#{Rules}	
+		</if>
+			<if test="Status!=null">
+			and Content_Status=#{Status} 	
+		</if>
+		<if test="Check !=null">
+					and Content_Key like CONCAT(CONCAT('%', #{Check,jdbcType=VARCHAR}),'%')
+					
+		</if>
+		<if test="IsKey!=null">
+			and Content_Key is not null	
+		</if>
+		
+	</where>
+	order by Content_CreateTime desc
+		
+</select>
+<insert id="addWeChatContent" parameterType="wtb.core.model.WeChatContent" keyProperty="ID" useGeneratedKeys="true">
+	insert into wtb_wechatcontent(
+	Content_ID,
+	Content_Key,
+	Content_Context,
+	Content_Type,
+	Content_Title,
+	Content_Description,
+	Content_PicUrl,
+	Content_Url,
+	Content_CreateTime,
+	Content_Rules,
+	Content_AppID,
+	Content_Status,
+	Content_Author,
+	Content_WID,
+	Content_MediaId
+	)values(
+		#{ID},#{Key},#{Content},#{Type},#{Title},#{Description},#{PicUrl},#{Url},#{CreateTime},#{Rules},#{AppID},#{Status},#{Author},#{WID},#{MediaId}
+	)
+</insert>
+
+
+<delete id="deleteWeChatContent" parameterType="wtb.core.model.WeChatContent">
+	update  wtb_wechatcontent set Content_Status=88
+			where
+				 Content_ID = #{ID}
+			
+</delete>
+</mapper>

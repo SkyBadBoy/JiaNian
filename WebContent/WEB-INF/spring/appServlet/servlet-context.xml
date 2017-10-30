@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- Configures the @Controller programming model 必须加上这个，不然请求controller时会出现no 
+		mapping url错误 -->
+	<mvc:annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources/ directory -->
+	<resources mapping="/img/**" location="/img/" />
+	<resources mapping="/js/**" location="/js/" />
+	<resources mapping="/css/**" location="/css/" />
+	<resources mapping="/css/plugins/**" location="/css/plugins/" />
+	<resources mapping="/css/plugin/**" location="/css/plugin/" />
+	<resources mapping="/css/plugins/font-awesome-4.5.0/fonts/**" location="/css/plugins/font-awesome-4.5.0/fonts/" />
+	<resources mapping="/fonts/**" location="/fonts/" />
+	<resources mapping="/upload/**" location="/upload/" />
+	<resources mapping="/include/**" location="/include/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/jsp directory -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		 
+		<beans:property name="prefix" value="/" />
+		<beans:property name="suffix" value=".jsp" /> 
+	</beans:bean>
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<beans:bean class="wtb.core.controller.UserAuthenticationController">
+				<beans:property name="uncheckUrls">
+					<beans:list>
+					    <beans:value>/index</beans:value>
+						<beans:value>/Users/login</beans:value>
+						<beans:value>/js</beans:value>
+						<beans:value>/css</beans:value>
+						<beans:value>/upload</beans:value>
+						<beans:value>/include</beans:value>
+						<beans:value>/fonts</beans:value>
+						<beans:value>/img</beans:value>
+						<beans:value>/WeMoney/payCallBack</beans:value>
+						<beans:value>/WeMoney/alipayapi</beans:value>
+						<beans:value>/WeMoney/aliPayCallBack</beans:value>
+						<beans:value>/WeMoney/alipayapiResult</beans:value>
+						<beans:value>/Users/getAuthCode</beans:value>
+						<beans:value>/weChatGroup/phoneIntroduce</beans:value>
+						<beans:value>/WeChatCustom/getAccessToken</beans:value>
+						<beans:value>/Competition/phoneCompetitionDetails</beans:value>
+						<beans:value>/Competition/phoneCompetition</beans:value>
+						<beans:value>/Competition/putCompetition</beans:value>
+						<beans:value>/Competition/submitCompetition</beans:value>
+						<beans:value>/Competition/phoneSummitMeeting</beans:value>
+						<beans:value>/Competition/phoneSummitMeetingDetails</beans:value>
+						<beans:value>/AccessActivity/sendAccessActive</beans:value>
+						<beans:value>/Students/phoneUpdatePhoneResult</beans:value>
+						<beans:value>/Students/phoneRegister</beans:value>
+						<beans:value>/Students/phoneuserinfoedit_temp</beans:value>
+						<beans:value>/Students/phoneInputPayInfo</beans:value>
+						<beans:value>/Students/phonehelp</beans:value>
+						<beans:value>/Students/phoneCheckIsFull</beans:value>
+						<beans:value>/Students/phoneAppDownLoad</beans:value>
+						<beans:value>/Activity/phoneTeacherReview</beans:value>
+						
+						<beans:value>/WeMoney/payWeChat</beans:value>
+						<beans:value>/Product/getSignature</beans:value>
+						<beans:value>/WeMoney/phoneshareAddIntegral</beans:value>
+						<beans:value>/Ranking/getphoneWXWDSRanking</beans:value>
+						
+						<beans:value>/Feedback/phoneCreateCard</beans:value>
+					</beans:list>
+				</beans:property>
+				<beans:property name="whiteList">
+					<beans:list>
+					    <beans:value>/ApplyList/applyCombo</beans:value>
+					    
+						<beans:value>/weChatGroup/phoneWeNewsHome</beans:value>
+						<beans:value>/weChatGroup/getWeChatGroupPaJsonrtList</beans:value>
+						<beans:value>/weChatGroup/getWeNewsPaJsonrtList</beans:value>
+						<beans:value>/weChatPublic/PhoneBusinessApply</beans:value>
+						<beans:value>/weChatPublic/AuthenticationUser</beans:value>
+						<beans:value>/WeChatCustom/getAccessToken</beans:value>
+						<beans:value>/Students/phoneSinaRule</beans:value>
+						<beans:value>/Region/getRegionList</beans:value>
+						<beans:value>/Students/phoneShare</beans:value>
+						<beans:value>/Users/applysuccess</beans:value>
+						<beans:value>/Users/AuthenticationUser</beans:value>
+						<beans:value>/Users/getAuthCode</beans:value>
+						<beans:value>/Users/getStudentData</beans:value>
+						<beans:value>/Users/ServerRole</beans:value>
+						<beans:value>/Users/phonelogin</beans:value>
+						<beans:value>/Users/phoneStudentRegister</beans:value>
+						<beans:value>/Students/phoneuserinfoedit_temp</beans:value>
+						<beans:value>/Students/phoneCheckIsFull</beans:value>
+						<beans:value>/ApplyList/phoneAreaManageApply</beans:value>
+						<beans:value>/ApplyList/phoneApplyAuthorize</beans:value>
+						<beans:value>/Activity/getPhoneActivityList</beans:value>
+						<beans:value>/Students/phoneAppDownLoad</beans:value>
+						<beans:value>/Students/phonelogin</beans:value>
+						<beans:value>/Students/phoneFindPassword</beans:value>
+						<beans:value>/Students/phonehelp</beans:value>
+						<beans:value>/Students/phoneSinaUserInfo</beans:value>
+						<beans:value>/Students/isExistUser</beans:value>
+						<beans:value>/Students/SaveScanInfo</beans:value>
+						<beans:value>/Students/getScanInfo</beans:value>
+						<beans:value>/Students/AddWeChatUser</beans:value>
+						<beans:value>/Students/unsubscribe</beans:value>
+						<beans:value>/Students/StudentsLogList</beans:value>
+						<beans:value>/Students/deleteStudentsLog</beans:value>
+						<beans:value>/Students/StudentsUserList</beans:value>
+						<beans:value>/Students/StudentsNewsList</beans:value>
+						<beans:value>/Students/getStudentsNewsList</beans:value>
+						<beans:value>/Students/getSchoolSettledList</beans:value>
+						<beans:value>/Students/SchoolSettledList</beans:value>
+						<beans:value>/Students/phoneGetUserInfo</beans:value>
+						<beans:value>/Students/phoneConsumptionIntegration</beans:value>
+						<beans:value>/Activity/phoneSinaActivityDetail</beans:value>
+						<beans:value>/Activity/phoneApplyActivity</beans:value>
+						<beans:value>/Notices/shareAddIntegral</beans:value>
+						<beans:value>/Notices/deleteMyCaoGao</beans:value>
+						<beans:value>/Notices/getMyNoticesList</beans:value>
+						<beans:value>/Notices/getMyNoticesList</beans:value>
+						<beans:value>/Picture/uploadpic</beans:value>
+						<beans:value>/Students/getStudentsLogList</beans:value>
+						<beans:value>/ProdPicture/uploadpic</beans:value>
+						<beans:value>/Activity/AddBallotIntegration</beans:value>
+						<beans:value>/Notices/urlNotices</beans:value>
+						<beans:value>/Notices/AddBallotIntegration</beans:value>
+						<beans:value>/Region/SyncXBRegion</beans:value>
+						<beans:value>/Notices/phoneSortNotices</beans:value>
+						<beans:value>/Notices/BigSortNotices</beans:value>
+						<beans:value>/Notices/getMyNoticesList</beans:value>
+						<beans:value>/Notices/voteNotices</beans:value>
+						<beans:value>/Notices/checkVoteNotices</beans:value>
+						<beans:value>/ProdPicture/ProdPictureHeadList</beans:value>
+						<beans:value>/ProdPicture/enableProdPrivate</beans:value>
+						<beans:value>/Region/SchoolBind</beans:value>
+						<beans:value>/WeChatCustom/WeChatCustomList</beans:value>
+						<beans:value>/WeChatCustom/MessageRequest</beans:value>
+						<beans:value>/WeChatCustom/addWeChatContent</beans:value>
+						<beans:value>/WeChatCustom/GroupSend</beans:value>
+						<beans:value>/WeChatCustom/Subscribe</beans:value>
+						<beans:value>/WeChatCustom/Rules</beans:value>
+						<beans:value>/WeChatCustom/Mpnews</beans:value>
+						<beans:value>/WeChatCustom/addWeChatInfo</beans:value>
+						<beans:value>/WeChatCustom/saveWeChatInfo</beans:value>
+						<beans:value>/WeChatCustom/sendWeChatInfo</beans:value>
+						<beans:value>/WeChatCustom/deleteWeChat</beans:value>
+						<beans:value>/WeChatCustom/addSun</beans:value>
+						<beans:value>/WeChatCustom/WeChatCustomHome</beans:value>
+						<beans:value>/WeChatCustom/getWeChatMessage</beans:value>
+						<beans:value>/weChatGroup/phoneSinaBallotList</beans:value>
+						<beans:value>/weChatGroup/getSinaBallotList</beans:value>
+						<beans:value>/WeChatCustom/getAccessToken</beans:value>
+						<beans:value>/Notices/checkIslikeNotices</beans:value>
+						<beans:value>/Notices/likeNotices</beans:value>
+						
+						<beans:value>/Notices/deleteMyNotices</beans:value>			
+						<beans:value>/Notices/saveCookie</beans:value>
+						<beans:value>/Comment/addComment</beans:value>
+						<beans:value>/Notices/phoneVerfiyNews</beans:value>
+						<beans:value>/Comment/getCommentList</beans:value>
+						<beans:value>/Feedback/sendFeedback</beans:value>
+						<beans:value>/WeMoney/getWeMoneyRecordList</beans:value>
+						
+						<beans:value>/WeMoney/refundWeChat</beans:value>
+						
+						<beans:value>/WeMoney/addWeMoney</beans:value>
+						<beans:value>/Ranking/getphoneNoticeReadRanking</beans:value>
+						<beans:value>/Notices/getNoticeLikeList</beans:value>
+						<beans:value>/Video/likeVideo</beans:value>
+						<beans:value>/Ranking/phoneWXWDSRanking</beans:value>
+						<beans:value>/Ranking/getphoneWXWDSRanking</beans:value>
+						<beans:value>/Ranking/phoneStudentsRanking</beans:value>
+						<beans:value>/Ranking/phonegetNoticesStudentRankingList</beans:value>
+						<beans:value>/Ranking/phoneSchoolRanking</beans:value>
+						<beans:value>/Ranking/phoneReadRanking</beans:value>
+						<beans:value>/Ranking/phoneKindRanking</beans:value>
+						<beans:value>/Competition/Competition</beans:value>
+						<beans:value>/Competition/phoneCompetitionDetails</beans:value>
+						<beans:value>/Competition/putCompetition</beans:value>
+						<beans:value>/Comment/addComment</beans:value>
+						
+						
+						<!--接口调用  关于积分的都走这边-->
+						<beans:value>/Notices/addphoneNotices</beans:value>
+						<beans:value>/Notices/addphoneNewNotices</beans:value>
+						<beans:value>/Notices/AddLevel</beans:value>
+						<beans:value>/Product/AddNoticesClickCount</beans:value>
+						<beans:value>/Students/makeMoney</beans:value>
+						<beans:value>/Notices/deleteNotices</beans:value>
+						<beans:value>/Notices/addCaptainComment</beans:value>
+						<beans:value>/Students/addWeMoney</beans:value>
+						
+						<!--PC端  -->
+						<beans:value>/WeNewsHome</beans:value>
+						<beans:value>/WeNews/UserLogin</beans:value>
+						
+					</beans:list>
+				</beans:property>
+					<beans:property name="wenewsList">
+					   	<beans:list>
+					   		<beans:value>/WeNews/UserLogin</beans:value>
+					   		<beans:value>/WeNews/News</beans:value>
+					   		<beans:value>/WeNews/ReviewNews</beans:value>
+					   		<beans:value>/WeNews/Student</beans:value>
+					   		<beans:value>/WeNews/School</beans:value>
+					   		<beans:value>/WeNews/Glory</beans:value>
+					   		<beans:value>/WeNews/Office</beans:value>
+						</beans:list>
+				</beans:property>
+			</beans:bean>
+
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- 扫描业务组件,让spring不扫描带有@Service注解的类(留在root-context.xml中扫描@Service注解的类),防止事务失效 -->
+	<context:component-scan base-package="wtb.core,read.core">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+</beans:beans>

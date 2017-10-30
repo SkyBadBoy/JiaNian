@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadGameQuestionMapper">
+ <resultMap type="wtb.core.model.GameQuestion" id="ClassResultMap">
+        <result property="ID" column="GameQuestion_ID"/>
+        <result property="PKID" column="GameQuestion_ID"/>
+        <result property="Memo" column="GameQuestion_Memo"/>
+        <result property="CreateTime" column="GameQuestion_CreateTime"/>
+        <result property="ModifyTime" column="GameQuestion_ModifyTime"/>
+        <result property="Version" column="GameQuestion_Version"/>
+        <result property="Status" column="GameQuestion_Status"/>
+        <result property="Title" column="GameQuestion_Title"/>
+        <result property="Answer" column="GameQuestion_Answer"/>
+        <result property="FailCount" column="GameQuestion_FailCount"/>
+        <result property="RightCount" column="GameQuestion_RightCount"/>
+        <result property="Content" column="GameQuestion_Content"/>
+        <result property="Number" column="GameQuestion_Number"/>
+        <result property="ImageUrl" column="GameQuestion_ImageUrl"/>
+        <result property="Type" column="GameQuestion_Type"/>
+        <result property="ContinuedTime" column="GameQuestion_ContinuedTime"/>
+    </resultMap>
+    <sql id="param">
+    	GameQuestion_ID,
+			GameQuestion_Status,
+			GameQuestion_Memo,
+			GameQuestion_CreateTime,
+			GameQuestion_ModifyTIme,
+			GameQuestion_Version,
+			GameQuestion_Title,
+			GameQuestion_Answer,
+			GameQuestion_FailCount	,
+			GameQuestion_RightCount,
+			GameQuestion_Content,
+			GameQuestion_Number,
+			GameQuestion_ImageUrl,
+			GameQuestion_Type,
+			GameQuestion_ContinuedTime
+    </sql>
+    <sql id="where">
+            <if test="ID != null">
+                AND GameQuestion_ID = #{ID}
+            </if>
+            <if test="Type != null">
+                AND GameQuestion_Type = #{Type}
+            </if>
+            <if test="Status != null">
+                AND GameQuestion_Status = #{Status}
+            </if>
+            <if test="Number != null">
+                AND GameQuestion_Number = #{Number}
+            </if>
+            <if test="Status == null">
+                AND GameQuestion_Status = 1
+            </if>
+            <if test="Sina != null">
+                AND #{Sina} = #{Sina}
+            </if>
+    </sql>
+    <select id="findGameQuestion" parameterType="wtb.core.model.GameQuestion" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM wtb_GameQuestions
+         <where>
+         1=1
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <select id="searchGameQuestion" parameterType="wtb.core.model.GameQuestion" resultMap="ClassResultMap">
+        SELECT 
+        <include refid="param"></include>
+         FROM wtb_GameQuestions
+        WHERE GameQuestion_ID = #{ID} AND GameQuestion_Status = 1
+    </select>
+
+    <select id="queryGameQuestion" parameterType="map" resultMap="ClassResultMap">
+        SELECT
+        	<include refid="param"></include>
+        FROM wtb_GameQuestions
+
+        <where>
+        1=1
+            <include refid="where"></include>
+        </where>
+        <if test="limit != null and start !=null ">
+	        limit ${start},${limit} 
+		</if>
+    </select>
+
+   
+   
+</mapper>

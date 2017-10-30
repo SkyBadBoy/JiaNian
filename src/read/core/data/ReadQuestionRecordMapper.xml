@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadQuestionRecordMapper">
+<resultMap type="wtb.core.model.QuestionRecord" id="ClassResultMap">
+        <result property="ID" column="QuestionRecord_ID"/>
+        <result property="CreateTime" column="QuestionRecord_CreateTime"/>
+        <result property="ModifyTime" column="QuestionRecord_ModifyTime"/>
+        <result property="Version" column="QuestionRecord_Version"/>
+        <result property="Status" column="QuestionRecord_Status"/>
+        <result property="Memo" column="QuestionRecord_Memo"/>
+        <result property="StudentID" column="QuestionRecord_StudentID"/>
+        <result property="QuestionID" column="QuestionRecord_QuestionID"/>
+        <result property="AnswerResult" column="QuestionRecord_AnswerResult"/>
+        <result property="Type" column="QuestionRecord_Type"/>
+        <result property="ContinuedTime" column="QuestionRecord_ContinuedTime"/>
+    </resultMap>
+    
+    <sql id="param">
+    
+    	QuestionRecord_ID,
+		QuestionRecord_Status,
+		QuestionRecord_Memo,
+		QuestionRecord_CreateTime,
+		QuestionRecord_ModifyTIme,
+		QuestionRecord_Version,
+		QuestionRecord_StudentID,
+		QuestionRecord_QuestionID,
+		QuestionRecord_AnswerResult,
+		QuestionRecord_Type,
+		QuestionRecord_ContinuedTime
+    
+    </sql>
+    <sql id="where">
+    	<if test="ID != null">
+                AND QuestionRecord_ID = #{ID}
+            </if>
+            <if test="Type != null">
+                AND QuestionRecord_Type = #{Type}
+            </if>
+            <if test="StudentID != null">
+                AND QuestionRecord_StudentID = #{StudentID}
+            </if>
+            <if test="QuestionID != null">
+                AND QuestionRecord_QuestionID = #{QuestionID}
+            </if>
+             <if test="AnswerResult != null">
+                AND QuestionRecord_AnswerResult = #{AnswerResult}
+            </if>
+            <if test="Status != null">
+                AND QuestionRecord_Status = #{Status}
+            </if>
+             <if test="Status == null">
+                AND QuestionRecord_Status = 1
+            </if>
+            <if test="Sina != null">
+                AND #{Sina} = #{Sina}
+            </if>
+    
+    </sql>
+    
+    
+    <select id="findQuestionRecord" parameterType="wtb.core.model.QuestionRecord" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM wtb_QuestionRecords
+        <where>
+        1=1
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <select id="searchQuestionRecord" parameterType="wtb.core.model.QuestionRecord" resultMap="ClassResultMap">
+        SELECT 
+        <include refid="param"></include>
+         FROM wtb_QuestionRecords
+        WHERE QuestionRecord_ID = #{ID}
+    </select>
+
+    <select id="queryQuestionRecord" parameterType="map" resultMap="ClassResultMap">
+        SELECT
+        <include refid="param"></include>
+        FROM wtb_QuestionRecords
+
+        <where>
+        1=1
+            <include refid="where"></include>
+        </where>
+        order by QuestionRecord_CreateTime desc
+        <if test="limit != null and start !=null ">
+	        limit ${start},${limit} 
+		</if>
+    </select>
+
+
+    
+</mapper>

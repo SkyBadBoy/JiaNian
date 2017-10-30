@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadCommentMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Comment" id="ClassResultMap">
+	<result property="ID" column="Comment_ID"/>
+	<result property="PKID" column="Comment_ID"/>
+	<result property="UserID" column="Comment_UserID"/>
+	<result property="NoticesID" column="Comment_NoticesID"/>
+	<result property="CreateTime" column="Comment_CreateTime"/>
+	<result property="Content" column="Comment_Content" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="Status" column="Comment_Status"/>
+	<result property="Type" column="Comment_Type"/>
+	<result property="NewTitle" column="Comment_NewTitle"/>
+	<result property="UserName" column="Comment_UserName" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="UserImage" column="Comment_UserImage"/>
+	<association property="Notice" column="Comment_NoticesID"
+			select="read.core.data.ReadNoticesMapper.getNoticesByID" />
+	
+</resultMap>
+<resultMap type="wtb.core.model.Comment" id="ClassResultMapByNoticeID">
+	<result property="ID" column="Comment_ID"/>
+	<result property="PKID" column="Comment_ID"/>
+	<result property="UserID" column="Comment_UserID"/>
+	<result property="NoticesID" column="Comment_NoticesID"/>
+	<result property="CreateTime" column="Comment_CreateTime"/>
+	<result property="Content" column="Comment_Content" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="Status" column="Comment_Status"/>
+	<result property="Type" column="Comment_Type"/>
+	<result property="UserName" column="Comment_UserName" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="UserImage" column="Comment_UserImage"/>
+	
+
+
+</resultMap>
+
+
+<resultMap type="wtb.core.model.Comment" id="ClassResultMapWeNew">
+	<result property="ID" column="Comment_ID"/>
+	<result property="PKID" column="Comment_ID"/>
+	<result property="UserID" column="Comment_UserID"/>
+	<result property="NoticesID" column="Comment_NoticesID"/>
+	<result property="CreateTime" column="Comment_CreateTime"/>
+	<result property="Content" column="Comment_Content" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="Status" column="Comment_Status"/>
+	<result property="Type" column="Comment_Type"/>
+	<association property="Student" column="Comment_UserID"
+			select="read.core.data.ReadStudentsMapper.getStudentsByIDList" />
+	
+</resultMap>
+
+
+<select id="getCommentList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Comment_ID,
+  		Comment_UserID,
+		Comment_NoticesID,
+		Comment_CreateTime,
+		Comment_Content,
+		Comment_Status,
+		Comment_Type,
+		ifnull((select Students_Name from wtb_Students where Students_ID=Comment_UserID),'游客') as Comment_UserName,
+		ifnull((select Students_ImageUrl from wtb_Students where Students_ID=Comment_UserID),'') as Comment_UserImage,
+		case Comment_Type when 1 THEN
+(select Video_Title from wtb_Video where Video_ID=Comment_NoticesID)
+else 
+(select Notices_Title from wtb_Notices where Notices_ID=Comment_NoticesID)
+end
+ as Comment_NewTitle
+		FROM wtb_Comment
+		<where>
+			1=1 and Comment_Status!=88
+			<if test="NoticesID != null">
+				and Comment_NoticesID = #{NoticesID}
+			</if>	
+		</where>
+		order by Comment_CreateTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+<select id="getCommentWeNewsList" parameterType="map" resultMap="ClassResultMapWeNew">
+	SELECT
+		Comment_ID,
+  		Comment_UserID,
+		Comment_NoticesID,
+		Comment_CreateTime,
+		Comment_Content,
+		Comment_Status,
+		Comment_Type
+		FROM wtb_Comment
+		<where>
+			1=1 and Comment_Status!=88
+			<if test="_parameter != null">
+				and Comment_NoticesID = #{_parameter}
+			</if>	
+		</where>
+		order by Comment_CreateTime desc
+			 limit 0,10
+</select>
+
+<select id="getCommentListByNoticeID" parameterType="map" resultMap="ClassResultMapByNoticeID">
+	SELECT Comment_ID,
+  		Comment_UserID,
+		Comment_NoticesID,
+		Comment_CreateTime,
+		Comment_Content,
+		Comment_Status,
+		Comment_Type,
+		t2.Students_Name as Comment_UserName,
+		case Students_ImageUrl when  null then (select ifnull(Picture_Url,'') from wtb_Picture where Picture_ID=t2.Students_ImageID) else Students_ImageUrl end as Comment_UserImage
+		FROM wtb_Comment t1,wtb_Students t2
+		<where>
+			 t1.Comment_UserID=t2.Students_ID and 1=1 and Comment_Status!=88 
+			<if test="NoticesID != null">
+				and Comment_NoticesID = #{NoticesID}
+			</if>	
+		</where>
+		order by Comment_CreateTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+<select id="getCommentCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Comment
+		<where>
+			1=1 and Comment_Status!=88
+			<if test="NoticesID != null">
+				and Comment_NoticesID = #{NoticesID}
+			</if>	
+		</where>
+		
+	
+</select>
+<select id="getCommentUserCount" parameterType="map" resultType="int">
+	select count(1) as CommentCount from (
+	select Comment_UserID from wtb_Comment where Comment_NoticesID=#{_parameter} group by Comment_UserID
+	) as CommentCount
+</select>
+</mapper>
+

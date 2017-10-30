@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadDeviceMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+     
+<resultMap type="wtb.core.model.Device" id="ClassResultMap">
+	<result property="ID" column="Device_ID"/>
+	<result property="PKID" column="Device_ID"/>
+	<result property="Name" column="Device_Name"/>
+	<result property="UserID" column="Device_UserID"/>
+	<result property="Version" column="Device_Version"/>
+	<result property="IsUsing" column="Device_IsUsing"/>
+	<result property="CreateTime" column="Device_CreateTime"/>
+	<result property="ModifyTime" column="Device_ModifyTime"/>
+	<result property="Status" column="Device_Status"/>
+	<result property="Type" column="Device_Type"/>
+	<result property="Model" column="Device_Model"/>
+	<result property="System" column="Device_System"/>
+	<result property="UDID" column="Device_UDID"/>
+
+</resultMap>
+<sql id="sql">
+		Device_ID,
+  		Device_Name,
+		Device_UserID,
+		Device_Version,
+		Device_IsUsing,
+		Device_CreateTime,
+		Device_ModifyTime,
+		Device_Status,
+		Device_Type,
+		Device_Model,
+		Device_System,
+		Device_UDID
+</sql>
+<sql id="where">
+		1=1
+			<if test="ID != null">
+					and Device_ID = #{ID}
+				</if>
+		
+
+</sql>
+<select id="getDeviceList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_Device
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by Device_ModifyTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getDeviceCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Device
+		<where>
+			<include refid="where"></include>
+		</where>
+		
+</select>
+<select id="getDeviceByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_Device
+		<where>
+			Device_Status=1
+				<if test="ID != null">
+					and Device_ID = #{ID}
+				</if>
+				
+		</where>
+	order by Device_ModifyTime desc
+		
+</select>
+</mapper>
+

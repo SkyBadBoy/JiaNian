@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.GameQuestionMapper">
+ 
+    <insert id="addGameQuestion" parameterType="wtb.core.model.GameQuestion" keyProperty="GameQuestionID" useGeneratedKeys="true">
+        INSERT INTO wtb_GameQuestions (
+        GameQuestion_ID,
+			GameQuestion_Status,
+			GameQuestion_Memo,
+			GameQuestion_CreateTime,
+			GameQuestion_ModifyTIme,
+			GameQuestion_Version,
+			GameQuestion_Title,
+			GameQuestion_Answer,
+			GameQuestion_FailCount	,
+			GameQuestion_RightCount,
+			GameQuestion_Content,
+			GameQuestion_Number,
+			GameQuestion_ImageUrl,
+			GameQuestion_Type,
+			GameQuestion_ContinuedTime
+        ) VALUES (
+        #{ID}, #{Memo}, NOW(),NOW(), #{Version}, #{Title}, #{Answer}, #{FailCount}, #{RightCount}, #{Content}
+        , #{Number}, #{ImageUrl}, #{Type}, #{ContinuedTime}
+        )
+    </insert>
+
+    <update id="changeGameQuestion" parameterType="wtb.core.model.GameQuestion">
+        UPDATE wtb_GameQuestions SET
+			GameQuestion_Status=#{Status},
+			GameQuestion_Memo=#{Memo},
+			GameQuestion_ModifyTIme =  NOW(),
+			GameQuestion_Version = GameQuestion_Version + 1,
+			GameQuestion_Title=#{Memo},
+			GameQuestion_Answer=#{Memo},
+			GameQuestion_Content=#{Content},
+			GameQuestion_Number=#{Number},
+			GameQuestion_ImageUrl=#{ImageUrl},
+			GameQuestion_Type=#{Type},
+			GameQuestion_ContinuedTime=#{ContinuedTime}
+        WHERE GameQuestion_ID = #{ID} 
+    </update>
+
+    <delete id="removeGameQuestion" parameterType="wtb.core.model.GameQuestion">
+        UPDATE wtb_GameQuestions SET
+        GameQuestion_ModifyTime = NOW(),
+        GameQuestion_Status=88,
+        GameQuestion_Version = GameQuestion_Version + 1
+        WHERE GameQuestion_ID = #{ID} 
+    </delete>
+
+   <update id="changeGameQuestionRightCount" parameterType="wtb.core.model.GameQuestion">
+        UPDATE wtb_GameQuestions SET
+        <if test="RightCount == 0 ">
+            GameQuestion_FailCount=GameQuestion_FailCount+1,
+        </if>
+        <if test="RightCount == 1 ">
+            GameQuestion_RightCount=GameQuestion_RightCount+1,
+        </if>
+        GameQuestion_ModifyTime = NOW()
+        WHERE GameQuestion_ID = #{ID} 
+    </update>
+    
+   
+</mapper>

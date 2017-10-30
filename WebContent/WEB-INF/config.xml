@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ======================================================================= -->
+<!-- 接口的url跳转 -->
+<!-- ======================================================================= -->
+
+<wtb-servers>
+	<!-- 掌易(新浪小编)官网 -->
+	<item><value>http://sina.ztnet.com.cn/</value></item>
+	<!-- 新浪小编登录官网 -->
+	<item><value>http://sina.ztnet.com.cn/index.php/Home/Phone/index</value></item>	 
+	<!-- 公众号接口域名-->
+	<item><value>http://www.whohelp.cc</value></item>	
+	<!-- 是否启用短信提醒业务 -->
+	<item><value>false</value></item>	
+	<!-- 邮件配置 -->
+	<item><value>smtp.exmail.qq.com</value></item>	
+	<item><value>465</value></item>	
+	<item><value>wenews@whohelp.cc</value></item>	
+	<item><value>lumLK2K0fKHxEVWp</value></item>	
+</wtb-servers>

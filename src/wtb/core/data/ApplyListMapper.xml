@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.ApplyListMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<insert id="addApplyList" parameterType="wtb.core.model.ApplyList" keyProperty="id" useGeneratedKeys="true">
+	INSERT into wtb_ApplyList (
+			ApplyList_ID,
+			ApplyList_Content,
+			ApplyList_UserName,
+			ApplyList_UserPhone,
+			ApplyList_CreateTime,
+			ApplyList_ModifyTime,
+			ApplyList_Status,
+			ApplyList_StudentID,
+			ApplyList_Type,
+			ApplyList_Course
+		) VALUES (
+			#{ID},#{Content}, #{UserName}, #{UserPhone},now(),now(),#{Status}
+			,#{StudentID},#{Type},#{Course}
+		)
+</insert>
+<update id="updateApplyList" parameterType="wtb.core.model.ApplyList">
+	UPDATE wtb_ApplyList 
+		SET
+			ApplyList_Content=#{Content},
+			ApplyList_UserName=#{UserName},
+			ApplyList_UserPhone=#{UserPhone},
+			ApplyList_ModifyTime=now(),
+			ApplyList_Status=#{Status},
+			ApplyList_StudentID=#{StudentID},
+			ApplyList_Type=#{Type},
+			ApplyList_Course=#{Course}
+			where ApplyList_ID = #{ID}
+</update>
+<delete id="deleteApplyList" parameterType="wtb.core.model.ApplyList">
+	update  wtb_ApplyList set ApplyList_Status=88
+			where
+				 ApplyList_ID = #{ID}
+			
+</delete>
+<update id="enabledApplyList" parameterType="wtb.core.model.ApplyList">
+	update  wtb_ApplyList set ApplyList_Status=1
+			where
+				 ApplyList_ID = #{ID}
+			
+</update>
+</mapper>
+

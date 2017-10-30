@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.PaidListingMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.PaidListing" id="ClassResultMap">
+	<result property="ID" column="PaidListing_ID"/>
+	<result property="PKID" column="PaidListing_ID"/>
+	<result property="WeChatID" column="PaidListing_WeChatID"/>
+	<result property="CreateTime" column="PaidListing_CreateTime"/>
+	<result property="ModifyTime" column="PaidListing_ModifyTime"/>
+	<result property="Status" column="PaidListing_Status"/>
+	<result property="Year" column="PaidListing_Year"/>
+	<result property="Month" column="PaidListing_Month"/>
+	<result property="Amount" column="PaidListing_Amount"/>	
+	<result property="IsTop" column="PaidListing_IsTop"/>
+	<result property="AreaID" column="PaidListing_AreaID"/>
+	<result property="IsTopResult" column="IsTopResult"/>
+	
+	<association property="BaseInfo" column="PaidListing_Status"
+			select="wtb.core.data.BaseInfoMapper.getBaseInfoList" />
+<association property="WeChat" column="PaidListing_WeChatID"
+			select="read.core.data.ReadWeChatPublicMapper.getWeChatPublicForIDList" />
+<association property="Area" column="PaidListing_AreaID" select="wtb.core.data.RegionMapper.getRegionByIDList" />
+</resultMap>
+<select id="getPaidListingList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		PaidListing_ID,
+		PaidListing_WeChatID,
+		PaidListing_Year,
+		PaidListing_Month,
+		PaidListing_Amount,
+		PaidListing_IsTop,
+		PaidListing_CreateTime,
+		PaidListing_ModifyTime,
+		PaidListing_Status,
+		PaidListing_AreaID,
+		case  when 
+		PaidListing_IsTop=1 then '是' else '否' end as IsTopResult
+		
+		FROM wtb_PaidListing
+		<where>
+			1=1
+				<if test="ID != null">
+					and PaidListing_ID = #{ID}
+				</if>
+				<if test="AreaID != null">
+					and PaidListing_AreaID = #{AreaID}
+				</if>
+				<if test="Status != null">
+					and PaidListing_Status = #{Status}
+				</if>
+				<if test="IsTop != null">
+					and PaidListing_IsTop = #{IsTop}
+				</if>
+				<if test="WeChatID != null">
+					and PaidListing_WeChatID = #{WeChatID}
+				</if>
+				<if test="Year != null">
+					and PaidListing_Year = #{Year}
+				</if>
+				<if test="Month != null">
+					and PaidListing_Month = #{Month}
+				</if>
+				
+		</where>
+		order by PaidListing_IsTop desc,PaidListing_Amount desc
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+				</if>
+</select>
+
+<select id="getPaidListingCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_PaidListing
+		<where>
+			1=1
+				<if test="ID != null">
+					and PaidListing_ID = #{ID}
+				</if>
+				<if test="AreaID != null">
+					and PaidListing_AreaID = #{AreaID}
+				</if>
+				<if test="Status != null">
+					and PaidListing_Status = #{Status}
+				</if>
+				<if test="IsTop != null">
+					and PaidListing_IsTop = #{IsTop}
+				</if>
+				<if test="WeChatID != null">
+					and PaidListing_WeChatID = #{WeChatID}
+				</if>
+				<if test="Year != null">
+					and PaidListing_Year = #{Year}
+				</if>
+				<if test="Month != null">
+					and PaidListing_Month = #{Month}
+				</if>
+				
+		</where>
+
+</select>
+<insert id="addPaidListing" parameterType="wtb.core.model.PaidListing" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_PaidListing (
+			PaidListing_ID,
+			PaidListing_WeChatID,
+			PaidListing_Year,
+			PaidListing_Month,
+			PaidListing_Amount,
+			PaidListing_IsTop,
+			PaidListing_CreateTime,
+			PaidListing_ModifyTime,
+			PaidListing_Status,
+			PaidListing_AreaID
+		) VALUES (
+			#{ID}, #{WeChatID}, #{Year}, #{Month},#{Amount},#{IsTop},#{CreateTime}
+			,#{ModifyTime},#{Status},#{AreaID}
+		)
+</insert>
+<update id="updatePaidListing" parameterType="wtb.core.model.PaidListing">
+	UPDATE wtb_PaidListing 
+		SET
+		PaidListing_ID=#{ID},
+			PaidListing_WeChatID=#{WeChatID},
+			PaidListing_Year=#{Year},
+			PaidListing_Month=#{Month},
+			PaidListing_Amount=#{Amount},
+			PaidListing_IsTop=#{IsTop},
+			PaidListing_CreateTime=#{CreateTime},
+			PaidListing_ModifyTime=#{ModifyTime},
+			PaidListing_Status=#{Status},
+			PaidListing_AreaID=#{AreaID}
+			where PaidListing_ID = #{ID}
+</update>
+<delete id="deletePaidListing" parameterType="wtb.core.model.PaidListing">
+	update  wtb_PaidListing set PaidListing_Status=88
+			where
+				 PaidListing_ID = #{ID}
+			
+</delete>
+<delete id="enabledPaidListing" parameterType="wtb.core.model.PaidListing">
+	update  wtb_PaidListing set PaidListing_Status=1
+			where
+				 PaidListing_ID = #{ID}
+			
+</delete>
+<update id="UpLevevProduct" parameterType="wtb.core.model.Product">
+	update  wtb_PaidListing set PaidListing_Amount=PaidListing_Amount+#{Amount},PaidListing_ModifyTime=#{ModifyTime}
+			where
+				 PaidListing_ID = #{ID}
+</update>
+<update id="TopLevevProduct" parameterType="wtb.core.model.Product">
+	update  wtb_PaidListing set PaidListing_IsTop=#{IsTop},PaidListing_ModifyTime=#{ModifyTime}
+			where
+				 PaidListing_ID = #{ID}
+</update>
+</mapper>
+

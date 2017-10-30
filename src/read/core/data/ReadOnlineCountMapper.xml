@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadOnlineCountMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.OnlineCount" id="ClassResultMap">
+	<result property="ID" column="OnlineCount_ID"/>
+	<result property="CreateTime" column="OnlineCount_CreateTime"/>
+	<result property="Memo" column="OnlineCount_Memo"/>
+	<result property="Status" column="OnlineCount_Status"/>
+	<result property="Type" column="OnlineCount_Type"/>
+	<result property="Count" column="OnlineCount_Count"/>
+	<result property="NewUserCount" column="OnlineCount_NewUserCount"/>
+	<result property="AccessUserCount" column="OnlineCount_AccessUserCount"/>
+	<result property="ModifyTime" column="OnlineCount_ModifyTime"/>
+</resultMap>
+<sql id="param">
+OnlineCount_ID,
+OnlineCount_CreateTime,
+OnlineCount_Type,
+OnlineCount_Count,
+OnlineCount_NewUserCount,
+OnlineCount_AccessUserCount,
+OnlineCount_ModifyTime,
+OnlineCount_Status,
+OnlineCount_Memo
+
+</sql>
+<sql id="where">
+	<if test="ID != null">
+		and OnlineCount_ID = #{ID}
+	</if>
+	<if test="Type != null">
+		and OnlineCount_Type = #{Type}
+	</if>
+	<if test="Status != null">
+		and OnlineCount_Status = #{Status}
+	</if>
+	<if test="Status == null">
+		and OnlineCount_Status = 1
+	</if>
+	<if test="OnlineYear != null">
+		and year(OnlineCount_CreateTime) = #{OnlineYear}
+	</if>
+	<if test="OnlineMonth !=null">
+		and month(OnlineCount_CreateTime) = #{OnlineMonth} 
+	</if>
+	<if test="OnlineDay !=null">
+		and day(OnlineCount_CreateTime) = #{OnlineDay} 
+	</if>
+	<if test="OnlineLater !=null">
+		and date_format(`OnlineCount_CreateTime`,'%Y-%m-%d %H:%i')>=date_format(date_sub(now(), interval ${OnlineLater} minute),'%Y-%m-%d %H:%i')
+	</if>
+	<if test="OnlineToDay !=null">
+		and  TO_DAYS(`OnlineCount_CreateTime`) = TO_DAYS(NOW())
+	</if>
+	
+	
+	<if test="CurrentOnline !=null">
+		and year(OnlineCount_CreateTime) = year(now()) and month(OnlineCount_CreateTime) =month(now()) and day(OnlineCount_CreateTime) =  day(now())
+		and hour(OnlineCount_CreateTime) =  hour(now()) and  minute(OnlineCount_CreateTime) =  minute(date_sub(now(), interval 1 minute))  
+	</if>
+	<if test="Sina !=null">
+		and #{Sina}=#{Sina}
+	</if>
+</sql>
+<select id="getOnlineCountList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+	<if test="OnlineLater !=null  or OnlineToDay!=null">
+			 year(OnlineCount_CreateTime),month(OnlineCount_CreateTime),day(OnlineCount_CreateTime),hour(OnlineCount_CreateTime),minute(OnlineCount_CreateTime),
+		</if>
+		<include refid="param"></include>
+
+		FROM wtb_OnlineCount
+		<where>
+			1=1
+			<include refid="where"></include>
+		</where>
+		<if test="OnlineLater !=null or OnlineToDay!=null">
+			group by year(OnlineCount_CreateTime),month(OnlineCount_CreateTime),day(OnlineCount_CreateTime),hour(OnlineCount_CreateTime),minute(OnlineCount_CreateTime)
+			order by OnlineCount_CreateTime   
+		</if>
+		<if test="OnlineLater ==null and OnlineToDay ==null">
+			order by OnlineCount_CreateTime    desc
+		</if>
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+<select id="getOnlineCountCount" parameterType="map" resultType="long">
+	SELECT
+		Count(1)
+		FROM wtb_OnlineCount
+		<where>
+			1=1 
+			<include refid="where"></include>
+		</where>
+		
+</select>
+<select id="getOnlineCountListByID" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="param"></include>
+
+		FROM wtb_OnlineCount
+		<where>
+			1=1
+				<if test="_parameter != null">
+					and OnlineCount_ID = #{_parameter}
+				</if>
+				
+		</where>
+</select>
+
+</mapper>
+

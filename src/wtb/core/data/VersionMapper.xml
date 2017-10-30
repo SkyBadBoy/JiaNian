@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.VersionMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<insert id="addVersion" parameterType="wtb.core.model.Version" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Version (
+			Version_ID,
+			Version_ClientType,
+			Version_Number,
+			Version_ReleaseTime,
+			Version_CreateTime,
+			Version_ModifyTime,
+			Version_Status,
+			Version_Deleted,
+			Version_FilePath,
+			Version_UpdateType,
+			Version_Content,
+			Version_Build
+		) VALUES (
+			#{ID},#{ClientType},#{Number},#{ReleaseTime}, now(),now(),#{Status},#{Deleted},#{FilePath},#{UpdateType},#{Content}
+			,#{Build}
+		)
+</insert>
+<update id="updateVersion" parameterType="wtb.core.model.Version">
+	UPDATE wtb_Version 
+		SET
+			Version_ClientType=#{ClientType},
+			Version_Number=#{Number},
+			Version_ReleaseTime=#{ReleaseTime},
+			Version_ModifyTime=now(),
+			Version_Status=#{Status},
+			Version_Deleted=#{Deleted},
+			Version_FilePath=#{FilePath},
+			Version_UpdateType=#{UpdateType},
+			Version_Content=#{Content},
+			Version_Build=#{Build}
+			where Version_ID = #{ID}
+</update>
+<delete id="deleteVersion" parameterType="wtb.core.model.Version">
+	update  wtb_Version set Version_Status=88
+			where
+				 Version_ID = #{ID}
+			
+</delete>
+<update id="enabledVersion" parameterType="wtb.core.model.Version">
+	update  wtb_Version set Version_Status=1
+			where
+				 Version_ID = #{ID}
+			
+</update>
+</mapper>
+

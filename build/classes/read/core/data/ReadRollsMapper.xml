@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="read.core.data.ReadRollsMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.Rolls" >
+    <id column="roll_id" property="ID" jdbcType="BIGINT" />
+	<result column="roll_id" property="PKID" jdbcType="BIGINT"/>
+    <result column="roll_markid" property="rollMarkid" jdbcType="VARCHAR" />
+    <result column="roll_userid" property="rollUserid" jdbcType="BIGINT" />
+    <result column="roll_belongid" property="rollBelongid" jdbcType="BIGINT" />
+    <result column="roll_type" property="rollType" jdbcType="INTEGER" />
+    <result column="roll_status" property="rollStatus" jdbcType="INTEGER" />
+    <result column="roll_delete" property="rollDelete" jdbcType="INTEGER" />
+    <result column="roll_prizeid" property="rollPrizeid" jdbcType="BIGINT" />
+    <result column="roll_redundancy" property="rollRedundancy" jdbcType="VARCHAR" />
+    <result column="roll_createtime" property="rollCreatetime" jdbcType="TIMESTAMP" />
+    <result column="roll_modifytime" property="rollModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    roll_id, roll_markid, roll_userid, roll_belongid, roll_type, roll_status, roll_delete, 
+    roll_prizeid, roll_redundancy, roll_createtime, roll_modifytime
+  </sql>
+  
+  
+ <resultMap id="QueryByTypeResultMap" type="wtb.core.json.ReturnRolls" >
+    <id column="id" property="ID" jdbcType="BIGINT" />
+    <result column="markid" property="markId" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+   <!--  <result column="efficientCount" property="efficientCount" jdbcType="INTEGER" /> -->
+    <!-- <association property="efficientCount" column="" select=""></association> -->
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="status" property="Status" jdbcType="INTEGER" />
+    <result column="starttime" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="endtime" property="endTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="QueryByType_Column_List" >
+    ro.roll_id AS id, ro.roll_markid AS markid, pr.prize_rolltitle AS title, 
+	pr.prize_rolldetails AS detail, pr.prize_discount AS discount, pr.prize_rollremark AS remark, ro.roll_type AS type,
+     ro.roll_status AS status, DATE_FORMAT(pr.prize_vaildstarttime,'%Y-%m-%d %H:%i:%S') AS starttime, DATE_FORMAT(pr.prize_vaildendtime,'%Y-%m-%d %H:%i:%S') AS endtime
+  </sql>
+  <!-- by Sheryl -->
+  <select id="QueryByType" resultMap="QueryByTypeResultMap" parameterType="map" >
+    SELECT 
+    <include refid="QueryByType_Column_List" />
+		FROM wtb_prizes as pr,
+	(SELECT roll_id,roll_markid,roll_type,roll_status 
+		FROM wtb_rolls 
+		WHERE roll_userid = #{ID,jdbcType=BIGINT} 
+		AND roll_type = #{type,jdbcType=INTEGER}
+		ORDER BY roll_status ASC,roll_createtime DESC) AS ro
+	WHERE ro.roll_type = pr.prize_id LIMIT #{start},#{size}
+  </select> 
+  <select id="QueryCountByType" resultType="java.lang.Integer" parameterType="map" >
+    SELECT 
+    		COUNT(*) 
+    	FROM wtb_rolls 
+    	WHERE roll_userid = #{ID,jdbcType=BIGINT} 
+	AND roll_delete = 0 AND roll_status = 0 AND roll_type = #{type,jdbcType=INTEGER}
+  </select> 
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_rolls
+    where roll_id = #{ID,jdbcType=BIGINT}
+  </select>
+ 
+</mapper>

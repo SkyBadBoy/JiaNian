@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadAccessActiveMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.AccessActive" id="ClassResultMap">
+	<result property="ID" column="AccessActive_ID"/>
+	<result property="CreateTime" column="AccessActive_CreateTime"/>
+	<result property="Memo" column="AccessActive_Memo"/>
+	<result property="Status" column="AccessActive_Status"/>
+	<result property="Type" column="AccessActive_Type"/>
+	<result property="UserID" column="AccessActive_UserID"/>
+	<result property="IPAddress" column="AccessActive_IPAddress"/>
+	<result property="AccessArea" column="AccessActive_AccessArea"/>
+	<result property="AccessUrl" column="AccessActive_AccessUrl"/>
+	<result property="ModifyTime" column="AccessActive_ModifyTime"/>
+	<result property="Year" column="AccessActive_Year"/>
+	<result property="Month" column="AccessActive_Month"/>
+	<result property="Day" column="AccessActive_Day"/>
+	<result property="Hour" column="AccessActive_Hour"/>
+	<result property="Count" column="AccessActive_Count"/>
+</resultMap>
+<sql id="param">
+	AccessActive_ID,
+	AccessActive_CreateTime,
+	AccessActive_ModifyTime,
+	AccessActive_Status,
+	AccessActive_Memo,
+	AccessActive_UserID,
+	AccessActive_IPAddress,
+	AccessActive_AccessArea,
+	AccessActive_AccessUrl,
+	AccessActive_Type
+</sql>
+<sql id="where">
+	<if test="ID != null">
+		and AccessActive_ID = #{ID}
+	</if>
+	<if test="Type != null">
+		and AccessActive_Type = #{Type}
+	</if>
+	<if test="Status != null">
+		and AccessActive_Status = #{Status}
+	</if>
+	<if test="UserID != null">
+		and AccessActive_UserID = #{UserID}
+	</if>
+	<if test="AccessArea != null">
+		and AccessActive_AccessArea = #{AccessArea}
+	</if>
+	<if test="Status == null">
+		and AccessActive_Status = 1
+	</if>
+	<if test="OnlineYear != null">
+		and year(AccessActive_CreateTime) = #{OnlineYear}
+	</if>
+	<if test="OnlineMonth !=null">
+		and month(AccessActive_CreateTime) = #{OnlineMonth} 
+	</if>
+	<if test="OnlineDay !=null">
+		and day(AccessActive_CreateTime) = #{OnlineDay} 
+	</if>
+	<if test="toDay !=null">
+		and year(AccessActive_CreateTime) = year(now()) and month(AccessActive_CreateTime) =month(now()) and day(AccessActive_CreateTime) =  day(now())
+	</if>
+	<if test="Sina !=null">
+		and #{Sina}=#{Sina}
+	</if>
+</sql>
+<select id="getAccessActiveList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="param"></include>
+
+		FROM wtb_AccessActive
+		<where>
+			1=1
+				<include refid="where"></include>
+				
+		</where>
+		order by AccessActive_CreateTime   desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+<select id="getAccessActiveCount" parameterType="map" resultType="long">
+	SELECT
+		Count(1)
+		FROM wtb_AccessActive
+		<where>
+			1=1 
+			<include refid="where"></include>
+		</where>
+		
+</select>
+
+<select id="getDayActiveCountList"  parameterType="map" resultMap="ClassResultMap">
+select day(AccessActive_CreateTime)as AccessActive_Day,month(AccessActive_CreateTime) as AccessActive_Month
+	<if test="OnlineHour !=null">
+		,hour(AccessActive_CreateTime) as AccessActive_Hour
+	</if>
+	<if test="GroupYear !=null">
+		,year(AccessActive_CreateTime) as AccessActive_Year
+	</if>
+,count(1) as AccessActive_Count from wtb_AccessActive 
+<where>
+1=1 and AccessActive_Status!=88
+<include refid="where"></include>
+</where>
+group by AccessActive_Day,AccessActive_Month
+	<if test="OnlineHour !=null">
+		,AccessActive_Hour
+	</if>
+	<if test="GroupYear !=null">
+		,AccessActive_Year
+	</if>
+	
+</select>
+
+<select id="getAccessActiveCountForMinute" parameterType="map" resultType="long">
+	select  COUNT(DISTINCT AccessActive_UserID) from wtb_AccessActive where 
+year(AccessActive_CreateTime)=year(date_add(now(), interval -1 minute)) 
+and month(AccessActive_CreateTime)=month(date_add(now(), interval -1 minute)) 
+and hour(AccessActive_CreateTime)=hour(date_add(now(), interval -1 minute))  
+and minute(AccessActive_CreateTime)=minute(date_add(now(), interval -1 minute))
+<if test="Type == null">
+	and AccessActive_Type = 1
+</if>
+<if test="Type != null">
+	and AccessActive_Type = #{Type}
+</if>
+		
+</select>
+
+<select id="getAccessActiveListByID" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="param"></include>
+
+		FROM wtb_AccessActive
+		<where>
+			1=1
+			<if test="_parameter != null">
+				and AccessActive_ID = #{_parameter}
+			</if>
+				
+		</where>
+</select>
+</mapper>
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadBaseInfoMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.BaseInfo" id="ClassResultMap">
+	<result property="ID" column="BaseInfo_ID"/>
+	<result property="PKID" column="BaseInfo_ID"/>
+	<result property="Name" column="BaseInfo_Name"/>
+	<result property="Memo" column="BaseInfo_Memo"/>
+	<result property="Status" column="BaseInfo_Status"/>
+<result property="ParentID" column="BaseInfo_parentID"/>
+</resultMap>
+<sql id="params">
+BaseInfo_ID,
+  BaseInfo_Name,
+  BaseInfo_Memo,
+  BaseInfo_Status,
+  BaseInfo_parentID
+
+</sql>
+<sql id="where">
+	<if test="ID != null">
+		and BaseInfo_ID = #{ID}
+	</if>
+	<if test="ParentID != null">
+		and BaseInfo_parentID = #{ParentID}
+	</if>
+	<if test="Status != null">
+		and BaseInfo_Status = #{Status}
+	</if>
+	<if test="sina != null">
+		and #{sina} = #{sina}
+	</if>
+</sql>
+<select id="getBaseInfoList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="params"></include>
+
+		FROM wtb_BaseInfo
+		<where>
+			1=1
+				<if test="_parameter != null">
+					and BaseInfo_ID = #{_parameter}
+				</if>
+				
+		</where>
+</select>
+<select id="getBaseInfoListByID" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="params"></include>
+
+		FROM wtb_BaseInfo
+		<where>
+			1=1 and BaseInfo_Status=1
+				<include refid="where"></include>
+		</where>
+</select>
+
+<select id="getBaseInfoCount" parameterType="map" resultType="int">
+	SELECT
+		count(1) as CountNum
+
+		FROM wtb_BaseInfo
+		<where>
+			1=1 and BaseInfo_Status=1
+				<include refid="where"></include>
+				
+		</where>
+</select>
+
+</mapper>
+

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadVersionMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Version" id="ClassResultMap">
+	<result property="ID" column="Version_ID"/>
+	<result property="PKID" column="Version_ID"/>
+	<result property="ClientType" column="Version_ClientType"/>
+	<result property="Number" column="Version_Number"/>
+	<result property="ReleaseTime" column="Version_ReleaseTime"/>
+	<result property="CreateTime" column="Version_CreateTime"/>
+	<result property="ModifyTime" column="Version_ModifyTime"/>
+	<result property="Status" column="Version_Status"/>
+	<result property="Deleted" column="Version_Deleted"/>
+	<result property="FilePath" column="Version_FilePath"/>
+	<result property="UpdateType" column="Version_UpdateType"/>
+	<result property="Content" column="Version_Content"  typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="Build" column="Version_Build"/>
+</resultMap>
+<sql id="sql">
+	Version_ID,
+	Version_ClientType,
+	Version_Number,
+	Version_ReleaseTime,
+	Version_CreateTime,
+	Version_ModifyTime,
+	Version_Status,
+	Version_Deleted,
+	Version_FilePath,
+	Version_UpdateType,
+	ifnull(Version_Content,"") as Version_Content,
+	Version_Build
+</sql>
+<sql id="where">
+	1=1
+	<if test="ID != null">
+			and Version_ID = #{ID}
+	</if>
+	<if test="ClientType != null">
+			and Version_ClientType = #{ClientType}
+	</if>
+	<if test="Number != null">
+			and Version_Number = #{Number}
+	</if>
+	<if test="Status != null">
+			and Version_Status = #{Status}
+	</if>
+	<if test="Status == null">
+			and Version_Status = 1
+	</if>
+	<if test="UpdateType != null">
+			and Version_UpdateType = #{UpdateType}
+	</if>
+	<if test="Sina != null">
+			and #{Sina} = #{Sina}
+	</if>
+</sql>
+
+<select id="getVersionList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_Version
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by Version_ModifyTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getVersionCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Version
+		<where>
+			<include refid="where"></include>
+		</where>
+		
+</select>
+
+<select id="getVersionMaxNumber" parameterType="map" resultType="int">
+	SELECT
+		max(Version_Number)
+		FROM wtb_Version
+		<where>
+			<include refid="where"></include>
+		</where>
+		
+</select>
+
+<select id="getVersionByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_Version
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by Version_ModifyTime desc
+		
+</select>
+
+
+</mapper>
+

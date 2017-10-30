@@ -1,0 +1,264 @@
+html {
+	height: 100%; position: relative;
+}
+body {
+	height: 100%; position: relative;
+}
+a {
+	-webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none;
+}
+.clearfix::after {
+	height: 0px; clear: both; display: block; visibility: hidden; content: ".";
+}
+.clearfix {
+	display: inline-block;
+}
+.clearfix {
+	display: block;
+}
+ul {
+	list-style: none; margin: 0px; padding: 0px;
+}
+ul li {
+	list-style: none; margin: 0px; padding: 0px;
+}
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+body {
+	background: rgb(240, 240, 240); margin: 0px; padding: 0px; color: rgb(0, 0, 0); font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 14px;
+}
+.mainBox {
+	background: rgb(240, 240, 240); width: 100%; height: 100%;
+}
+.liatBox {
+	height: auto; font-size: 18px; box-sizing: border-box; -webkit-box-sizing: border-box;
+}
+.header {
+	background: rgb(0, 0, 0); width: 100%; height: 2.5em; text-align: center; color: rgb(255, 255, 255); line-height: 2.5em; position: relative;
+}
+.header em {
+	left: 10px; top: 10px; width: 44px; height: 24px; text-align: center; color: rgb(255, 255, 255); line-height: 24px; font-style: normal; display: block; position: absolute;
+}
+.headertitle {
+	background: rgb(39, 54, 79);
+}
+.nav {
+	background: rgb(255, 255, 255); padding-top: 1em;
+}
+.nav ul {
+	margin: 0px auto; width: 95%;
+}
+.nav ul li {
+	margin: 4%; border-radius: 100%; width: 17%; float: left; position: relative;
+}
+.nav ul li a {
+	width: 100%; height: 100%; display: block; position: relative; z-index: 11;
+}
+.nav ul li .bog {
+	border-radius: 100%; border: 6px solid currentColor; border-image: none; left: -6px; top: -6px; width: 100%; display: none; position: absolute; z-index: 0; opacity: 0.2;
+}
+.nav p {
+	margin: 0px auto; padding: 5px 0px 10px; text-align: center; color: rgb(245, 72, 76);
+}
+.nav ul li.a1 a {
+	background: url("../images/a1.png") no-repeat 0% 0% / cover; border-radius: 100%;
+}
+.nav ul li.a2 a {
+	background: url("../images/a2.png") no-repeat 0% 0% / cover;
+}
+.nav ul li.a3 a {
+	background: url("../images/a3.png") no-repeat 0% 0% / cover;
+}
+.nav ul li.a4 a {
+	background: url("../images/a4.png") no-repeat 0% 0% / cover;
+}
+.nav ul li.a5 a {
+	background: url("../images/a5.png") no-repeat 0% 0% / cover;
+}
+.nav ul li.a6 a {
+	background: url("../images/a6.png") no-repeat 0% 0% / cover;
+}
+.nav ul li.a7 a {
+	background: url("../images/a7.png") no-repeat 0% 0% / cover;
+}
+.nav ul li.a8 a {
+	background: url("../images/a8.png") no-repeat 0% 0% / cover;
+}
+.nav ul li.a1 {
+	color: rgb(235, 104, 119);
+}
+.nav ul li.a2 {
+	color: rgb(243, 152, 0);
+}
+.nav ul li.a3 {
+	color: rgb(34, 172, 56);
+}
+.nav ul li.a4 {
+	color: rgb(19, 181, 177);
+}
+.nav ul li.a5 {
+	color: rgb(174, 93, 161);
+}
+.nav ul li.a6 {
+	color: rgb(0, 160, 233);
+}
+.nav ul li.a7 {
+	color: rgb(68, 138, 202);
+}
+.nav ul li.a8 {
+	color: rgb(0, 115, 109);
+}
+.f2 {
+	display: none;
+}
+.nav ul li.hover .bog {
+	display: block;
+}
+.list-box {
+	background: rgb(255, 255, 255); margin: 15px auto; border-radius: 4px; width: 95%;
+}
+.list-box .title {
+	border-bottom-color: rgb(199, 199, 199); border-bottom-width: 1px; border-bottom-style: dashed;
+}
+.list-box .title .left span {
+	color: rgb(39, 54, 79); float: left; display: block;
+}
+.list-box .title .left i {
+	color: rgb(39, 54, 79); float: left; display: block;
+}
+.list-box .title .left em {
+	color: rgb(39, 54, 79); float: left; display: block;
+}
+.list-box .title .left span {
+	padding: 10px 10px 0px 12px; font-size: 1em;
+}
+.list-box .title .left i {
+	font-style: normal;
+}
+.list-box .title .left em {
+	font-style: normal;
+}
+.list-box .title .left i {
+	background: rgb(39, 54, 79); margin: 16px 0px; width: 2px; height: 15px;
+}
+.list-box .title .left em {
+	padding: 13px 5px; font-size: 0.8em;
+}
+.list-box .title .time {
+	padding: 13px 12px 0px 0px; color: rgb(153, 153, 153); font-size: 0.8em;
+}
+.list-box .bottom .left span {
+	float: left; display: block;
+}
+.list-box .bottom .left em {
+	float: left; display: block;
+}
+.list-box .bottom .left span {
+	padding: 10px 6px 15px 12px; color: rgb(245, 72, 76); font-size: 1.2em; font-weight: bold;
+}
+.list-box .bottom .left em {
+	padding: 16px 0px 15px; color: rgb(124, 124, 124); font-size: 0.8em; font-style: normal;
+}
+.list-box .bottom .adde {
+	padding: 13px 12px 0px 0px; color: rgb(153, 153, 153); font-size: 0.8em;
+}
+.ad {
+	background: rgb(255, 255, 255); margin: 15px auto; border-radius: 4px; width: 95%; position: relative;
+}
+.ad img {
+	margin: 0px auto; padding: 10px 0px; width: 80%; display: block;
+}
+.ad em {
+	top: 2%; right: 2%; color: rgb(153, 153, 153); font-size: 0.6em; font-style: normal; position: absolute;
+}
+.detai-list {
+	position: relative;
+}
+.detai-list .title {
+	border-bottom-color: currentColor; border-bottom-width: medium; border-bottom-style: none;
+}
+.detai-list .icon {
+	top: 15px;  right: 5%; position: absolute;
+}
+.d-list {
+	padding: 1em 0px; position: relative;
+}
+.d-list .clearfix em {
+	margin: 0.5em; width: 21px; float: left; display: block;
+}
+.d-list .clearfix span {
+	width: 85%; color: rgb(90, 90, 90); font-size: 0.9em; margin-top: 0.6em; float: left;
+}
+.d-list .btn {
+	position: absolute;
+}
+.d-list .btn1.btn {
+	top: 50%; right: 70px; margin-top: -23px;
+}
+.d-list .btn2.btn {
+	top: 50%; right: 10px; margin-top: -23px;
+}
+.d-list > p {
+	margin: 0px auto; width: 90%; padding-bottom: 10px;
+}
+.d-list > p > em {
+	margin-right: 5px;
+}
+.d-list > p.p {
+	color: rgb(217, 123, 0);
+}
+#rocket-to-top div {
+	margin: 0px; padding: 0px; left: 0px; top: 0px; width: 40px; overflow: hidden; position: absolute;
+}
+#rocket-to-top .level-2 {
+	background: url("../images/rocket_button_up.png") no-repeat -111px 0px; height: 120px; display: none; z-index: 1; opacity: 0;
+}
+#rocket-to-top .level-3 {
+	background: 0px 0px; height: 68px; display: block; z-index: 2; cursor: pointer;
+}
+#rocket-to-top {
+	background: url("../images/rocket_button_up.png") no-repeat -111px 0px; margin: -10px 0px; padding: 0px; top: 80%; width: 40px; height: 120px; right: 0px; overflow: hidden; display: block; position: fixed; z-index: 11; cursor: default;
+}
+@media screen and (min-width:1025px)
+{
+.swiper-container {
+	margin: 0px auto; width: 740px;
+}
+.list-box .title .left i {
+	background: rgb(39, 54, 79); margin: 12px 0px; width: 2px; height: 15px;
+}
+.list-box .title .left em {
+	padding: 12px 5px; font-size: 0.8em;
+}
+.detai-list .title {
+	font-size: 36px;
+}
+.detai-list .title .left {
+	margin-top: 40px;
+}
+.detai-list .title .left i {
+	background: rgb(39, 54, 79); margin: 20px 0px; width: 2px; height: 15px;
+}
+.detai-list .bottom .left span {
+	padding: 10px 6px 15px 12px; color: rgb(245, 72, 76); font-size: 2em; font-weight: bold;
+}
+.detai-list .bottom .left em {
+	padding: 16px 0px 15px; color: rgb(124, 124, 124); font-size: 1.5em; font-style: normal;
+}
+.detai-list {
+	height: 200px; position: relative;
+}
+.detai-list .title {
+	border-bottom-color: currentColor; border-bottom-width: medium; border-bottom-style: none;
+}
+.detai-list .icon {
+	top: 15px;  right: 5%; position: absolute;
+}
+}
+.swiper-container-horizontal > .swiper-pagination {
+	bottom: 0px;
+}

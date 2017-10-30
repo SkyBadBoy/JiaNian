@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadNoticesMapper"> 
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Notices" id="RankingMap1">
+	<result property="ID" column="Notices_ID"/>
+	<result property="PKID" column="Notices_ID"/>
+	<result property="Title" column="Notices_Title" typeHandler="read.smUtil.MyBlobTypeHandler1" />
+	<result property="Content" column="Notices_Content" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="PublishUser" column="Notices_PublishUser"/>
+	<result property="CreateTime" column="Notices_CreateTime"/>
+	<result property="CreateDate" column="Notices_CreateTime"/>
+	<result property="ModifyTime" column="Notices_ModifyTime"/>
+	<result property="Status" column="Notices_Status"/>
+	<result property="Author" column="Notices_Author"/>
+	<result property="Type" column="Notices_Type"/>
+	<result property="ImageID" column="Notices_ImageID"/>
+	<result property="AreaID" column="Notices_AreaID"/>
+	<result property="ClickCount" column="Notices_ClickCount"/>
+	<result property="IsDel" column="Notices_IsDel"/>
+	<result property="IsSchool" column="Notices_IsSchool"/>
+	<result property="Region" column="Notices_Region"/>
+	<result property="IsCity" column="Notices_IsCity"/>
+	<result property="IsPro" column="Notices_IsPro"/>
+	<result property="WhoSend" column="Notices_WhoSend"/>
+	<result property="Like" column="Notices_Like"/>
+	<result property="IsActivity" column="Notices_IsActivity"/>
+	<result property="ClickCountTemp" column="Notices_ClickCountTemp"/>
+	<result property="VoteCount" column="Notices_VoteCount"/>
+	<result property="VoteID" column="Notices_VoteID"/>
+	<result property="CommentCount" column="Notices_CommentCount"/>
+	<result property="Count" column="Notices_Count"/>
+	<result property="ShareCount" column="Notices_ShareCount"/>
+	<result property="CaptainComment" column="Notices_CaptainComment"/>
+	<result property="Memo" column="Notices_Memo"/>
+	<result property="IsTop" column="Notices_IsTop"/>
+	<result property="ContentType" column="Notices_ContentType"/>
+	<association property="Image" column="Notices_ImageID" select="read.core.data.ReadProdPictureMapper.getPictureByIDList" />
+	<association property="SRegion" column="Notices_AreaID" select="read.core.data.ReadRegionMapper.getRegionByIDList"/>
+	<association property="Student" column="Notices_PublishUser" select="read.core.data.ReadStudentsMapper.getStudentsByIDList"/>
+	<association property="Pictures" column="Notices_ID" select="read.core.data.ReadProdPictureMapper.getPictureByProductIDList"/>
+</resultMap>
+
+<resultMap type="wtb.core.model.Notices" id="HtmlMap">
+	<result property="ID" column="Notices_ID"/>
+	<result property="PKID" column="Notices_ID"/>
+	<result property="Title" column="Notices_Title" typeHandler="read.smUtil.MyBlobTypeHandler1" />
+	<result property="PublishUser" column="Notices_PublishUser"/>
+	<result property="CreateTime" column="Notices_CreateTime"/>
+	<result property="CreateDate" column="Notices_CreateTime"/>
+	<result property="ModifyTime" column="Notices_ModifyTime"/>
+	<result property="Status" column="Notices_Status"/>
+	<result property="Author" column="Notices_Author"/>
+	<result property="Type" column="Notices_Type"/>
+	<result property="ImageID" column="Notices_ImageID"/>
+	<result property="AreaID" column="Notices_AreaID"/>
+	<result property="ClickCount" column="Notices_ClickCount"/>
+	<result property="IsDel" column="Notices_IsDel"/>
+	<result property="IsSchool" column="Notices_IsSchool"/>
+	<result property="Region" column="Notices_Region"/>
+	<result property="IsCity" column="Notices_IsCity"/>
+	<result property="IsPro" column="Notices_IsPro"/>
+	<result property="WhoSend" column="Notices_WhoSend"/>
+	<result property="Like" column="Notices_Like"/>
+	<result property="IsActivity" column="Notices_IsActivity"/>
+	<result property="ClickCountTemp" column="Notices_ClickCountTemp"/>
+	<result property="VoteCount" column="Notices_VoteCount"/>
+	<result property="VoteID" column="Notices_VoteID"/>
+	<result property="CommentCount" column="Notices_CommentCount"/>
+	<result property="Count" column="Notices_Count"/>
+	<result property="ShareCount" column="Notices_ShareCount"/>
+	<result property="CaptainComment" column="Notices_CaptainComment"/>
+	<result property="Memo" column="Notices_Memo"/>
+	<result property="IsTop" column="Notices_IsTop"/>
+	<result property="ContentType" column="Notices_ContentType"/>
+	<association property="Image" column="Notices_ImageID" select="read.core.data.ReadProdPictureMapper.getPictureByIDList" />
+	<association property="SRegion" column="Notices_AreaID" select="read.core.data.ReadRegionMapper.getRegionByIDList"/>
+	<association property="Student" column="Notices_PublishUser" select="read.core.data.ReadStudentsMapper.getStudentsByIDList"/>
+	<association property="Pictures" column="Notices_ID" select="read.core.data.ReadProdPictureMapper.getPictureByProductIDList"/>
+</resultMap>
+
+<resultMap type="wtb.core.model.Notices" id="RankingMap">
+	<result property="ID" column="Notices_ID"/>
+	<result property="PKID" column="Notices_ID"/>
+	<result property="Title" column="Notices_Title"/>
+	<result property="Level" column="Notices_Level"/>
+	<result property="AreaID" column="Notices_AreaID"/>
+	<result property="Author" column="Notices_Author"/>
+	<result property="PublishUser" column="Notices_PublishUser"/>
+	<result property="Count" column="Notices_Count"/>
+	<result property="Day" column="Notices_Day"/>
+	<result property="Month" column="Notices_Month"/>
+	<result property="Year" column="Notices_Year"/>
+	<result property="ContentType" column="Notices_ContentType"/>
+	<association property="SRegion" column="Notices_AreaID" select="read.core.data.ReadRegionMapper.getRegionByIDList"/>
+	<association property="Student" column="Notices_PublishUser" select="read.core.data.ReadStudentsMapper.getStudentsByIDList"/>
+</resultMap>
+<sql id="params">
+Notices_ID,
+  		Notices_Title,
+		Notices_Content,
+		Notices_PublishUser,
+		Notices_CreateTime,
+		Notices_ModifyTime,
+		Notices_Status,
+		Notices_Author,
+		Notices_Type,
+		Notices_ImageID,
+		Notices_AreaID,
+		Notices_ClickCount,
+		Notices_IsDel,
+		Notices_Region,
+		Notices_IsCity,
+		Notices_IsPro,
+		Notices_WhoSend,
+		Notices_Like,
+		Notices_IsActivity,
+		Notices_ClickCountTemp,
+		Notices_VoteCount,
+		Notices_VoteID,
+		Notices_CommentCount,
+		(Notices_CommentCount+Notices_Like+(Notices_ClickCount/2)) as Notices_Count,
+		Notices_ShareCount,
+		Notices_CaptainComment,
+		Notices_Memo,
+		Notices_IsTop,
+		Notices_ContentType
+</sql>
+<sql id="where">
+	<if test="NotEdit">
+				and Notices_Status!=11
+			</if>
+				<if test="VoteID != null">
+				and Notices_VoteID = #{VoteID}
+			</if>
+			<if test="ID != null">
+				and Notices_ID = #{ID}
+			</if>
+			<if test="IsActivity != null">
+				and Notices_IsActivity = #{IsActivity}
+			</if>
+			<if test="startTime!=null and endTime!=null">
+				and Notices_CreateTime  between  #{startTime} and #{endTime}
+			</if>
+			<if test="Month!=null and Year!=null">
+				and Month(Notices_CreateTime)=#{Month} and   Year(Notices_CreateTime)=#{Year}
+			</if>
+			<if test="Month==null and Year!=null">
+				and Year(Notices_CreateTime)=#{Year}
+			</if>
+			<if test="ToMonth!=null">
+				and month(Notices_CreateTime)=month(now()) and Year(Notices_CreateTime)=Year(now())
+			</if>
+			<if test="isqu!=null">
+				and `Notices_Region`=1 and `Notices_AreaID`in(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`=(SELECT `PARENT_ID` FROM `wtb_Region` WHERE `REGION_ID` = #{AreaID}))
+			</if>
+			<if test="isCity!=null">
+				and `Notices_AreaID` in (SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID` in (SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`=(SELECT `REGION_ID` FROM `wtb_Region` WHERE `REGION_ID`=(SELECT `PARENT_ID` FROM `wtb_Region` WHERE `REGION_ID`=(SELECT `PARENT_ID` FROM `wtb_Region` WHERE `REGION_ID`=#{AreaID}))))) and `Notices_IsCity`=1
+			</if>
+			<if test="isPro!=null">
+				and `Notices_AreaID` IN(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`IN(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID` IN(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`=(SELECT `REGION_ID` FROM `wtb_Region` WHERE `REGION_ID`=(SELECT `PARENT_ID` FROM `wtb_Region` WHERE `REGION_ID`=(SELECT `REGION_ID` FROM `wtb_Region` WHERE `REGION_ID`=(SELECT `PARENT_ID` FROM `wtb_Region` WHERE `REGION_ID`=(SELECT `PARENT_ID` FROM `wtb_Region` WHERE `REGION_ID`=#{AreaID})))))))) and `Notices_IsPro`=1 and `Notices_Status`=1
+			</if>
+			
+			<if test="AreaID != null and isqu==null and isCity==null and isPro==null and AreaIDisQu==null">
+					and Notices_AreaID =#{AreaID}
+			</if>
+			<if test="BelongAreaID != null">
+					and Notices_AreaID In (select REGION_ID from wtb_Region where PARENT_ID=#{BelongAreaID})
+			</if>
+			<if test="AreaIDisQu !=null and IsSchool!=null">
+				and  (Notices_AreaID=#{AreaIDisQu} or `Notices_AreaID`IN(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`=#{AreaID} ) and `Notices_IsSchool`=#{IsSchool} )
+				
+			</if>
+			<if test="AreaIDCity != null">
+					and (Notices_AreaID=#{AreaIDCity} or Notices_AreaID In ( SELECT `REGION_ID` FROM wtb_Region WHERE parent_id in ( SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID` = #{AreaIDCity} ) ) AND `Notices_IsCity` in (1,2))
+			</if>
+			<if test="AreaIDPro != null">
+					and (Notices_AreaID=#{AreaIDPro} or `Notices_AreaID`IN(SELECT `REGION_ID` FROM wtb_Region WHERE parent_id in (SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`in(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`=#{AreaIDPro}))) AND `Notices_IsPro` in (1,2))
+			</if>
+			<if test="AdminQu != null and status !=null">
+					and Notices_Status=1 and `Notices_AreaID`IN(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`=#{AdminQu}) and `Notices_IsDel`=1 and `Notices_Status`=#{status}
+			</if>
+			<if test="UsersID != null">
+				and Notices_PublishUser =#{UsersID}
+			</if>
+			<if test="IsSchool != null">
+				and Notices_IsSchool = #{IsSchool}
+			</if>
+			<if test="Type != null">
+				and Notices_Type = #{Type}
+			</if>
+			<if test="Status != null">
+				and Notices_Status = #{Status}
+			</if>
+			<if test="Status == null">
+				and Notices_Status != 88
+			</if>
+			<if test="IsDel != null">
+				and Notices_IsDel = #{IsDel}
+			</if>
+			<if test="Region != null">
+				and Notices_Region = #{Region}
+			</if>
+			<if test="IsCity != null">
+				and Notices_IsCity = #{IsCity}
+			</if>
+			<if test="IsPro != null">
+				and Notices_IsPro = #{IsPro}
+			</if>
+			<if test="Author != null">
+				and Notices_Author = #{Author}
+			</if>
+			<if test="WhoSend != null">
+				and Notices_WhoSend = #{WhoSend}
+			</if>
+			<if test="Time !=null">
+				and DATE_FORMAT(`Notices_CreateTime`,'%Y-%m-%d')=#{Time}
+			</if>
+			<if test="Title != null">
+					and (Notices_Title like CONCAT(CONCAT('%', #{Title,
+				jdbcType=VARCHAR}),'%') or Notices_Author like CONCAT(CONCAT('%', #{Title,
+				jdbcType=VARCHAR}),'%'))
+			</if>
+			<if test="EndShi!=null">
+				and `Notices_AreaID`IN(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`=#{EndShi}) AND `Notices_Region`=2 
+			</if>
+			<if test="EndSheng!=null">
+				 and `Notices_AreaID`IN(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`IN(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`=#{EndSheng})) and `Notices_IsCity`=2 
+			</if>
+			<if test="AreaID != null and AreaIDisQu==null">
+					and Notices_AreaID =#{AreaID}
+			</if>
+			<if test="BelongAreaID != null">
+					and Notices_AreaID In (select REGION_ID from wtb_Region where PARENT_ID=#{BelongAreaID})
+			</if>
+		
+			<if test="citysize!=null">
+				and `Notices_IsCity`=1 and `Notices_AreaID` in (SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`=(SELECT `PARENT_ID` FROM `wtb_Region` WHERE `REGION_ID` = #{AreaID}))
+			</if>
+			<if test="Today!=null">
+				and TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW())
+			</if>
+			 <if test="Yesterday!=null">
+			 	and to_days(now())-to_days(`Notices_CreateTime`) =1
+			 </if>
+			 <if test="YesMonth">
+			 	and date_format(`Notices_CreateTime`,'%Y-%m')=date_format(date_sub(curdate(), interval 1 month),'%Y-%m')
+			 </if>
+			 <if test="HangZhouYesterday!=null">
+			 	and `Notices_AreaID`IN(SELECT `REGION_ID` FROM `wtb_Region` WHERE `PARENT_ID`=#{HangZhouYesterday}) and to_days(now())-to_days(`Notices_CreateTime`) =1
+			 </if>
+			 <if test="SCreateTime!=null and ECreateTime!=null">
+			 	and (`Notices_CreateTime`&gt;=#{SCreateTime} and `Notices_CreateTime` &lt;=#{ECreateTime})
+			 </if>
+			 <if test="Rand != null">
+					and #{Rand} =#{Rand}
+			</if>
+			 <if test="later!= null">
+				and TIMESTAMPDIFF(MINUTE,now(),Notices_CreateTime)&gt;-#{later}
+			</if>
+			<if test="IsTop!= null">
+				and Notices_IsTop=#{IsTop}
+			</if>
+			<if test="ContentType!= null">
+				and Notices_ContentType=#{ContentType}
+			</if>
+			
+</sql>
+<select id="getReadNoticesList" parameterType="map" resultMap="RankingMap1">
+	SELECT
+		<include refid="params"></include>
+		FROM wtb_Notices
+		
+		<where>
+			1=1 
+			<include refid="where"></include>
+		</where>
+			<if test="orde!=null">
+				GROUP BY `Notices_AreaID` HAVING(COUNT(`Notices_AreaID`)>1)
+			</if>
+			<if test="TimeGroup!=null">
+				GROUP BY DATE_FORMAT(`Notices_CreateTime`,'%Y-%m-%d')
+			</if>
+			<if test="ClickCountOrder==null and LikeOrder==null  and CommentOrder==null  and Count==null and CreateTime==null">
+				order by Notices_CreateTime  desc, Notices_ClickCount desc
+			</if>
+			<if test="ClickCountOrder!=null">
+				order by Notices_ClickCount desc
+			</if>
+			<if test="LikeOrder!=null">
+				order by Notices_Like desc
+			</if>
+			<if test="CreateTime!=null">
+				order by Notices_CreateTime  desc
+			</if>
+			<if test="CommentOrder!=null">
+				order by Notices_CommentCount desc
+			</if>
+			<if test="Count!=null">
+				order by Notices_Count desc
+			</if>
+			<if test="limit != null and start !=null ">
+				 limit ${start},${limit} 
+			</if>
+</select>
+
+
+<select id="getNoticesByID" parameterType="long" resultMap="RankingMap1">
+	SELECT
+		<include refid="params"></include>
+		FROM wtb_Notices
+		<where>
+				<if test="_parameter != null">
+					 Notices_ID = #{_parameter}
+				</if>
+		</where>
+</select>
+<select id="getNoticesHtmlByID" parameterType="long" resultMap="HtmlMap">
+	SELECT
+		<include refid="params"></include>
+		FROM wtb_Notices
+		<where>
+				<if test="_parameter != null">
+					 Notices_ID = #{_parameter}
+				</if>
+		</where>
+</select>
+<select id="getNoticesCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Notices
+		<where>
+			1=1 
+			<include refid="where"></include>
+		</where>
+		
+</select>
+<select id="getNoticesCountByAreaID" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Notices
+		<where>
+			1=1 and Notices_Status!=88
+			<if test="_parameter != null">
+				and 	 Notices_AreaID = #{_parameter}
+				</if>
+		</where>
+		
+</select>
+
+<select id="getNoticesChiefKindRankingList" parameterType="map" resultMap="RankingMap">
+select count(1) as Notices_Count,Notices_AreaID,
+(select Students_ID from wtb_Students where Students_Chief=3 and Students_AreaID=Notices_AreaID  limit 0,1) as Notices_PublishUser from wtb_Notices 
+<where>
+Notices_AreaID in(
+select Students_AreaID from wtb_Students where Students_Chief=3
+) 
+
+	<if test="startTime!=null and endTime!=null">
+			and wtb_Notices.Notices_CreateTime  between  #{startTime} and #{endTime}
+	</if>
+	<if test="Month!=null and Year!=null">
+		and Month(Notices_CreateTime)=#{Month} and   Year(Notices_CreateTime)=#{Year}
+	</if>
+	<if test="Today!=null">
+		and TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW())
+	</if>
+	<if test="Month!=null">
+	 	and date_format(`Notices_CreateTime`,'%Y-%m')=date_format(now(),'%Y-%m')
+	 </if>
+	  <if test="AreaID!=null">
+		 	and Notices_AreaID=#{AreaID}
+		 </if>
+</where>
+group by Notices_AreaID 
+order by count(1) desc
+<if test="limit != null and start !=null ">
+		 limit ${start},${limit} 
+</if>
+	
+</select>
+
+<select id="getNoticesReadRankingList" parameterType="map" resultMap="RankingMap">
+select * FROM  
+ (  
+     SELECT A.*,@curRank := @curRank + 1 as Notices_Level
+     FROM     
+     (    
+      SELECT Notices_ID,Notices_Author,Notices_Title,Notices_PublishUser, 
+	<if test="startTime!=null and endTime!=null">
+			(select count(1) from wtb_ClickList where ClickList_BeLongID= Notices_ID and ClickList_CreateTime between #{startTime} and #{endTime}  )
+	</if>
+	<if test="startTime==null or endTime==null">
+		Notices_ClickCount
+	</if>
+	
+ as Notices_Count FROM wtb_Notices 
+<where>
+	wtb_Notices.Notices_Status != 88 AND wtb_Notices.Notices_PublishUser != 0 AND wtb_Notices.Notices_PublishUser IS NOT NULL
+	<if test="startTime!=null and endTime!=null">
+			and wtb_Notices.Notices_CreateTime  between  #{startTime} and #{endTime}
+	</if>
+	<if test="Month!=null and Year!=null">
+			and Month(Notices_CreateTime)=#{Month} and   Year(Notices_CreateTime)=#{Year}
+		</if>
+		<if test="Today!=null">
+			and TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW())
+		</if>
+		<if test="Month!=null">
+		 	and date_format(`Notices_CreateTime`,'%Y-%m')=date_format(now(),'%Y-%m')
+		 </if>
+		  <if test="AreaID!=null">
+		 	and Notices_AreaID=#{AreaID}
+		 </if>
+		 <if test="VoteID!=null">
+		 	and Notices_VoteID=#{VoteID}
+		 </if>
+</where>
+order by Notices_Count desc
+   
+     ) A ,(SELECT @curRank:=0) B   
+ ) M  
+ ORDER BY Notices_Level 
+	
+	<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+	</if>
+	
+</select>
+<select id="getNoticesRankingList" parameterType="map" resultMap="RankingMap">
+select * FROM  
+ (  
+     SELECT A.*,@curRank := @curRank + 1 as Notices_Level
+     FROM     
+     (    
+      SELECT Notices_PublishUser, COUNT(*) as Notices_Count FROM wtb_Notices 
+<where>
+	wtb_Notices.Notices_Status != 88 AND wtb_Notices.Notices_PublishUser != 0 AND wtb_Notices.Notices_PublishUser IS NOT NULL
+	<if test="startTime!=null and endTime!=null">
+			and wtb_Notices.Notices_CreateTime  between  #{startTime} and #{endTime}
+	</if>
+	<if test="Month!=null and Year!=null">
+			and Month(Notices_CreateTime)=#{Month} and   Year(Notices_CreateTime)=#{Year}
+		</if>
+		<if test="Today!=null">
+			and TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW())
+		</if>
+		<if test="Month!=null">
+		 	and date_format(`Notices_CreateTime`,'%Y-%m')=date_format(now(),'%Y-%m')
+		 </if>
+		  <if test="AreaID!=null">
+		 	and Notices_AreaID=#{AreaID}
+		 </if>
+		<if test="VoteID!=null">
+		 	and Notices_VoteID=#{VoteID}
+		 </if>
+		 	and EXISTS (select Students_ID from wtb_Students where Students_ID=Notices_PublishUser)
+
+</where>
+GROUP BY
+Notices_PublishUser,Notices_AreaID
+order by COUNT(*) desc
+   
+     ) A ,(SELECT @curRank:=0) B   
+ ) M  
+ <where>
+ <if test="RankUsersID != null">
+	and Notices_PublishUser =#{RankUsersID}
+</if>
+</where>
+ ORDER BY Notices_Level 
+	
+	<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+	</if>
+	
+</select>
+
+<select id="getNoticesVoteRankingList" parameterType="map" resultMap="RankingMap">
+select * FROM  
+ (  
+     SELECT A.*,@curRank := @curRank + 1 as Notices_Level
+     FROM     
+     (    
+      SELECT *,Notices_VoteCount as Notices_Count FROM wtb_Notices 
+		<where>
+			Notices_Status=1
+		<if test="VoteID!=null">
+			and Notices_VoteID=${VoteID} 
+		</if>
+		</where>
+order by Notices_VoteCount desc
+   
+     ) A ,(SELECT @curRank:=0) B   
+ ) M  
+ <where>
+ <include refid="where"></include>
+ </where>
+  ORDER BY Notices_Level 
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+	</if>
+</select>
+
+
+<select id="getNoticesSchoolRankingList" parameterType="map" resultMap="RankingMap">
+select * FROM  
+ (  
+     SELECT A.*,@curRank := @curRank + 1 as Notices_Level
+     FROM     
+     (    
+      SELECT Notices_AreaID,Count(*) as Notices_Count FROM wtb_Notices 
+		<where>
+			Notices_Status != 88 AND
+			Notices_AreaID != 0
+		<if test="startTime!=null and endTime!=null">
+			and Notices_CreateTime  between  #{startTime} and #{endTime}
+		</if>
+		<if test="Month!=null and Year!=null">
+			and Month(Notices_CreateTime)=#{Month} and   Year(Notices_CreateTime)=#{Year}
+		</if>
+		<if test="Today!=null">
+			and TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW())
+		</if>
+		<if test="Month!=null">
+		 	and date_format(`Notices_CreateTime`,'%Y-%m')=date_format(now(),'%Y-%m')
+		 </if>
+		 <if test="AreaID!=null">
+		 	and Notices_AreaID=#{AreaID}
+		 </if>
+		 <if test="VoteID!=null">
+		 	and Notices_VoteID=#{VoteID}
+		 </if>
+		</where>
+	
+		GROUP BY
+		Notices_AreaID
+		ORDER BY
+			Count(*) desc
+   
+     ) A ,(SELECT @curRank:=0) B   
+ ) M  
+  ORDER BY Notices_Level 
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+	</if>
+</select>
+
+
+<select id="getNoticesRankingCount" parameterType="map" resultType="int">
+SELECT COUNT(*) FROM( SELECT Notices_PublishUser,COUNT(*)
+FROM
+	wtb_Notices
+<where>
+Notices_Status != 88
+AND Notices_PublishUser != 0
+AND Notices_PublishUser IS NOT NULL
+
+<if test="startTime!=null and endTime!=null">
+			and Notices_CreateTime  between  #{startTime} and #{endTime}
+		</if>
+		<if test="Month!=null and Year!=null">
+			and Month(Notices_CreateTime)=#{Month} and   Year(Notices_CreateTime)=#{Year}
+		</if>
+		<if test="Today!=null">
+			and TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW())
+		</if>
+		<if test="Month!=null">
+		 	and date_format(`Notices_CreateTime`,'%Y-%m')=date_format(now(),'%Y-%m')
+		 </if>
+		  <if test="AreaID!=null">
+		 	and Notices_AreaID=#{AreaID}
+		 </if>
+		 <if test="VoteID!=null">
+		 	and Notices_VoteID=#{VoteID}
+		 </if>
+</where>
+	
+GROUP BY
+	wtb_Notices.Notices_PublishUser
+ORDER BY
+	COUNT(*) DESC)a
+</select>
+	
+	
+<select id="getSchoolActiveCount" parameterType="map" resultType="int">
+select count(1) from (
+select count(1) from wtb_Notices 
+<where>
+Notices_Status != 88
+AND Notices_PublishUser != 0
+AND Notices_PublishUser IS NOT NULL
+	 <if test="Yesterday!=null">
+	 	and to_days(now())-to_days(`Notices_CreateTime`) =1
+	 </if>
+	 <if test="startTime!=null and endTime!=null">
+		and Notices_CreateTime  between  #{startTime} and #{endTime}
+	</if>
+	<if test="Month!=null and Year!=null">
+		and Month(Notices_CreateTime)=#{Month} and   Year(Notices_CreateTime)=#{Year}
+	</if>
+	<if test="Today!=null">
+		and TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW())
+	</if>
+	<if test="Month!=null and Year==null">
+	 	and date_format(`Notices_CreateTime`,'%Y-%m')=date_format(now(),'%Y-%m')
+	 </if>
+	  <if test="AreaID!=null">
+		 	and Notices_AreaID=#{AreaID}
+		 </if>
+</where>
+
+group by Notices_AreaID
+) t
+</select>	
+	
+	
+<select id="getNoticesSchoolRankingCount" parameterType="map" resultType="int">
+SELECT COUNT(*) FROM(SELECT
+			wtb_Notices.Notices_AreaID,Count(*)
+		FROM
+			wtb_Notices
+		<where>
+			wtb_Notices.Notices_Status != 88 AND
+			wtb_Notices.Notices_AreaID != 0
+		<if test="startTime!=null and endTime!=null">
+			and wtb_Notices.Notices_CreateTime  between  #{startTime} and #{endTime}
+		</if>
+		</where>
+	
+		GROUP BY
+		wtb_Notices.Notices_AreaID
+		ORDER BY
+			COUNT(*) DESC)a
+</select>
+	
+	
+
+<select id="getAreaIDList" parameterType="map" resultMap="RankingMap1">
+	SELECT Notices_AreaID FROM wtb_Notices WHERE 1=1 and `Notices_Status`=1 GROUP BY `Notices_AreaID` HAVING(COUNT(`Notices_AreaID`)>=1)
+</select>
+
+<select id="getNoticesTimeList" parameterType="map" resultMap="RankingMap1">
+SELECT 
+	DATE_FORMAT(
+		`Notices_CreateTime`, '%Y-%m-%d'
+	) as Notices_Time
+
+FROM 
+	wtb_Notices 
+WHERE 
+	1 = 1 
+	and Notices_Status =1 
+GROUP BY 
+	DATE_FORMAT(
+		`Notices_CreateTime`, '%Y-%m-%d'
+	) 
+</select>
+
+<select id="getWantData"  parameterType="map" resultMap="RankingMap1">
+	<if test="getRegion!=null">
+		SELECT `Notices_AreaID` FROM `wtb_Notices` GROUP BY `Notices_AreaID`
+	</if>
+	<if test="getTime!=null">
+		SELECT DATE_FORMAT(`Notices_CreateTime`,'%Y-%m-%d') FROM wtb_Notices GROUP BY DATE_FORMAT(`Notices_CreateTime`,'%Y-%m-%d')
+	</if>
+</select>
+
+<select id="getSchoolNoticesList"  parameterType="map" resultMap="RankingMap">
+	select Notices_AreaID,count(*) as Notices_Count
+from wtb_Notices where Notices_Status=1 and Notices_AreaID >0 and to_days(now())-to_days(`Notices_CreateTime`) =1 group by Notices_AreaID order by count(*) desc
+limit 0,10
+</select>
+<select id="getAreaNoticesList"  parameterType="map" resultMap="RankingMap">
+select Notices_AreaID,sum(Notices_Count) as Notices_Count from (
+select (select PARENT_ID from wtb_Region where REGION_ID= Notices_AreaID) as Notices_AreaID,count(*) as Notices_Count from
+ wtb_Notices where Notices_Status=1 and Notices_AreaID >0 and to_days(now())-to_days(`Notices_CreateTime`) =1 group by Notices_AreaID order by count(*) desc 
+) t
+group by Notices_AreaID
+limit 0,10 
+</select>
+
+<select id="getStudentNoticesList"  parameterType="map" resultMap="RankingMap">
+select Notices_AreaID,Notices_PublishUser,count(*) as Notices_Count
+from wtb_Notices where Notices_Status=1 and Notices_PublishUser >0 and to_days(now())-to_days(`Notices_CreateTime`) =1 group by Notices_PublishUser,Notices_AreaID order by count(*) desc limit 0,10
+</select>
+<select id="getDayNoticesCountList"  parameterType="map" resultMap="RankingMap">
+select day(Notices_CreateTime)as Notices_Day,month(Notices_CreateTime) as Notices_Month,count(1) as Notices_Count from wtb_Notices 
+<where>
+1=1 and Notices_Status!=88
+<include refid="where"></include>
+</where>
+group by Notices_Day,Notices_Month
+</select>
+
+<select id="getNoticesGlamourCount" parameterType="map" resultType="int">
+SELECT
+	(sum((select ifnull(Count(1),0) from wtb_WeMoneyRecord where WeMoneyRecord_Type=3 and WeMoneyRecord_Belong=Notices_ID and WeMoneyRecord_Status=1))+
+	sum((select ifnull(sum(WeMoneyRecord_WeMoney),0) from wtb_WeMoneyRecord where WeMoneyRecord_Type=3 and WeMoneyRecord_Belong=Notices_ID and WeMoneyRecord_Status=1))+
+	sum((select ifnull(count(1),0) from wtb_Notices  
+	<where>
+			1=1 
+			<include refid="where"></include>
+		</where>))+
+		ifnull(sum(Notices_CommentCount),0)+ifnull(sum(Notices_Like),0)+ifnull(sum(Notices_ShareCount),0)+ifnull(sum(Notices_ClickCount),0))/7 as Notices_Count
+		
+		FROM wtb_Notices
+		<where>
+			1=1 
+			<include refid="where"></include>
+		</where>
+		
+</select>
+</mapper>
+

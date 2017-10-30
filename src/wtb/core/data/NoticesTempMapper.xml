@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.NoticesTempMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<resultMap type="wtb.core.model.NoticesTemp" id="ClassResultMap">
+	<result property="ID" column="NoticeTemp_ID"/>
+	<result property="title" column="NoticeTemp_Title" />
+	<result property="content" column="NoticeTemp_Content" typeHandler="wtb.smUtil.MyBlobTypeHandler"/>
+	<result property="imageIDList" column="NoticeTemp_ImageIDList"/>
+	<result property="imageUrl" column="NoticeTemp_ImageUrl"/>
+	<result property="imgLiId" column="NoticeTemp_ImgLiId"/>
+	<result property="imgLiSrc" column="NoticeTemp_ImgLiSrc"/>
+	<result property="status" column="NoticeTemp_Status"/>
+	<result property="NoticeSrcID" column="NoticeTemp_SrcID"/>
+	<result property="CreateTime" column="NoticeTemp_CreateTime"/>
+	<result property="ModifyTime" column="NoticeTemp_ModifyTime"/>
+</resultMap>
+<sql id="param">
+NoticeTemp_ID,
+  		NoticeTemp_Title,
+		ifnull(NoticeTemp_Content,'') as NoticeTemp_Content,
+		NoticeTemp_ImageIDList,
+		NoticeTemp_ImageUrl,
+		NoticeTemp_ImgLiId,
+		NoticeTemp_ImgLiSrc,
+		NoticeTemp_Status,
+		NoticeTemp_SrcID,
+		NoticeTemp_ModifyTime,
+		NoticeTemp_CreateTime
+
+
+</sql>
+	
+<select id="getNoticesList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="param"></include>
+		FROM wtb_NoticeTemp
+		<where>
+			1=1 
+			<if test="ID != null">
+				and NoticeTemp_ID = #{ID}
+			</if>
+			<if test="status != null">
+				and NoticeTemp_Status = #{status}
+			</if>
+			<if test="NoticeSrcID != null">
+				and NoticeTemp_SrcID = #{NoticeSrcID}
+			</if>
+		</where>
+		
+</select>
+
+<select id="getNoticesByID" parameterType="long" resultMap="ClassResultMap">
+	SELECT
+		<include refid="param"></include>
+		FROM wtb_NoticeTemp
+		<where>
+		1=1   and 
+			<if test="_parameter != null">
+				 NoticeTemp_ID = #{_parameter}
+			</if>
+		</where>
+</select>
+
+
+
+<insert id="addNotices" parameterType="wtb.core.model.NoticesTemp" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_NoticeTemp (
+			NoticeTemp_ID,
+  		NoticeTemp_Title,
+		NoticeTemp_Content,
+		NoticeTemp_ImageIDList,
+		NoticeTemp_ImageUrl,
+		NoticeTemp_ImgLiId,
+		NoticeTemp_ImgLiSrc,
+		NoticeTemp_Status,
+		NoticeTemp_SrcID,
+		NoticeTemp_ModifyTime,
+		NoticeTemp_CreateTime
+		) VALUES (
+			#{ID}, #{title},#{content}, #{imageIDList}, #{imageUrl},#{imgLiId},#{imgLiSrc},#{status},#{NoticeSrcID},now(),now()
+			
+		)
+</insert>
+<update id="updateNotices" parameterType="wtb.core.model.NoticesTemp">
+	UPDATE wtb_NoticeTemp 
+		SET
+  		NoticeTemp_Title=#{title},
+		NoticeTemp_Content=#{content},
+		NoticeTemp_ImageIDList=#{imageIDList},
+		NoticeTemp_ImageUrl=#{imageUrl},
+		NoticeTemp_ImgLiId=#{imgLiId},
+		NoticeTemp_ImgLiSrc=#{imgLiSrc},
+		NoticeTemp_Status=#{status},
+		NoticeTemp_SrcID=#{NoticeSrcID},
+		NoticeTemp_ModifyTime = now()
+			where NoticeTemp_ID = #{ID}
+</update>
+
+<delete id="deleteNotices" parameterType="wtb.core.model.NoticesTemp">
+	update  wtb_NoticeTemp set NoticeTemp_Status=88,NoticeTemp_ModifyTime = now(),
+NoticeTemp_Title='',
+		NoticeTemp_Content='',
+		NoticeTemp_ImageIDList='',
+		NoticeTemp_ImageUrl='',
+		NoticeTemp_ImgLiId='',
+		NoticeTemp_ImgLiSrc='',
+		NoticeTemp_SrcID=0
+			where
+				 NoticeTemp_ID = #{ID}
+</delete>
+
+</mapper>
+

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.ErrorStatMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.ErrorStat" id="ClassResultMap">
+	<result property="ID" column="ErrorStat_ID"/> 
+	<result property="PKID" column="ErrorStat_ID"/> 
+	<result property="ClassName" column="ErrorStat_ClassName"/>
+	<result property="Memo" column="ErrorStat_Memo"/>
+	<result property="Status" column="ErrorStat_Status"/>
+	<result property="Type" column="ErrorStat_Type"/>
+	<result property="CreateTime" column="ErrorStat_CreateTime"/>
+	<result property="ModifyTime" column="ErrorStat_ModifyTime"/>
+	<result property="Count" column="ErrorStat_Count"/>
+	<result property="TotalCount" column="ErrorStat_TotalCount"/>
+	<result property="SendTime" column="ErrorStat_SendTime"/>
+</resultMap>
+<sql id="param">
+ErrorStat_ID,
+ErrorStat_ClassName,
+ErrorStat_CreateTime,
+ErrorStat_ModifyTime,
+ErrorStat_Memo,
+ErrorStat_Status,
+ErrorStat_Type,
+ErrorStat_TotalCount,
+ErrorStat_Count,
+ErrorStat_SendTime
+
+</sql>
+<sql id="where">
+<if test="Type!=null">
+			and  ErrorStat_Type=#{Type}
+		</if>
+		<if test="Status!=null">
+			and  ErrorStat_Status=#{Status}
+		</if>
+		<if test="ClassName!=null">
+			and  ErrorStat_ClassName=#{ClassName}
+		</if>
+		<if test="Status==null">
+			and ErrorStat_Status!=88
+		</if>
+		<if test="ID!=null">
+			and  ErrorStat_ID=#{ID}
+		</if>
+</sql>
+
+<insert id="addErrorStat" parameterType="wtb.core.model.ErrorStat" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_ErrorStats(
+	<include refid="param"></include>
+				) VALUES 
+				(#{ID},#{ClassName},now(),now(),#{Memo},#{Status},#{Type},#{TotalCount},#{Count},#{SendTime})
+</insert>
+<delete id="deleteErrorStat" parameterType="wtb.core.model.ErrorStat" >
+	update  wtb_ErrorStats set ErrorStat_Status=88
+			where
+				 ErrorStat_ID = #{ID}
+</delete>
+<update id="updateErrorStat" parameterType="wtb.core.model.ErrorStat">
+	update  wtb_ErrorStats set
+			ErrorStat_ID=#{ID}, 
+			ErrorStat_ClassName=#{ClassName},
+			ErrorStat_ModifyTime=now(),
+			ErrorStat_Memo=#{Memo},
+			ErrorStat_Status=#{Status},
+			ErrorStat_Type=#{Type},
+			ErrorStat_TotalCount=#{TotalCount},
+			ErrorStat_Count=#{Count},
+			ErrorStat_SendTime=#{SendTime}
+			where
+				 ErrorStat_ID = #{ID}
+</update>
+
+<update id="updateErrorStatByClassName" parameterType="wtb.core.model.ErrorStat">
+	update  wtb_ErrorStats set
+			ErrorStat_TotalCount=ErrorStat_TotalCount+1,
+			ErrorStat_Count=ErrorStat_Count+1
+			where
+				 ErrorStat_ID=#{ID}
+</update>
+</mapper>

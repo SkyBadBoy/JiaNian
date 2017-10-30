@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeChatCustomMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.WeChatCustom" id="ClassResultMap">
+	<result property="ID" column="WeChatCustom_ID"/>
+	<result property="PKID" column="WeChatCustom_ID"/>
+	<result property="Name" column="WeChatCustom_Name"/>
+	<result property="Type" column="WeChatCustom_Type"/>
+	<result property="URL" column="WeChatCustom_Url"/>
+	<result property="Key" column="WeChatCustom_key"/>
+	<result property="ParentID" column="WeChatCustom_ParentID"/>
+	<result property="CreateTime" column="WeChatCustom_CreateTime"/>
+	<result property="Status" column="WeChatCustom_Status"/>
+	<result property="mGroup" column="WeChatCustom_Group"/>
+	
+</resultMap>
+<select id="getWeChatCustomList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		WeChatCustom_ID,
+		WeChatCustom_Name,
+		WeChatCustom_Type,
+		WeChatCustom_Url,
+		WeChatCustom_key,
+		WeChatCustom_ParentID,
+		WeChatCustom_CreateTime,
+		WeChatCustom_Status,
+		WeChatCustom_Group
+		FROM wtb_WeChatCustom
+		<where>
+			1=1 
+			<if test="del==null">
+				and WeChatCustom_Status!=88
+			</if>
+			<if test="ID != null">
+					and WeChatCustom_ID = #{ID}
+			</if>
+			
+			<if test="ParentID != null">
+					and WeChatCustom_ParentID = #{ParentID}
+			</if>
+			<if test="mGroup!=null">
+				and WeChatCustom_Group=#{mGroup}
+			</if>
+		</where>
+		<if test="time!=null">
+			order by WeChatCustom_CreateTime  desc
+		</if>
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+
+
+<select id="getWeChatCustomCount" parameterType="map" resultType="int">
+	SELECT
+		COUNT(*)
+		FROM wtb_WeChatCustom
+		<where>
+			1=1 and WeChatCustom_Status!=88
+			<if test="ID != null">
+					and WeChatCustom_ID = #{ID}
+			</if>
+			<if test="ParentID != null">
+					and WeChatCustom_ParentID = #{ParentID}
+			</if>
+				<if test="mGroup!=null">
+				and WeChatCustom_Group=#{mGroup}
+			</if>
+		</where>
+</select>
+<insert id="addWeChatCustom" parameterType="wtb.core.model.WeChatCustom" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_WeChatCustom (
+		WeChatCustom_ID,
+		WeChatCustom_Name,
+		WeChatCustom_Type,
+		WeChatCustom_Url,
+		WeChatCustom_key,
+		WeChatCustom_ParentID,
+		WeChatCustom_CreateTime,
+		WeChatCustom_Status,
+		WeChatCustom_Group
+		) VALUES (
+			#{ID}, #{Name}, #{Type}, #{URL},#{Key},#{ParentID},#{CreateTime},#{Status},#{mGroup}
+		)
+</insert>
+<update id="updateWeChatCustom" parameterType="wtb.core.model.WeChatCustom">
+	UPDATE `wtb_WeChatCustom`
+	 SET
+		`WeChatCustom_ID`=#{ID},
+		`WeChatCustom_Name`=#{Name},
+		`WeChatCustom_Type`=#{Type},
+		`WeChatCustom_Url`=#{URL},
+		`WeChatCustom_key`=#{Key},
+		`WeChatCustom_ParentID`=#{ParentID},
+		`WeChatCustom_CreateTime`=#{CreateTime},
+		`WeChatCustom_Status`=#{Status},
+		`WeChatCustom_Group`=#{mGroup}
+		
+			where`WeChatCustom_ID`=#{ID}
+</update>
+<delete id="deleteWeChatCustom" parameterType="wtb.core.model.WeChatCustom">
+	update  wtb_WeChatCustom set WeChatCustom_Status=88
+			where
+				 WeChatCustom_ID = #{ID}
+</delete>
+</mapper>
+

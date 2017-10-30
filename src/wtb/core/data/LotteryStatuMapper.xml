@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wtb.core.data.LotteryStatuMapper" >
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.LotteryStatu" >
+    <id column="lottery_id" property="lotteryId" jdbcType="BIGINT" />
+    <result column="lottery_userid" property="lotteryUserid" jdbcType="BIGINT" />
+    <result column="lottery_belongid" property="lotteryBelongid" jdbcType="BIGINT" />
+    <result column="lottery_residuecount" property="lotteryResiduecount" jdbcType="INTEGER" />
+    <result column="lottery_obtainedcount" property="lotteryObtainedcount" jdbcType="INTEGER" />
+    <result column="lottery_totalcount" property="lotteryTotalcount" jdbcType="INTEGER" />
+    <result column="lottery_redundancy" property="lotteryRedundancy" jdbcType="VARCHAR" />
+    <result column="lottery_createtime" property="lotteryCreatetime" jdbcType="TIMESTAMP" />
+    <result column="lottery_modifytime" property="lotteryModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    lottery_id, lottery_userid, lottery_belongid, lottery_residuecount, lottery_obtainedcount, 
+    lottery_totalcount, lottery_redundancy, lottery_createtime, lottery_modifytime
+  </sql>
+  
+  <insert id="AddNewMessage" parameterType="wtb.core.model.LotteryStatu" >
+    insert into wtb_lotterystatu (lottery_id, lottery_userid, lottery_belongid, 
+      lottery_residuecount, lottery_obtainedcount, 
+      lottery_totalcount, lottery_redundancy, lottery_createtime, 
+      lottery_modifytime)
+    values (#{lotteryId,jdbcType=BIGINT}, #{lotteryUserid,jdbcType=BIGINT}, #{lotteryBelongid,jdbcType=BIGINT}, 
+      #{lotteryResiduecount,jdbcType=INTEGER}, DEFAULT, 
+      #{lotteryTotalcount,jdbcType=INTEGER}, #{lotteryRedundancy,jdbcType=VARCHAR},now(), 
+      now())
+  </insert>
+  <!-- by Sheryl --><!-- 改变剩余抽奖次数 -->
+<update id="AddCount" parameterType="java.lang.Long" >
+	UPDATE wtb_lotterystatu 
+		SET
+		lottery_residuecount = lottery_residuecount + 1 
+		WHERE lottery_userid = #{ID} 
+</update>
+<update id="CutCount" parameterType="java.lang.Long" >
+	UPDATE wtb_lotterystatu 
+		SET
+		lottery_residuecount = lottery_residuecount - 1,
+		lottery_obtainedcount = lottery_obtainedcount - 1
+		WHERE lottery_userid = #{ID}
+</update>
+<update id="AddTotalCount" parameterType="java.lang.Long" >
+	UPDATE wtb_lotterystatu 
+		SET
+		lottery_totalcount = lottery_totalcount + 1
+		WHERE lottery_userid = #{ID}
+</update>
+<update id="AddTwoCount" parameterType="java.lang.Long">
+	UPDATE wtb_lotterystatu 
+		SET
+		lottery_totalcount = lottery_totalcount + 1,
+		lottery_residuecount = lottery_residuecount + 1
+		WHERE lottery_userid = #{ID}
+</update>
+<update id="ChangeLimit" parameterType="java.lang.Long" >
+	UPDATE wtb_lotterystatu 
+		<set>
+		lottery_obtainedcount = <![CDATA[ DEFAULT ]]> ,
+		lottery_modifytime = now()
+		</set>
+		WHERE lottery_userid = #{ID}
+</update>
+  
+ 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wtb_lotterystatu
+    where lottery_id = #{lotteryId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="wtb.core.model.LotteryStatu" >
+    insert into wtb_lotterystatu (lottery_id, lottery_userid, lottery_belongid, 
+      lottery_residuecount, lottery_obtainedcount, 
+      lottery_totalcount, lottery_redundancy, lottery_createtime, 
+      lottery_modifytime)
+    values (#{lotteryId,jdbcType=BIGINT}, #{lotteryUserid,jdbcType=BIGINT}, #{lotteryBelongid,jdbcType=BIGINT}, 
+      #{lotteryResiduecount,jdbcType=INTEGER}, #{lotteryObtainedcount,jdbcType=INTEGER}, 
+      #{lotteryTotalcount,jdbcType=INTEGER}, #{lotteryRedundancy,jdbcType=VARCHAR}, #{lotteryCreatetime,jdbcType=TIMESTAMP}, 
+      #{lotteryModifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="wtb.core.model.LotteryStatu" >
+    insert into wtb_lotterystatu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lotteryId != null" >
+        lottery_id,
+      </if>
+      <if test="lotteryUserid != null" >
+        lottery_userid,
+      </if>
+      <if test="lotteryBelongid != null" >
+        lottery_belongid,
+      </if>
+      <if test="lotteryResiduecount != null" >
+        lottery_residuecount,
+      </if>
+      <if test="lotteryObtainedcount != null" >
+        lottery_obtainedcount,
+      </if>
+      <if test="lotteryTotalcount != null" >
+        lottery_totalcount,
+      </if>
+      <if test="lotteryRedundancy != null" >
+        lottery_redundancy,
+      </if>
+      <if test="lotteryCreatetime != null" >
+        lottery_createtime,
+      </if>
+      <if test="lotteryModifytime != null" >
+        lottery_modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lotteryId != null" >
+        #{lotteryId,jdbcType=BIGINT},
+      </if>
+      <if test="lotteryUserid != null" >
+        #{lotteryUserid,jdbcType=BIGINT},
+      </if>
+      <if test="lotteryBelongid != null" >
+        #{lotteryBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="lotteryResiduecount != null" >
+        #{lotteryResiduecount,jdbcType=INTEGER},
+      </if>
+      <if test="lotteryObtainedcount != null" >
+        #{lotteryObtainedcount,jdbcType=INTEGER},
+      </if>
+      <if test="lotteryTotalcount != null" >
+        #{lotteryTotalcount,jdbcType=INTEGER},
+      </if>
+      <if test="lotteryRedundancy != null" >
+        #{lotteryRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="lotteryCreatetime != null" >
+        #{lotteryCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lotteryModifytime != null" >
+        #{lotteryModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="wtb.core.model.LotteryStatu" >
+    update wtb_lotterystatu
+    <set >
+      <if test="lotteryUserid != null" >
+        lottery_userid = #{lotteryUserid,jdbcType=BIGINT},
+      </if>
+      <if test="lotteryBelongid != null" >
+        lottery_belongid = #{lotteryBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="lotteryResiduecount != null" >
+        lottery_residuecount = #{lotteryResiduecount,jdbcType=INTEGER},
+      </if>
+      <if test="lotteryObtainedcount != null" >
+        lottery_obtainedcount = #{lotteryObtainedcount,jdbcType=INTEGER},
+      </if>
+      <if test="lotteryTotalcount != null" >
+        lottery_totalcount = #{lotteryTotalcount,jdbcType=INTEGER},
+      </if>
+      <if test="lotteryRedundancy != null" >
+        lottery_redundancy = #{lotteryRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="lotteryCreatetime != null" >
+        lottery_createtime = #{lotteryCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lotteryModifytime != null" >
+        lottery_modifytime = #{lotteryModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where lottery_id = #{lotteryId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="wtb.core.model.LotteryStatu" >
+    update wtb_lotterystatu
+    set lottery_userid = #{lotteryUserid,jdbcType=BIGINT},
+      lottery_belongid = #{lotteryBelongid,jdbcType=BIGINT},
+      lottery_residuecount = #{lotteryResiduecount,jdbcType=INTEGER},
+      lottery_obtainedcount = #{lotteryObtainedcount,jdbcType=INTEGER},
+      lottery_totalcount = #{lotteryTotalcount,jdbcType=INTEGER},
+      lottery_redundancy = #{lotteryRedundancy,jdbcType=VARCHAR},
+      lottery_createtime = #{lotteryCreatetime,jdbcType=TIMESTAMP},
+      lottery_modifytime = #{lotteryModifytime,jdbcType=TIMESTAMP}
+    where lottery_id = #{lotteryId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadPayRecordMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+     
+<resultMap type="wtb.core.model.PayRecord" id="ClassResultMap">
+	<result property="ID" column="PayRecord_ID"/>
+	<result property="PKID" column="PayRecord_ID"/>
+	<result property="UserID" column="PayRecord_UserID"/>
+	<result property="OrderID" column="PayRecord_OrderID"/>
+	<result property="PayMethod" column="PayRecord_PayMethod"/>
+	<result property="PayReason" column="PayRecord_PayReason"/>
+	<result property="Money" column="PayRecord_Money"/>
+	<result property="Status" column="PayRecord_Status"/>
+	<result property="Tarde" column="PayRecord_Tarde"/>
+	<result property="CreateTime" column="PayRecord_CreateTime"/>
+	<result property="Type" column="PayRecord_Type"/>
+	<result property="ModifyTime" column="PayRecord_ModifyTime"/>
+	<result property="Version" column="PayRecord_Version"/>
+	<result property="BeLongID" column="PayRecord_BeLongID"/>
+	<result property="Deleted" column="PayRecord_Deleted"/>
+</resultMap>
+<sql id="sql">
+		PayRecord_ID,
+		PayRecord_UserID,
+		PayRecord_OrderID,
+		PayRecord_PayMethod,
+		PayRecord_PayReason,
+		PayRecord_Money,
+		PayRecord_Tarde,
+		PayRecord_CreateTime,
+		PayRecord_ModifyTime,
+		PayRecord_Version,
+		PayRecord_Status,
+		PayRecord_Deleted,
+		PayRecord_BeLongID,
+		PayRecord_Type
+
+</sql>
+<sql id="where">
+		1=1
+			<if test="ID != null">
+					and PayRecord_ID = #{ID}
+				</if>
+				<if test="UserID != null">
+					and PayRecord_UserID = #{UserID}
+				</if>
+				<if test="OrderID != null">
+					and PayRecord_OrderID = #{OrderID}
+				</if>
+				<if test="PayMethod != null">
+					and PayRecord_PayMethod =#{PayMethod}
+				</if>
+				<if test="Status != null">
+					and PayRecord_Status = #{Status}
+				</if>
+				<if test="Type!=null">
+					and PayRecord_Type = #{Type}
+				</if>
+				<if test="Year !=null and Month !=null">
+					and year(PayRecord_CreateTime) =#{Year} and  month(PayRecord_CreateTime) = #{Month}
+				</if>
+				<if test="BeLongID!=null">
+					and PayRecord_BeLongID = #{BeLongID}
+				</if>
+				<if test="Tarde !=null">
+					and PayRecord_Tarde = #{Tarde}
+				</if>
+				<if test="Sina !=null">
+					and #{Sina} = #{Sina}
+				</if>
+</sql>
+<select id="getPayRecordList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+	<include refid="sql"></include>
+		FROM wtb_PayRecords
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by PayRecord_ModifyTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getPayRecordCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_PayRecords
+		<where>
+			<include refid="where"></include>
+		</where>
+		
+</select>
+<select id="getPayRecordByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_PayRecords
+		<where>
+			PayRecord_Status=1
+				<include refid="where"></include>
+		</where>
+		order by PayRecord_ModifyTime desc
+</select>
+
+
+</mapper>
+

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadIntegrationMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Integration" id="ClassResultMap">
+	<result property="ID" column="Integration_ID"/>
+	<result property="CreateTime" column="Integration_CreateTime"/>
+	<result property="Status" column="Integration_Status"/>
+	<result property="Reason" column="Integration_Reason"/>
+	<result property="Num" column="Integration_Num"/>
+	<result property="StudentID" column="Integration_StudentID"/>
+	<result property="SrcID" column="Integration_SrcID"/>
+	<result property="Type" column="Integration_Type"/>
+</resultMap>
+<resultMap type="wtb.core.model.Integration" id="RankingMap">
+	<result property="StudentID" column="Integration_StudentID"/>
+	<result property="Num" column="Integration_Num"/>
+	<association property="Student" column="Integration_StudentID" select="read.core.data.ReadStudentsMapper.getStudentsByIDList"/>
+</resultMap>
+<sql id="where">
+		<if test="ID != null">
+			and Integration_ID = #{ID}
+		</if>
+		<if test="StudentID!=null">
+			and Integration_StudentID = #{StudentID}
+		</if>
+		<if test="Num!=null">
+			and Integration_Num = #{Num}
+		</if>
+		<if test="SrcID!=null">
+			and Integration_SrcID = #{SrcID}
+		</if>
+		<if test="Type!=null">
+			and Integration_Type = #{Type}
+		</if>
+		<if test="startTime!=null and endTime!=null">
+			and  Integration_CreateTime between  #{startTime} and #{endTime}
+		</if>
+		<if test="Yesterday!=null">
+		 	and to_days(now())-to_days(`Integration_CreateTime`) =1
+		 </if>
+</sql>
+<select id="getIntegrationRecordRankingList" parameterType="map" resultMap="RankingMap">
+	SELECT sum(Integration_Num) as Integration_Num,Integration_StudentID
+	FROM
+	wtb_Integration
+	<where>
+		Integration_Status != 88 AND
+		Integration_Type = 1  
+		<include refid="where"></include>
+	</where>
+	GROUP BY
+		Integration_StudentID
+	ORDER BY
+		Integration_Num DESC
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+<select id="getIntegrationRecordRankingCount" parameterType="map" resultType="int">
+	select count(1) from (
+	SELECT  sum(Integration_Num) as Integration_Num,Integration_StudentID
+	FROM
+	wtb_Integration
+	<where>
+		Integration_Status != 88 AND
+		Integration_Type = 1  
+		<include refid="where"></include>
+	</where>
+	GROUP BY
+		Integration_StudentID
+) t
+</select>
+<select id="getNoticesIntegrationRankingList" parameterType="map" resultMap="RankingMap">
+	SELECT count(1) as Integration_Num,Integration_SrcID as Integration_StudentID
+	FROM
+	wtb_Integration
+	<where>
+		Integration_Status != 88 AND
+		Integration_Type = 1 and  Integration_SrcID!=0
+		<include refid="where"></include>
+	</where>
+	GROUP BY
+		Integration_SrcID
+	ORDER BY
+		Integration_Num DESC
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+<select id="getIntegrationList" parameterType="map" resultMap="ClassResultMap">
+	SELECT 
+		Integration_ID,
+		Integration_CreateTime,
+		Integration_Status,
+		Integration_Reason,
+		Integration_Num,
+		Integration_StudentID,
+		Integration_SrcID,
+		Integration_Type
+		FROM wtb_Integration
+		
+		<where>
+			1=1 and Integration_Status!=88
+			<include refid="where"></include>
+		</where>
+			order by Integration_CreateTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+<select id="getIntegrationCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Integration
+		<where>
+			1=1 and Notices_Status!=88
+			<include refid="where"></include>
+		</where>
+</select>
+
+</mapper>

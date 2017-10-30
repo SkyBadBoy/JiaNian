@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.FeedbackMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<insert id="addFeedback" parameterType="wtb.core.model.Feedback" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Feedback (
+			Feedback_ID,
+  		Feedback_UserID,
+		Feedback_CreateTime,
+		Feedback_Content,
+		Feedback_Status
+		) VALUES (
+			#{ID}, #{UserID}, #{CreateTime},#{Content},#{Status}
+		)
+</insert>
+<delete id="deleteFeedback" parameterType="wtb.core.model.Feedback">
+	 update  wtb_Feedback set Feedback_Status=88
+			where
+				 Feedback_ID = #{ID}
+</delete>
+</mapper>
+

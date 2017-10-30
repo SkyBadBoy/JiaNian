@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeChatPublicMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+
+<update id="UpClickCount" parameterType="map">
+	update  wtb_WeChatPublic set WeChatPublic_ClickCount=WeChatPublic_ClickCount+1
+			where
+				 WeChatPublic_ID = #{ID}
+			
+</update>
+	
+<insert id="addWeChatPublic" parameterType="wtb.core.model.WeChatPublic"
+	keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_WeChatPublic (
+	WeChatPublic_ID ,
+	WeChatPublic_WeChat ,
+	WeChatPublic_Company ,
+	WeChatPublic_Content ,
+	WeChatPublic_CreateTime ,
+	WeChatPublic_ModifyTime ,
+	WeChatPublic_WebSiteURL ,
+	WeChatPublic_Status,
+	WeChatPublic_QRCodeURLID ,
+	WeChatPublic_LogoID,
+	WeChatPublic_ContactPerson,
+	WeChatPublic_ContactPhone,
+	WeChatPublic_Organizational,
+	WeChatPublic_BusinessLicense,
+	WeChatPublic_EMail,
+	WeChatPublic_PublicType,
+	WeChatPublic_RegisterSubject,
+	WeChatPublic_OrgName,
+	WeChatPublic_Memo,
+	WeChatPublic_BannerID,
+	WeChatPublic_Address,
+	WeChatPublic_Lng,
+	WeChatPublic_Lat,
+	WeChatPublic_AreaID,
+	WeChatPublic_Weight,
+	WeChatPublic_ClickCount,
+	WeChatPublic_Praise,
+	WeChatPublic_Bind
+	) VALUES (
+	#{ID}, #{WeChat}, #{Company},
+	#{Content},
+	now(), now(), #{WebSiteURL},
+	#{Status},
+	#{QRCodeURLID},#{LogoID},#{ContactPerson},#{ContactPhone},#{Organizational},#{BusinessLicense}
+	,#{EMail},#{PublicType},#{RegisterSubject},#{OrgName},#{Memo},#{BannerID}
+	,#{Address},#{Lng},#{Lat},#{AreaID},#{Weight},#{ClickCount},#{Praise},#{Bind}
+	
+	)
+</insert>
+<update id="updateWeChatPublic" parameterType="wtb.core.model.WeChatPublic">
+	UPDATE
+	wtb_WeChatPublic
+	SET
+	WeChatPublic_WeChat=#{WeChat} ,
+	WeChatPublic_Company=#{Company} ,
+	WeChatPublic_Content =#{Content},
+	WeChatPublic_ModifyTime=now(),
+	WeChatPublic_WebSiteURL =#{WebSiteURL},
+	WeChatPublic_Status =#{Status},
+	WeChatPublic_QRCodeURLID =#{QRCodeURLID},
+	WeChatPublic_LogoID=#{LogoID},
+	WeChatPublic_ContactPerson=#{ContactPerson},
+	WeChatPublic_ContactPhone=#{ContactPhone},
+	WeChatPublic_Organizational=#{Organizational},
+	WeChatPublic_BusinessLicense=#{BusinessLicense},
+	WeChatPublic_EMail=#{EMail},
+	WeChatPublic_PublicType=#{PublicType},
+	WeChatPublic_RegisterSubject=#{RegisterSubject},
+	WeChatPublic_OrgName=#{OrgName},
+	WeChatPublic_Memo=#{Memo},
+	WeChatPublic_BannerID=#{BannerID},
+	WeChatPublic_Address=#{Address},
+	WeChatPublic_Lng=#{Lng},
+	WeChatPublic_Lat=#{Lat},
+	WeChatPublic_AreaID=#{AreaID},
+	WeChatPublic_Weight=#{Weight},
+	WeChatPublic_ClickCount=#{ClickCount},
+	WeChatPublic_Praise=#{Praise},
+	WeChatPublic_Bind=#{Bind}
+	where WeChatPublic_ID = #{ID}
+</update>
+<delete id="deleteWeChatPublic" parameterType="wtb.core.model.WeChatPublic">
+	update
+	wtb_WeChatPublic set WeChatPublic_Status=88
+	where
+	WeChatPublic_ID = #{ID}
+
+</delete>
+<update id="enabledWeChatPublic" parameterType="wtb.core.model.WeChatPublic">
+	update
+	wtb_WeChatPublic set WeChatPublic_Status=1 ,WeChatPublic_ModifyTime=now()
+	where
+	WeChatPublic_ID = #{ID}
+
+</update>
+<update id="JoinWeChatPublic" parameterType="int">
+	update
+	wtb_WeChatPublic set WeChatPublic_Status=2 ,WeChatPublic_ModifyTime=now()
+	where
+	WeChatPublic_ID = #{ID} and WeChatPublic_Status=1
+
+</update>
+</mapper>
+

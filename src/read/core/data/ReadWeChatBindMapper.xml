@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadWeChatBindMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.WeChatBind" id="ClassResultMap">
+	<result property="ID" column="WeChatBind_ID"/>
+	<result property="PKID" column="WeChatBind_ID"/>
+	<result property="StudentID" column="WeChatBind_StudentID"/>
+	<result property="Memo" column="WeChatBind_Memo"/>
+	<result property="OpenID" column="WeChatBind_OpenID"/>
+	<result property="UnionID" column="WeChatBind_UnionID"/>
+	<result property="CreateTime" column="WeChatBind_CreateTime"/>
+	<result property="ModifyTime" column="WeChatBind_ModifyTime"/>
+	<result property="Status" column="WeChatBind_Status"/>
+
+
+</resultMap>
+<sql id="sql">
+    	WeChatBind_ID,
+		WeChatBind_OpenID,
+		WeChatBind_UnionID,
+		WeChatBind_StudentID,
+		WeChatBind_CreateTime,
+		WeChatBind_ModifyTime,
+		WeChatBind_Status,
+		WeChatBind_Memo
+</sql>
+<sql id="where">
+    	1=1 and WeChatBind_Status != 88
+				<if test="ID != null">
+					and WeChatBind_ID = #{ID}
+				</if>
+				<if test="StudentID != null">
+					and WeChatBind_StudentID = #{StudentID}
+				</if>
+				<if test="OpenID != null">
+					and WeChatBind_OpenID = #{OpenID}
+				</if>
+				<if test="UnionID != null">
+					and WeChatBind_UnionID = #{UnionID}
+				</if>
+				<if test="Status != null">
+					and WeChatBind_Status = #{Status}
+				</if>
+				<if test="Sina != null">
+					and #{Sina} = #{Sina}
+				</if>
+</sql>
+<select id="getWeChatBindList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_WeChatBinds
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by WeChatBind_ModifyTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getWeChatBindCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_WeChatBinds
+		<where>
+			<include refid="where"></include>
+				
+		</where>
+		
+</select>
+<select id="getWeChatBindByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_WeChatBinds
+		<where>
+			<if test="_parameter != null">
+					 WeChatBind_ID = #{_parameter}
+				</if>
+		</where>
+		order by WeChatBind_CreateTime desc
+		
+</select>
+</mapper>
+

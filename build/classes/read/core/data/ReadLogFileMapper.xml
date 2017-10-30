@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadLogFileMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+     
+<resultMap type="wtb.core.model.LogFile" id="ClassResultMap">
+	<result property="ID" column="Log_ID"/>
+	<result property="PKID" column="Log_ID"/>
+	<result property="CreateTime" column="Log_CreateTime"/>
+	<result property="ModifyTime" column="Log_ModifyTime"/>
+	<result property="Status" column="Log_Status"/>
+	<result property="Type" column="Log_Type"/>
+	<result property="Model" column="Log_Model"/>
+	<result property="DeviceType" column="Log_DeviceType"/>
+	<result property="Url" column="Log_Url"/>
+	<result property="Version" column="Log_Version"/>
+	<result property="System" column="Log_System"/>
+	<result property="UDID" column="Log_UDID"/>
+</resultMap>
+<sql id="sql">
+		Log_ID,
+  		Log_CreateTime,
+		Log_ModifyTime,
+		Log_Status,
+		Log_Type,
+		Log_Model,
+		Log_DeviceType,
+		Log_Url,
+		Log_Version,
+		Log_System,
+		Log_UDID
+</sql>
+<sql id="where">
+		1=1
+				<if test="ID != null">
+					and Log_ID = #{ID}
+				</if>
+				<if test="Status != null">
+					and Log_Status = #{Status}
+				</if>
+				<if test="ID != null">
+					and Log_Type = #{Type}
+				</if>
+				<if test="Model != null">
+					and Log_Model = #{Model}
+				</if>
+				<if test="DeviceType != null">
+					and Log_DeviceType = #{DeviceType}
+				</if>
+				<if test="UDID != null">
+					and Log_UDID = #{UDID}
+				</if>
+				<if test="Version != null">
+					and Log_Version = #{Version}
+				</if>
+				<if test="Sina != null">
+					and #{Sina} = #{Sina}
+				</if>
+
+</sql>
+<select id="getLogFileList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_LogFile
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by Log_ModifyTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getLogFileCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_LogFile
+		<where>
+			<include refid="where"></include>
+		</where>
+		
+</select>
+<select id="getLogFileByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		FROM wtb_LogFile
+		<where>
+			Log_Status=1
+				<if test="ID != null">
+					and Log_ID = #{ID}
+				</if>
+				
+		</where>
+			order by Log_ModifyTime desc
+		
+</select>
+</mapper>
+

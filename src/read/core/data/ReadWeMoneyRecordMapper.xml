@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadWeMoneyRecordMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+     
+<resultMap type="wtb.core.model.WeMoneyRecord" id="ClassResultMap">
+	<result property="ID" column="WeMoneyRecord_ID"/>
+	<result property="PKID" column="WeMoneyRecord_ID"/>
+	<result property="WeMoney" column="WeMoneyRecord_WeMoney"/>
+	<result property="CreateTime" column="WeMoneyRecord_CreateTime"/>
+	<result property="ModifyTime" column="WeMoneyRecord_ModifyTime"/>
+	<result property="Status" column="WeMoneyRecord_Status"/>
+	<result property="UserID" column="WeMoneyRecord_UserID"/>
+	<result property="Deleted" column="WeMoneyRecord_Deleted"/>
+	<result property="Type" column="WeMoneyRecord_Type"/>
+	<result property="Belong" column="WeMoneyRecord_Belong"/>
+	<result property="Reson" column="WeMoneyRecord_Reson"/>
+	<result property="FromUserID" column="WeMoneyRecord_FromUserID"/>
+	<result property="Classify" column="WeMoneyRecord_Classify"/>
+	<result property="RewardLevel" column="WeMoneyRecord_RewardLevel"/>
+	<association property="FromUser" column="WeMoneyRecord_FromUserID" select="read.core.data.ReadStudentsMapper.getStudentsByIDList"/>
+	
+</resultMap>
+<sql id="params">
+WeMoneyRecord_ID,
+		WeMoneyRecord_WeMoney,
+		WeMoneyRecord_UserID,
+		WeMoneyRecord_Type,
+		WeMoneyRecord_Belong,
+		WeMoneyRecord_Reson,
+		WeMoneyRecord_CreateTime,
+		WeMoneyRecord_FromUserID,
+		WeMoneyRecord_Status,
+		WeMoneyRecord_ModifyTime,
+		WeMoneyRecord_Deleted,
+		WeMoneyRecord_Classify,
+		WeMoneyRecord_RewardLevel
+
+</sql>
+<sql id="where">
+			<if test="ID != null">
+				and WeMoneyRecord_ID = #{ID}
+			</if>
+			<if test="UserID != null">
+				and WeMoneyRecord_UserID = #{UserID}
+			</if>
+			<if test="FromUserID != null">
+				and WeMoneyRecord_FromUserID = #{FromUserID}
+			</if>
+			<if test="Status != null">
+				and WeMoneyRecord_Status = #{Status}
+			</if>
+			<if test="Type != null">
+				and WeMoneyRecord_Type = #{Type}
+			</if>
+			<if test="Reward != null">
+				and (WeMoneyRecord_Type = 2 or WeMoneyRecord_Type = 5)
+			</if>
+			<if test="Belong != null">
+				and WeMoneyRecord_Belong = #{Belong}
+			</if>
+			<if test="Classify != null">
+				and WeMoneyRecord_Classify = #{Classify}
+			</if>
+			<if test="RewardLevel != null">
+				and WeMoneyRecord_RewardLevel = #{RewardLevel}
+			</if>
+			<if test="Today != null">
+				and TO_DAYS(`WeMoneyRecord_CreateTime`) = TO_DAYS(NOW())
+			</if>
+			<if test="Sina != null">
+				and #{Sina}=#{Sina}
+			</if>
+</sql>
+<select id="getWeMoneyRecordList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="params"></include>
+		FROM wtb_WeMoneyRecord
+		<where>
+			WeMoneyRecord_Status=1
+			<include refid="where"></include>
+		</where>
+		order by WeMoneyRecord_CreateTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<resultMap type="wtb.core.model.WeMoneyRecord" id="RankingMap">
+	<result property="Belong" column="WeMoneyRecord_Belong"/>
+	<result property="Count" column="WeMoneyRecord_WeMoney"/>
+	<association property="Notices" column="WeMoneyRecord_Belong" select="read.core.data.ReadNoticesMapper.getNoticesByID"/>
+</resultMap>
+<select id="getWeMoneyRecordRankingList" parameterType="map" resultMap="RankingMap">
+	SELECT count(*) as WeMoneyRecord_WeMoney,wtb_WeMoneyRecord.WeMoneyRecord_Belong
+	FROM
+	wtb_WeMoneyRecord
+	<where>
+		wtb_WeMoneyRecord.WeMoneyRecord_Status != 88 AND
+		wtb_WeMoneyRecord.WeMoneyRecord_Type = 2
+		<if test="startTime!=null and endTime!=null">
+				and  WeMoneyRecord_CreateTime between  #{startTime} and #{endTime}
+		</if>
+		<if test="Yesterday!=null">
+		 	and to_days(now())-to_days(`WeMoneyRecord_CreateTime`) =1
+		 </if>
+	</where>
+	GROUP BY
+		wtb_WeMoneyRecord.WeMoneyRecord_Belong
+	ORDER BY
+		COUNT(*) DESC
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getWeMoneyRewardRankingList" parameterType="map" resultMap="RankingMap">
+	SELECT count(*) as WeMoneyRecord_WeMoney,WeMoneyRecord_FromUserID as WeMoneyRecord_Belong
+	FROM
+	wtb_WeMoneyRecord
+	<where>
+		WeMoneyRecord_Status != 88 AND
+		WeMoneyRecord_Type = 2 and
+		WeMoneyRecord_FromUserID in (select Students_ID from wtb_Students where Students_ID = WeMoneyRecord_FromUserID and Students_Official=1 )
+		<if test="startTime!=null and endTime!=null">
+				and  WeMoneyRecord_CreateTime between  #{startTime} and #{endTime}
+		</if>
+		<if test="Yesterday!=null">
+		 	and to_days(now())-to_days(`WeMoneyRecord_CreateTime`) =1
+		 </if>
+	</where>
+	GROUP BY
+		WeMoneyRecord_FromUserID
+	ORDER BY
+		COUNT(*) DESC 
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+	<select id="getWeMoneyRecordSumRankingList" parameterType="map" resultMap="RankingMap">
+	SELECT ifnull(sum(WeMoneyRecord_WeMoney),0) as WeMoneyRecord_WeMoney,WeMoneyRecord_Belong
+	FROM
+	wtb_WeMoneyRecord
+	<where>
+		WeMoneyRecord_Status != 88 AND
+		wtb_WeMoneyRecord.WeMoneyRecord_Type in(2,5)
+		<if test="startTime!=null and endTime!=null">
+				and  WeMoneyRecord_CreateTime between  #{startTime} and #{endTime}
+		</if>
+		<if test="Yesterday!=null">
+		 	and to_days(now())-to_days(`WeMoneyRecord_CreateTime`) =1
+		 </if>
+	</where>
+	GROUP BY
+		WeMoneyRecord_Belong
+	ORDER BY
+		WeMoneyRecord_WeMoney DESC
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+	<select id="getWeMoneyRecordRankingCount" parameterType="map" resultType="int">
+	SELECT
+	COUNT(*) FROM(
+	SELECT count(*),wtb_WeMoneyRecord.WeMoneyRecord_Belong
+	FROM
+	wtb_WeMoneyRecord
+	<where>
+		wtb_WeMoneyRecord.WeMoneyRecord_Status != 88 AND
+		wtb_WeMoneyRecord.WeMoneyRecord_Type in(2,5)
+		<if test="startTime!=null and endTime!=null">
+				and  WeMoneyRecord_CreateTime between  #{startTime} and #{endTime}
+		</if>
+		<if test="Yesterday!=null">
+		 	and to_days(now())-to_days(`WeMoneyRecord_CreateTime`) =1
+		 </if>
+	</where>
+	GROUP BY
+		wtb_WeMoneyRecord.WeMoneyRecord_Belong
+	ORDER BY
+		COUNT(*) DESC)a
+</select>
+	
+<select id="getWeMoneyRecordCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_WeMoneyRecord
+		<where>
+			WeMoneyRecord_Status=1
+			<include refid="where"></include>
+		</where>
+		
+</select>
+
+<select id="getWeMoneyRecordSum" parameterType="map" resultType="long">
+	SELECT
+		case count(WeMoneyRecord_WeMoney) when 0 then 0 else sum( WeMoneyRecord_WeMoney) end
+		FROM wtb_WeMoneyRecord
+		<where>
+			WeMoneyRecord_Status=1
+			<include refid="where"></include>
+		</where>
+</select>
+<select id="getWeMoneyRecordByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="params"></include>
+		FROM wtb_WeMoneyRecord
+		<where>
+			WeMoneyRecord_Status=1
+				<if test="ID != null">
+					and WeMoneyRecord_ID = #{ID}
+				</if>
+				
+		</where>
+		order by WeMoneyRecord_CreateTime desc
+		
+</select>
+
+
+
+
+
+<select id="getWeMoneyRecordUserCount" parameterType="map" resultType="int">
+	select count(1) as WeMoneyCount from (
+		select WeMoneyRecord_UserID from wtb_WeMoneyRecord where WeMoneyRecord_FromUserID=#{_parameter} and 
+				 TO_DAYS(`WeMoneyRecord_CreateTime`) = TO_DAYS(DATE_SUB(curdate(),INTERVAL 1 DAY))
+			and WeMoneyRecord_Type=2 group by WeMoneyRecord_UserID
+		) as WeMoneyCount
+		
+</select>
+<select id="getWeMoneyRecordUserSum" parameterType="map" resultType="int">
+	select ifnull(sum(WeMoneyRecord_WeMoney),0) as WeMoneyCount from (
+		select sum(WeMoneyRecord_WeMoney) as WeMoneyRecord_WeMoney from wtb_WeMoneyRecord where WeMoneyRecord_FromUserID=#{_parameter} and 
+				 TO_DAYS(`WeMoneyRecord_CreateTime`) = TO_DAYS(DATE_SUB(curdate(),INTERVAL 1 DAY))
+			and WeMoneyRecord_Type=2 group by WeMoneyRecord_UserID
+		) as WeMoneyCount
+		
+</select>
+
+</mapper>
+

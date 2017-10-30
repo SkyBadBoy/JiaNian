@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="read.core.data.ReadPrizesMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.Prizes" >
+    <id column="prize_id" property="ID" jdbcType="BIGINT" />
+	<!-- <result column="prize_id" property="PKID" jdbcType="VARCHAR"/> -->
+	<result column="prize_totalprobability" property="totalprobability" jdbcType="DECIMAL" />
+    <result column="prize_probability" property="prizeProbability" jdbcType="DECIMAL" />
+    <result column="prize_total" property="prizeTotal" jdbcType="INTEGER" />
+    <result column="prize_usecount" property="prizeUsecount" jdbcType="INTEGER" />
+    <result column="prize_residuecount" property="prizeResiduecount" jdbcType="INTEGER" />
+    <result column="prize_notusecount" property="prizeNotusecount" jdbcType="INTEGER" />
+    <result column="prize_merchantid" property="prizeMerchantid" jdbcType="BIGINT" />
+    <result column="prize_vaildstarttime" property="prizeVaildstarttime" jdbcType="TIMESTAMP" />
+    <result column="prize_vaildendtime" property="prizeVaildendtime" jdbcType="TIMESTAMP" />
+    <result column="prize_rolltitle" property="prizeRolltitle" jdbcType="VARCHAR" />
+    <result column="prize_rolldetails" property="prizeRolldetails" jdbcType="VARCHAR" />
+    <result column="prize_rollremark" property="prizeRollremark" jdbcType="VARCHAR" />
+    <result column="prize_discount" property="prizeDiscount" jdbcType="DECIMAL" />
+    <result column="prize_type" property="prizeType" jdbcType="INTEGER" />
+    <result column="prize_delete" property="prizeDelete" jdbcType="INTEGER" />
+    <result column="prize_redundancy" property="prizeRedundancy" jdbcType="VARCHAR" />
+    <result column="prize_createtime" property="prizeCreatetime" jdbcType="TIMESTAMP" />
+    <result column="prize_modifytime" property="prizeModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+   	prize_id, prize_totalprobability, prize_probability, prize_total, prize_usecount, prize_residuecount, prize_notusecount, 
+    prize_merchantid, prize_vaildstarttime, prize_vaildendtime, prize_rolltitle, prize_rolldetails, 
+    prize_rollremark, prize_discount, prize_type, prize_delete, prize_redundancy, prize_createtime, 
+    prize_modifytime
+  </sql>
+  
+  <sql id="QueryAll_Column_List" >
+    prize_id, prize_totalprobability, SUM(prize_probability * prize_usecount) AS prize_probability, 
+    SUM(prize_total) AS prize_total, SUM(prize_usecount) AS prize_usecount, SUM(prize_residuecount) AS prize_residuecount,
+    prize_notusecount, prize_merchantid, prize_vaildstarttime, prize_vaildendtime, prize_rolltitle, prize_rolldetails, 
+    prize_rollremark, prize_discount, prize_type, prize_delete, prize_redundancy, prize_createtime, prize_modifytime
+  </sql>
+  
+  <!-- by Sheryl -->
+  <select id="QueryAll" resultMap="BaseResultMap" >
+    SELECT  
+    <include refid="QueryAll_Column_List" />
+    FROM wtb_prizes
+    WHERE<![CDATA[ UNIX_TIMESTAMP(NOW()) <= UNIX_TIMESTAMP(prize_vaildendtime) ]]> 
+    AND prize_delete = 0 AND prize_residuecount > 0
+    GROUP BY prize_type,prize_merchantid 
+    ORDER BY prize_id 
+  </select>
+  <select id="QueryOneByType" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT  
+    SUM(prize_residuecount)
+    FROM wtb_prizes
+    WHERE<![CDATA[ UNIX_TIMESTAMP(NOW()) <= UNIX_TIMESTAMP(prize_vaildendtime) ]]> 
+    AND prize_delete = 0 AND prize_residuecount >= 0
+    AND prize_type = #{type,jdbcType=INTEGER}
+  </select>
+  <select id="QueryOne" resultType="java.lang.Integer"  parameterType="java.lang.Long">
+    SELECT  
+    prize_residuecount
+    FROM wtb_prizes
+    WHERE <![CDATA[ UNIX_TIMESTAMP(NOW()) <= UNIX_TIMESTAMP(prize_vaildendtime) ]]>
+    AND prize_delete = 0
+    AND prize_id = #{ID,jdbcType=BIGINT}
+  </select>
+  <select id="QuertAllBykind" resultMap="BaseResultMap">
+    SELECT  
+    <include refid="QueryAll_Column_List" />
+    FROM wtb_prizes
+    WHERE <![CDATA[ UNIX_TIMESTAMP(NOW()) <= UNIX_TIMESTAMP(prize_vaildendtime) ]]>
+    AND prize_delete = 0
+    GROUP BY prize_type <!-- ORDER BY prize_probability  -->
+  </select>
+  <sql id="QuerySome_Column_List" >
+    SUM(prize_residuecount) AS prize_residuecount, prize_rolltitle,prize_rollremark
+  </sql>
+  <select id="QueryByType" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT  
+    <include refid="QuerySome_Column_List" />
+    FROM wtb_prizes
+    WHERE prize_delete = 0 AND prize_type = #{type,jdbcType=INTEGER} LIMIT 1
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_prizes
+    where prize_id = #{ID,jdbcType=BIGINT}
+  </select>
+ <select id="QueryPrize" resultMap="BaseResultMap" parameterType="map">
+    SELECT  
+    <include refid="Base_Column_List" />
+    FROM wtb_prizes
+    WHERE prize_id = #{ID,jdbcType=BIGINT} AND #{Rand} = #{Rand} LIMIT 1
+  </select>
+</mapper>

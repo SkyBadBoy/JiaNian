@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadQuestionStatMapper">
+<resultMap type="wtb.core.model.QuestionStat" id="ClassResultMap">
+        <result property="ID" column="QuestionStat_ID"/>
+        <result property="CreateTime" column="QuestionStat_CreateTime"/>
+        <result property="ModifyTime" column="QuestionStat_ModifyTime"/>
+        <result property="Version" column="QuestionStat_Version"/>
+        <result property="Status" column="QuestionStat_Status"/>
+        <result property="Memo" column="QuestionStat_Memo"/>
+        <result property="StudentID" column="QuestionStat_StudentID"/>
+        <result property="RightCount" column="QuestionStat_RightCount"/>
+        <result property="FailCount" column="QuestionStat_FailCount"/>
+        <result property="Type" column="QuestionStat_Type"/>
+        <result property="Integral" column="QuestionStat_Integral"/>
+        <result property="Level" column="QuestionStat_Level"/>
+    </resultMap>
+    
+    <sql id="param">
+    
+    	QuestionStat_ID,
+		QuestionStat_Status,
+		QuestionStat_Memo,
+		QuestionStat_CreateTime,
+		QuestionStat_ModifyTIme,
+		QuestionStat_Version,
+		QuestionStat_StudentID,
+		QuestionStat_RightCount,
+		QuestionStat_FailCount,
+		QuestionStat_Type,
+		QuestionStat_Integral
+    
+    </sql>
+   <sql id="where">
+   
+   			<if test="ID != null">
+                AND QuestionStat_ID = #{ID}
+            </if>
+            <if test="Type != null">
+                AND QuestionStat_Type = #{Type}
+            </if>
+            <if test="StudentID != null">
+                AND QuestionStat_StudentID = #{StudentID}
+            </if>
+            <if test="LimitNo != null">
+                AND QuestionStat_LimitNo = #{LimitNo}
+            </if>
+            <if test="Status != null">
+                AND QuestionStat_Status = #{Status}
+            </if>
+             <if test="Status == null">
+                AND QuestionStat_Status = 1
+            </if>
+            <if test="Sina != null">
+                AND #{Sina} = #{Sina}
+            </if>
+   </sql>
+    <select id="findQuestionStat" parameterType="wtb.core.model.QuestionStat" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM wtb_QuestionStats
+         <where>
+           1=1
+            <include refid="where"></include>
+        </where>
+    </select>
+
+    <select id="searchQuestionStat" parameterType="wtb.core.model.QuestionStat" resultMap="ClassResultMap">
+        SELECT 
+        <include refid="param"></include>
+         FROM wtb_QuestionStats
+        WHERE QuestionStat_ID = #{iD}
+    </select>
+
+    <select id="queryQuestionStat" parameterType="map" resultMap="ClassResultMap">
+        SELECT
+        <include refid="param"></include>
+        FROM wtb_QuestionStats
+
+        <where>
+           1=1
+            <include refid="where"></include>
+        </where>
+        order by QuestionStat_Integral desc
+        <if test="limit != null and start !=null ">
+	        limit ${start},${limit} 
+		</if>
+		
+    </select>
+
+
+ <select id="queryQuestionStatRank" parameterType="map" resultMap="ClassResultMap">
+       select * FROM  
+ (  
+     SELECT A.*,@curRank := @curRank + 1 as QuestionStat_Level
+     FROM     
+     (    
+      SELECT <include refid="param"></include>  FROM wtb_QuestionStats 
+		 <where>
+			QuestionStat_Status != 88 
+	<include refid="where"></include>
+	
+		</where>
+		ORDER BY
+			QuestionStat_Integral desc
+   
+     ) A ,(SELECT @curRank:=0) B   
+ ) M  
+  
+  
+ORDER BY QuestionStat_Level 
+        <if test="limit != null and start !=null ">
+	        limit ${start},${limit} 
+		</if>
+		
+    </select>
+    
+    <select id="queryQuestionStatRankBySelf" parameterType="map" resultMap="ClassResultMap">
+    
+     select * from ( select * FROM ( SELECT A.*,@curRank := @curRank + 1 as QuestionStat_Level FROM 
+( SELECT
+<include refid="param"></include>
+ FROM wtb_QuestionStats 
+   <where>
+		QuestionStat_Status != 88 
+	</where>
+		 ORDER BY QuestionStat_Integral desc ) A 
+,(SELECT @curRank:=0) B ) M ) tab1   
+<where> 
+ <include refid="where"></include>
+</where>
+
+    </select>
+    
+</mapper>

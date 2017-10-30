@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.VideoClassMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.VideoClass" id="ClassResultMap">
+	<result property="ID" column="VideoClass_ID"/>
+	<result property="PKID" column="VideoClass_ID"/>
+	<result property="Title" column="VideoClass_Title"/>
+	<result property="ImageUrl" column="VideoClass_ImageUrl"/>
+	<result property="ParentID" column="VideoClass_ParentID"/>
+	<result property="CreateTime" column="VideoClass_CreateTime"/>
+	<result property="Level" column="VideoClass_Level"/>
+	<result property="ModifyTime" column="VideoClass_ModifyTime"/>
+	<result property="Status" column="VideoClass_Status"/>
+	<result property="IsEnd" column="VideoClass_IsEnd"/>
+	<result property="Memo" column="VideoClass_Memo"/>
+	<result property="Type" column="VideoClass_Type"/>
+	
+</resultMap>
+
+<sql id="params">
+	VideoClass_ID,
+ 	VideoClass_Title,
+	VideoClass_ParentID,
+	VideoClass_ImageUrl,
+	VideoClass_CreateTime,
+	VideoClass_ModifyTime,
+	VideoClass_Status,
+	VideoClass_Level,
+	VideoClass_IsEnd,
+	VideoClass_Memo,
+	VideoClass_Type
+	
+</sql>
+<sql id="where">
+	<if test="ID != null">
+		and VideoClass_ID = #{ID}
+	</if>
+	<if test="ParentID != null">
+		and VideoClass_ParentID =#{ParentID}
+	</if>
+	<if test="Level != null">
+		and VideoClass_Level =#{Level}
+	</if>
+	<if test="Status != null">
+		and VideoClass_Status = #{Status}
+	</if>
+	<if test="Type != null">
+		and VideoClass_Type = #{Type}
+	</if>
+	<if test="Title != null">
+		and VideoClass_Title like CONCAT(CONCAT('%', #{Title,
+		jdbcType=VARCHAR}),'%')
+		
+	</if>
+</sql>
+
+<insert id="addVideoClass" parameterType="wtb.core.model.VideoClass" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_VideoClass (
+			<include refid="params"></include>
+		) VALUES (
+			#{ID}, #{Title}, #{ParentID}, #{ImageUrl},now(),now(),#{Status}
+			,#{Level},#{IsEnd},#{Memo},#{Type}
+		)
+</insert>
+<update id="updateVideoClass" parameterType="wtb.core.model.VideoClass">
+	UPDATE wtb_VideoClass 
+		SET
+  		VideoClass_Title=#{Title},
+		VideoClass_ImageUrl=#{ImageUrl},
+		VideoClass_ParentID=#{ParentID},
+		VideoClass_ModifyTime=now(),
+		VideoClass_Status=#{Status},
+		VideoClass_Level=#{Level},
+		VideoClass_IsEnd=#{IsEnd},
+		VideoClass_Memo=#{Memo},
+		VideoClass_Type=#{Type}
+			where VideoClass_ID = #{ID}
+</update>
+<delete id="deleteVideoClass" parameterType="wtb.core.model.VideoClass">
+	update  wtb_VideoClass set VideoClass_Status=88,VideoClass_ModifyTime=now()
+			where
+				 VideoClass_ID = #{ID}
+			
+</delete>
+<update id="enabledVideoClass" parameterType="wtb.core.model.VideoClass">
+	update  wtb_VideoClass set VideoClass_Status=1,VideoClass_ModifyTime=now()
+			where
+				 VideoClass_ID = #{ID}
+			
+</update>
+
+<update id="UpdateToEnd" parameterType="wtb.core.model.VideoClass">
+		update  wtb_VideoClass set VideoClass_IsEnd=1,VideoClass_ModifyTime=now()
+			where
+				 VideoClass_ID =  #{_parameter}
+			
+</update>
+<update id="CancelToEnd" parameterType="wtb.core.model.VideoClass">
+		update  wtb_VideoClass set VideoClass_IsEnd=0,VideoClass_ModifyTime=now()
+			where
+				 VideoClass_ID =  #{_parameter}
+			
+</update>
+
+<update id="UpdateToType" parameterType="wtb.core.model.VideoClass">
+		update  wtb_VideoClass set VideoClass_Type=#{Type},VideoClass_ModifyTime=now(),VideoClass_ImageUrl=#{ImageUrl}
+			where
+				 VideoClass_ID =  #{ID}
+			
+</update>
+</mapper>
+

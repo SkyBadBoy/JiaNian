@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadStudentsMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Students" id="ClassResultMap">
+	<result property="ID" column="Students_ID"/>
+	<result property="PKID" column="Students_ID"/>
+	<result property="Name" column="Students_Name" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="Age" column="Students_Age"/>
+	<result property="Sex" column="Students_Sex"/>
+	<result property="IsSex" column="Students_IsSex"/>
+	<result property="Level" column="Students_Level"/>
+	<result property="ImageID" column="Students_ImageID"/>
+	<result property="QRImageID" column="Students_QRImageID"/>
+	<result property="Phone" column="Students_Phone"/>
+	<result property="School" column="Students_School"/>
+	<result property="No" column="Students_No"/>
+	<result property="CreateTime" column="Students_CreateTime"/>
+	<result property="Status" column="Students_Status"/>
+	<result property="PassWord" column="Students_PassWord"/>
+	<result property="AreaID" column="Students_AreaID"/>
+	<result property="LoginName" column="Students_LoginName"/>
+	<result property="OpenID" column="Students_OpenID"/>
+	<result property="UnionID" column="Students_UnionID"/>
+	<result property="Integration" column="Students_Integration"/>
+	<result property="Count" column="Students_Integration"/>
+	<result property="ParentName" column="Students_ParentName"/>
+	<result property="Email" column="Students_Email"/>
+	<result property="Grade" column="Students_Grade"/>
+	<result property="Habit" column="Students_Habit"/>
+	<result property="NoticeCount" column="Students_NoticeCount"/>
+	<result property="ImageUrl" column="Students_ImageUrl"/>
+	<result property="Official" column="Students_Official"/>
+	<result property="Chief" column="Students_Chief"/>
+	<result property="Order" column="Students_Order"/>
+	<result property="HonorCount" column="Students_HonorCount"/>
+	<result property="SendCount" column="Students_SendCount"/>
+	<result property="BirthDayRemind" column="Students_BirthDayRemind"/>
+	
+	<association property="Area" column="Students_AreaID"
+			select="read.core.data.ReadRegionMapper.getRegionByIDList" />
+</resultMap>
+<resultMap type="wtb.core.model.Students" id="ClassResultMapByID">
+	<result property="ID" column="Students_ID"/>
+	<result property="PKID" column="Students_ID"/>
+	<result property="Name" column="Students_Name" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="Age" column="Students_Age"/>
+	<result property="Sex" column="Students_Sex"/>
+	<result property="IsSex" column="Students_IsSex"/>
+	<result property="Level" column="Students_Level"/>
+	<result property="ImageID" column="Students_ImageID"/>
+	<result property="QRImageID" column="Students_QRImageID"/>
+	<result property="Phone" column="Students_Phone"/>
+	<result property="School" column="Students_School"/>
+	<result property="No" column="Students_No"/>
+	<result property="CreateTime" column="Students_CreateTime"/>
+	<result property="Status" column="Students_Status"/>
+	<result property="PassWord" column="Students_PassWord"/>
+	<result property="AreaID" column="Students_AreaID"/>
+	<result property="LoginName" column="Students_LoginName"/>
+	<result property="OpenID" column="Students_OpenID"/>
+	<result property="UnionID" column="Students_UnionID"/>
+	<result property="Integration" column="Students_Integration"/>
+	<result property="Count" column="Students_Integration"/>
+	<result property="ParentName" column="Students_ParentName"/>
+	<result property="Email" column="Students_Email"/>
+	<result property="Grade" column="Students_Grade"/>
+	<result property="Habit" column="Students_Habit"/>
+	<result property="NoticeCount" column="Students_NoticeCount"/>
+	<result property="ImageUrl" column="Students_ImageUrl"/>
+	<result property="Official" column="Students_Official"/>
+	<result property="Chief" column="Students_Chief"/>
+	<result property="HonorCount" column="Students_HonorCount"/>
+	<result property="SendCount" column="Students_SendCount"/>
+	<result property="BirthDayRemind" column="Students_BirthDayRemind"/>
+	<association property="Area" column="Students_AreaID"
+			select="read.core.data.ReadRegionMapper.getRegionByIDList" />
+	<association property="Image" column="Students_ImageID"
+			select="read.core.data.ReadPictureMapper.getPictureByIDList" />
+			
+</resultMap>
+<sql id="params">
+	Students_Phone,
+	Students_ID,
+ 	ifnull(Students_Name,'') as Students_Name,
+	Students_Age,
+	Students_Sex,
+	case Students_Sex when 1 then '男' else '女' end as Students_IsSex,
+	Students_CreateTime,
+	Students_Level,
+	Students_Status,
+	Students_ImageID,
+	Students_QRImageID,
+	Students_School,
+	Students_No,
+	Students_PassWord,
+	ifnull(Students_AreaID,0) as Students_AreaID,
+	Students_LoginName,
+	Students_OpenID,
+	Students_UnionID,
+	Students_Integration,
+	Students_ParentName,
+	Students_Email,
+	Students_Grade,
+	Students_Habit,
+	Students_NoticeCount,
+	case ifnull(Students_ImageUrl,'') when '' then (select ifnull(Picture_Url,'') from wtb_Picture where Picture_ID=Students_ImageID) else Students_ImageUrl end as Students_ImageUrl,
+	Students_Official,
+	Students_Chief,
+	Students_HonorCount,
+	Students_SendCount,
+	Students_BirthDayRemind
+</sql>
+<sql id="where">
+
+ 	
+		<if test="ID != null">
+			and Students_ID = #{ID}
+		</if>
+	
+		<if test="Status != null">
+			and Students_Status = #{Status}
+		</if>
+		<if test="Status == null">
+			and Students_Status = 1
+		</if>
+		<if test="Level != null">
+			and Students_Level = #{Level}
+		</if>
+		<if test="Official != null">
+			and Students_Official = #{Official}
+		</if>
+		<if test="Chief != null">
+			and Students_Chief = #{Chief}
+		</if>
+		<if test="LoginName != null">
+			and Students_LoginName = #{LoginName}
+		</if>
+		<if test="PassWord != null">
+			and Students_PassWord = #{PassWord}
+		</if>
+		<if test="Check !=null">
+			and (Students_Phone like CONCAT(CONCAT('%', #{Check,jdbcType=VARCHAR}),'%')
+			or Students_Name like CONCAT(CONCAT('%', #{Check,jdbcType=VARCHAR}),'%')
+			or Students_School like CONCAT(CONCAT('%', #{Check,jdbcType=VARCHAR}),'%'))
+		</if>
+		<if test="check !=null">
+			and (Students_Phone like CONCAT(CONCAT('%', #{check,jdbcType=VARCHAR}),'%')
+			or Students_Name like CONCAT(CONCAT('%', #{check,jdbcType=VARCHAR}),'%')
+			or Students_School like CONCAT(CONCAT('%', #{check,jdbcType=VARCHAR}),'%'))
+		</if>
+		
+		<if test="Phone != null">
+			and Students_Phone like CONCAT(CONCAT('%', #{Phone,
+		jdbcType=VARCHAR}),'%')
+		</if>
+		<!-- 正确的手机号�?-->
+		<if test="TPhone != null">
+			and Students_Phone =#{TPhone}
+		</if>
+		<if test="Name != null">
+			and Students_Name like CONCAT(CONCAT('%', #{Name,
+		jdbcType=VARCHAR}),'%')
+			
+		</if>
+		<if test="Today!=null">
+			and TO_DAYS(`Students_CreateTime`) = TO_DAYS(NOW()) and `Students_Phone`is not null and `Students_Phone`!=''
+		</if>
+		<if test="TodayActive!=null">
+			and TO_DAYS(`Students_ModifyTime`) = TO_DAYS(NOW()) and `Students_Phone`is not null and `Students_Phone`!=''
+		</if>
+		<if test="Month!=null">
+	 		and date_format(`Students_CreateTime`,'%Y-%m')=date_format(now(),'%Y-%m') and `Students_Phone`is not null and `Students_Phone`!=''
+	 	</if>
+		 <if test="Yesterday!=null">
+	 		and to_days(now())-to_days(`Students_CreateTime`) =1 and `Students_Phone`is not null and `Students_Phone`!=''
+		 </if>
+		  <if test="YesterdayActive!=null">
+	 		and to_days(now())-to_days(`Students_ModifyTime`) =1 and `Students_Phone`is not null and `Students_Phone`!=''
+		 </if>
+		 <if test="YesMonth">
+	 		and date_format(`Students_CreateTime`,'%Y-%m')=date_format(date_sub(curdate(), interval 1 month),'%Y-%m') and `Students_Phone`is not null and `Students_Phone`!=''
+	 	</if>
+		<if test="AreaID != null">
+			and Students_AreaID = #{AreaID}
+		</if>
+		<if test="BelongAreaID != null">
+			and Students_AreaID In (select REGION_ID from wtb_Region where PARENT_ID=#{BelongAreaID})
+		</if>
+		<if test="BelongAreaIDAll != null">
+			and ( Students_AreaID = #{BelongAreaIDAll} or Students_AreaID In (select REGION_ID from wtb_Region where PARENT_ID=#{BelongAreaIDAll})
+				or Students_AreaID In ( select REGION_ID from wtb_Region where PARENT_ID in( select REGION_ID from wtb_Region where PARENT_ID=#{BelongAreaIDAll}))
+				or Students_AreaID In ( select REGION_ID from wtb_Region where PARENT_ID in( select REGION_ID from wtb_Region where PARENT_ID in( select REGION_ID from wtb_Region where PARENT_ID=#{BelongAreaIDAll})))
+			)
+		</if>
+		<if test="UnitAreaID != null and UnitAreaID != 0 ">
+			and Students_AreaID = #{UnitAreaID}
+		</if>
+		<if test="UnionID != null">
+			and Students_UnionID = #{UnionID}
+		</if>
+		<if test="OpenID != null">
+			and Students_OpenID = #{OpenID}
+		</if>
+		<if test="startTime!=null and endTime!=null">
+			and Students_CreateTime  between  #{startTime} and #{endTime}
+		</if>
+		<if test="startTimeActive!=null and endTimeActive!=null">
+			and Students_ModifyTime  between  #{startTime} and #{endTime}
+		</if>
+		<if test="MonthActive!=null and YearActive!=null">
+			and Month(Students_ModifyTime)=#{MonthActive} and   Year(Students_ModifyTime)=#{YearActive}
+		</if>
+		<if test="isStu!=null">
+			and Students_Phone is not null and Students_Phone!=''
+		</if>
+		<if test="AgeMonth !=null and AgeDay !=null">
+			and  month(Students_Age)=month(NOW()) and day(Students_Age)=day(NOW()) and `Students_Phone`is not null and `Students_Phone`!=''
+			and (Students_BirthDayRemind  is  null or  (Students_BirthDayRemind  is not null and year(Students_BirthDayRemind)!=year(NOW())))
+		</if>
+		<if test="ToDayAge ==1">
+			and  month(Students_Age)=month(NOW()) and day(Students_Age)=day(NOW()) and `Students_Phone`is not null and `Students_Phone`!=''
+		</if>
+		<if test="Sina !=null">
+			and #{Sina}=#{Sina}
+		</if>
+		<if test="RegisterYear != null">
+			and year(Students_CreateTime) = #{RegisterYear}
+		</if>
+		<if test="RegisterMonth !=null">
+			and month(Students_CreateTime) = #{RegisterMonth} 
+		</if>
+		<if test="RegisterDay !=null">
+			and day(Students_CreateTime) = #{RegisterDay} 
+		</if>
+		<if test="RegisterHour !=null">
+			and hour(Students_CreateTime) = #{RegisterHour} 
+		</if>
+		<if test="Rand !=null">
+			and #{Rand} = #{Rand} 
+		</if>
+		<if test="NotUsedDay !=null">
+	 		and to_days(now())-to_days(`Students_CreateTime`) &gt;=#{NotUsedDay} and `Students_Phone`is not null and `Students_Phone`!=''
+		 </if>
+		<if test="CurAccessUser !=null">
+	 		and year(Students_ModifyTime)=year(NOW()) and month(Students_ModifyTime)=month(NOW())  and day(Students_ModifyTime)= day(NOW()) and HOUR(Students_ModifyTime)=HOUR(NOW())
+and minute(Students_ModifyTime)=minute(NOW())
+		 </if>
+		 <if test="CurNewUser !=null">
+	 		and year(Students_CreateTime)=year(NOW()) and month(Students_CreateTime)=month(NOW())  and day(Students_CreateTime)= day(NOW()) and HOUR(Students_CreateTime)=HOUR(NOW())
+and minute(Students_CreateTime)=minute(NOW()) 
+		 </if>
+		
+</sql>
+<select id="getStudentsList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+	
+		<include refid="params"></include>
+		FROM wtb_Students
+		<where>
+			1=1
+			<include refid="where"></include>
+			
+				
+		</where>
+		<if test="orderStudents==null and  orderNoticeCount==null and  orderSendCount==null and OrderNoticesCount==null">
+		order by Students_CreateTime  desc
+		</if>
+		<if test="orderStudents!=null">
+			order by Students_Integration DESC
+		</if>
+		<if test="orderNoticeCount!=null">
+			order by Students_NoticeCount DESC
+		</if>
+		<if test="orderSendCount !=null">
+			order by Students_SendCount 
+		</if>
+		<if test="OrderNoticesCount !=null">
+			order by Students_NoticeCount desc 
+		</if>
+		
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+		<if test="limit == null or start ==null ">
+			 limit 0,10
+		</if>
+</select>
+
+<select id="getStudentsAllNoticesList" parameterType="map" resultMap="ClassResultMap">
+select * FROM  
+ (  
+     SELECT A.*,@curRank := @curRank + 1 as Students_Order
+     FROM     
+     (    
+      SELECT * FROM wtb_Students 
+where
+	Students_Phone  IS NOT NULL
+
+order by Students_NoticeCount desc
+   
+     ) A ,(SELECT @curRank:=0) B   
+ ) M  
+ <where>
+ <include refid="where"></include>
+
+ </where>
+ ORDER BY Students_Order 
+	<if test="limit != null and start !=null ">
+		 limit ${start},${limit} 
+	</if>
+</select>
+<select id="getStudentsByIDList" parameterType="map" resultMap="ClassResultMapByID">
+	SELECT
+		<include refid="params"></include>
+	FROM wtb_Students
+		<where>
+			Students_Status=1
+				<if test="_parameter != null">
+					and Students_ID = #{_parameter}
+				</if>
+				
+		</where>
+		
+		
+</select>
+<select id="getStudentsCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Students
+		<where>
+			1=1
+			<include refid="where"></include>
+		</where>
+		
+</select>
+<select id="getStudentsCountByAreaID" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Students
+		<where>
+			1=1
+			<if test="_parameter != null">
+					and Students_AreaID = #{_parameter}
+				</if>
+		</where>
+		
+</select>
+
+<resultMap type="wtb.core.model.WeChatLastMonthStatInfo" id="ClassLastMonthResultMap">
+	<result property="Year" column="Create_Year" />
+	<result property="Month" column="Create_Month" />
+	<result property="Days" column="days" />
+	<result property="Hour" column="Create_Hour" />
+	<result property="Count" column="count" />
+</resultMap>
+<select id="getStudentsForDayStat" parameterType="map"
+	resultMap="ClassLastMonthResultMap">
+select  month(Students_CreateTime) as Create_Month,day(Students_CreateTime) days
+<if test="GroupHour !=null">
+		,hour(Students_CreateTime) as  Create_Hour
+	</if>
+	<if test="GroupYear !=null">
+		,year(Students_CreateTime) as  Create_Year
+	</if>
+
+,count(1) count from wtb_Students
+   
+ <where>
+ <include refid="where"></include>
+
+ </where>
+ group by days,Create_Month
+ <if test="GroupHour !=null">
+		,Create_Hour
+	</if>
+	<if test="GroupYear !=null">
+		,Create_Year
+	</if> 
+</select>
+
+<select id="getStudentsMonthStat" parameterType="map"
+	resultMap="ClassLastMonthResultMap">
+select year(Students_CreateTime) as Create_Year, month(Students_CreateTime) as Create_Month,day(Students_CreateTime) days,count(1) count from wtb_Students
+ where month(Students_CreateTime)=#{Month} and year(Students_CreateTime)=#{Year} and Students_Status&gt;=1
+ group by days,Create_Year,Create_Month;  
+</select>
+
+
+<resultMap type="wtb.core.model.WeChatStatInfo" id="ClassCountResultMap">
+	<result property="WeChatDayForDay" column="Count" />
+</resultMap>
+<select id="getStudentsByDaysList" parameterType="map"
+	resultMap="ClassCountResultMap">
+	SELECT
+	count(1) as Count
+	FROM wtb_Students
+	<where>
+		1=1
+		<if test="Days != null">
+			and  to_days(now()) - to_days(Students_CreateTime)&lt;= #{Days} and `Students_Phone`is not null and `Students_Phone`!=''
+		</if>
+		<if test="ThisMonth != null">
+			and  year(Students_CreateTime)=year(now()) and month(Students_CreateTime)=month(now())  and `Students_Phone`is not null and `Students_Phone`!=''
+		</if>
+		<if test="Status != null">
+			and Students_Status = #{Status}
+		</if>
+	</where>
+</select>
+</mapper>
+

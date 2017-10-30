@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.CompetitionMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<sql id="sql">
+		Competition_ID,
+		Competition_Name,
+		Competition_PictureUrl,
+		Competition_Phone,
+		Competition_Title,
+		Competition_AnnexURL,
+		Competition_Status,
+		Competition_CreateTime,
+		Competition_ModifyTime,
+		Competition_StringParamA,
+		Competition_StringParamB,
+		Competition_StringParamC,
+		Competition_StringParamD,
+		Competition_StringParamE,
+		Competition_StringParamF,
+		Competition_StringParamG,
+		Competition_StringParamH,
+		Competition_StringParamI,
+		Competition_StringParamJ,
+		Competition_StringParamK,
+		Competition_IntParamA,
+		Competition_IntParamB,
+		Competition_IntParamC,
+		Competition_IntParamD,
+		Competition_IntParamE,
+		Competition_DateParamA,
+		Competition_DateParamB,
+		Competition_DateParamC,
+		Competition_BigIntParamA,
+		Competition_BigIntParamB,
+		Competition_BigIntParamC,
+		Competition_Type,
+		Competition_BigStringParamA,
+		Competition_BigStringParamB
+</sql>
+  
+<insert id="addCompetition" parameterType="wtb.core.model.CompetitionApply" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_CompetitionApply (
+		<include refid="sql"></include>
+		) VALUES (
+			#{ID}, #{Name}, #{PictureUrl},#{Phone},#{Title},#{AnnexURL},#{Status},now(),now()
+			,#{StringParamA},#{StringParamB},#{StringParamC},#{StringParamD},#{StringParamE},#{StringParamF},
+			#{StringParamG},#{StringParamH},#{StringParamI},#{StringParamJ},#{StringParamK},#{IntParamA},#{IntParamB}
+			,#{IntParamC},#{IntParamD},#{IntParamE},#{DateParamA},#{DateParamB},#{DateParamC},#{BigIntParamA},#{BigIntParamB},#{BigIntParamC},#{Type},#{BigStringParamA}
+			,#{BigStringParamB}
+		)
+</insert>
+<update id="updateCompetition" parameterType="wtb.core.model.CompetitionApply">
+	UPDATE wtb_CompetitionApply 
+		SET
+		Competition_Name=#{Name},
+		Competition_PictureUrl=#{PictureUrl},
+		Competition_Phone=#{Phone},
+		Competition_Title=#{Title},
+		Competition_AnnexURL=#{AnnexURL},
+		Competition_Status=#{Status},
+		Competition_ModifyTime=now(),
+		Competition_StringParamA=#{StringParamA},
+		Competition_StringParamB=#{StringParamB},
+		Competition_StringParamC=#{StringParamC},
+		Competition_StringParamD=#{StringParamD},
+		Competition_StringParamE=#{StringParamE},
+		Competition_StringParamF=#{StringParamF},
+		Competition_StringParamG=#{StringParamG},
+		Competition_StringParamH=#{StringParamH},
+		Competition_StringParamI=#{StringParamI},
+		Competition_StringParamJ=#{StringParamJ},
+		Competition_StringParamK=#{StringParamK},
+		Competition_IntParamA=#{IntParamA},
+		Competition_IntParamB=#{IntParamB},
+		Competition_IntParamC=#{IntParamC},
+		Competition_IntParamD=#{IntParamD},
+		Competition_IntParamE=#{IntParamE},
+		Competition_DateParamA=#{DateParamA},
+		Competition_DateParamB=#{DateParamB},
+		Competition_DateParamC=#{DateParamC},
+		Competition_BigIntParamA=#{BigIntParamA},
+		Competition_BigIntParamB=#{BigIntParamB},
+		Competition_BigIntParamC=#{BigIntParamC},
+		Competition_Type=#{Type},
+		Competition_BigStringParamA=#{BigStringParamA},
+		Competition_BigStringParamB=#{BigStringParamB}
+			where Competition_ID = #{ID}
+</update>
+<delete id="deleteCompetition" parameterType="wtb.core.model.CompetitionApply">
+	update  wtb_CompetitionApply set Competition_Status=88
+			where
+				 Competition_ID = #{ID}
+</delete>
+<update id="enabledCompetition" parameterType="wtb.core.model.CompetitionApply">
+	update  wtb_CompetitionApply set Competition_Status=1
+			where
+				 Competition_ID = #{ID}
+</update>
+</mapper>
+

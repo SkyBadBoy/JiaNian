@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="wtb.core.data.LotteryRecordMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.LotteryRecord" >
+    <id column="record_id" property="ID" jdbcType="BIGINT" />
+	<result column="record_id" property="PKID" jdbcType="BIGINT"/>
+    <result column="record_userid" property="recordUserid" jdbcType="BIGINT" />
+    <result column="record_belongid" property="recordBelongid" jdbcType="BIGINT" />
+    <result column="record_type" property="recordType" jdbcType="INTEGER" />
+    <result column="record_delete" property="recordDelete" jdbcType="INTEGER" />
+    <result column="record_status" property="recordStatus" jdbcType="INTEGER" />
+    <result column="record_redundancy" property="recordRedundancy" jdbcType="VARCHAR" />
+    <result column="record_createtime" property="recordCreatetime" jdbcType="TIMESTAMP" />
+    <result column="record_modifytime" property="recordModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    record_id, record_userid, record_belongid, record_type, record_delete, record_status, record_redundancy, 
+    record_createtime, record_modifytime
+  </sql>
+  
+  <!-- by Sheryl -->
+  <insert id="AddNewMessage" parameterType="wtb.core.model.LotteryRecord" >
+    insert into wtb_lotteryrecord (record_id, record_userid, record_belongid, record_type, 
+      record_delete, record_status, record_redundancy, 
+      record_createtime, record_modifytime)
+    values (#{ID,jdbcType=BIGINT}, #{recordUserid,jdbcType=BIGINT}, #{recordBelongid,jdbcType=BIGINT}, #{recordType,jdbcType=INTEGER},
+      0, #{recordStatus,jdbcType=INTEGER}, #{recordRedundancy,jdbcType=VARCHAR}, 
+      now(), now())
+  </insert>
+  
+ 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wtb_lotteryrecord
+    where record_id = #{ID,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="wtb.core.model.LotteryRecord" >
+    insert into wtb_lotteryrecord (record_id, record_userid, record_belongid, record_type, 
+      record_delete, record_status, record_redundancy, 
+      record_createtime, record_modifytime)
+    values (#{ID,jdbcType=BIGINT}, #{recordUserid,jdbcType=BIGINT}, #{recordBelongid,jdbcType=BIGINT}, #{recordType,jdbcType=INTEGER},
+      #{recordDelete,jdbcType=INTEGER}, #{recordStatus,jdbcType=INTEGER}, #{recordRedundancy,jdbcType=VARCHAR}, 
+      #{recordCreatetime,jdbcType=TIMESTAMP}, #{recordModifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="wtb.core.model.LotteryRecord" >
+    insert into wtb_lotteryrecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ID != null" >
+        record_id,
+      </if>
+      <if test="recordUserid != null" >
+        record_userid,
+      </if>
+      <if test="recordBelongid != null" >
+        record_belongid,
+      </if>
+      <if test="recordType != null" >
+        record_type,
+      </if>
+      <if test="recordDelete != null" >
+        record_delete,
+      </if>
+      <if test="recordStatus != null" >
+        record_status,
+      </if>
+      <if test="recordRedundancy != null" >
+        record_redundancy,
+      </if>
+      <if test="recordCreatetime != null" >
+        record_createtime,
+      </if>
+      <if test="recordModifytime != null" >
+        record_modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ID != null" >
+        #{ID,jdbcType=BIGINT},
+      </if>
+      <if test="recordUserid != null" >
+        #{recordUserid,jdbcType=BIGINT},
+      </if>
+      <if test="recordBelongid != null" >
+        #{recordBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="recordType != null" >
+        #{recordType,jdbcType=INTEGER},
+      </if>
+      <if test="recordDelete != null" >
+        #{recordDelete,jdbcType=INTEGER},
+      </if>
+      <if test="recordStatus != null" >
+        #{recordStatus,jdbcType=INTEGER},
+      </if>
+      <if test="recordRedundancy != null" >
+        #{recordRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="recordCreatetime != null" >
+        #{recordCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordModifytime != null" >
+        #{recordModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="wtb.core.model.LotteryRecord" >
+    update wtb_lotteryrecord
+    <set >
+      <if test="recordUserid != null" >
+        record_userid = #{recordUserid,jdbcType=BIGINT},
+      </if>
+      <if test="recordBelongid != null" >
+        record_belongid = #{recordBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="recordType != null" >
+        record_type = #{recordType,jdbcType=INTEGER},
+      </if>
+      <if test="recordDelete != null" >
+        record_delete = #{recordDelete,jdbcType=INTEGER},
+      </if>
+      <if test="recordStatus != null" >
+        record_status = #{recordStatus,jdbcType=INTEGER},
+      </if>
+      <if test="recordRedundancy != null" >
+        record_redundancy = #{recordRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="recordCreatetime != null" >
+        record_createtime = #{recordCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordModifytime != null" >
+        record_modifytime = #{recordModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where record_id = #{ID,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="wtb.core.model.LotteryRecord" >
+    update wtb_lotteryrecord
+    set record_userid = #{recordUserid,jdbcType=BIGINT},
+      record_belongid = #{recordBelongid,jdbcType=BIGINT},
+      record_type = #{recordType,jdbcType=INTEGER},
+      record_delete = #{recordDelete,jdbcType=INTEGER},
+      record_status = #{recordStatus,jdbcType=INTEGER},
+      record_redundancy = #{recordRedundancy,jdbcType=VARCHAR},
+      record_createtime = #{recordCreatetime,jdbcType=TIMESTAMP},
+      record_modifytime = #{recordModifytime,jdbcType=TIMESTAMP}
+    where record_id = #{ID,jdbcType=BIGINT}
+  </update>
+</mapper>

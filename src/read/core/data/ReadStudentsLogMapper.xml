@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadStudentsLogMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<resultMap type="wtb.core.model.StudentsLog" id="ClassResultMap">
+		<result property="ID" column="StudentsLog_ID"/>
+		<result property="PKID" column="StudentsLog_ID"/>
+		<result property="CreateTime" column="StudentsLog_CreateTime"/>
+<!-- 		<result property="PKNID" column="StudentsLog_NewID"/> -->
+		<result property="NewID" column="StudentsLog_NewID"/>
+		<result property="StudentsID" column="StudentsLog_StudentsID"/>
+		<result property="Status" column="StudentsLog_Status"/>
+		<result property="URL" column="StudentsLog_URL"/>
+		<result property="Type" column="StudentsLog_Type"/>
+		<result property="Request" column="StudentsLog_Request"/>
+		<association property="WCID" column="StudentsLog_StudentsID" select="read.core.data.ReadWeChatPublicMapper.getWeChatPublicForIDList" /> 
+		<association property="news" column="StudentsLog_NewID" select="read.core.data.ReadNoticesMapper.getNoticesByID" /> 
+	 	<association property="Students" column="StudentsLog_StudentsID" select="read.core.data.ReadStudentsMapper.getStudentsByIDList"/> 
+		<association property="BaseInfo" column="StudentsLog_Status"
+			select="read.core.data.ReadBaseInfoMapper.getBaseInfoList" />
+	</resultMap>
+	<sql id="where">
+		<if test="LogID != null">
+					and StudentsLog_ID = #{ID}
+				</if>
+				<if test="ID != null">
+					and StudentsLog_ID = #{ID}
+				</if>
+			 	<if test="Status !=null">
+					and StudentsLog_Status = #{Status}
+				</if>
+				<if test="NewID !=null">
+					and StudentsLog_NewID = #{NewID}
+				</if>
+				<if test="StudentID!=null">
+					and StudentsLog_StudentsID = #{StudentID}
+				</if>
+				<if test="StudentsName!=null">
+					and StudentsLog_StudentsID in (SELECT Students_ID FROM wtb_Students WHERE Students_Name like CONCAT(CONCAT('%', #{StudentsName,
+				jdbcType=VARCHAR}),'%'))
+				</if>
+				<if test="SchoolName!=null">
+					and StudentsLog_StudentsID in (SELECT `WeChatPublic_ID` FROM `wtb_WeChatPublic` WHERE `WeChatPublic_Company` like CONCAT(CONCAT('%', #{SchoolName,
+					jdbcType=VARCHAR}),'%'))
+				</if>
+				<if test="Type !=null">
+					and StudentsLog_Type=#{Type}
+				</if>
+				<if test="Rand != null">
+						and #{Rand} =#{Rand}
+				</if>
+	</sql>
+	<select id="getStudentsLogList" parameterType="map" resultMap="ClassResultMap">
+		SELECT 
+			StudentsLog_ID,
+			StudentsLog_CreateTime,
+			StudentsLog_NewID,
+			StudentsLog_StudentsID,
+			StudentsLog_Status,
+			StudentsLog_URL,
+			StudentsLog_Request,
+			StudentsLog_Type
+			FROM wtb_StudentsLog
+			<where>
+				1=1 and StudentsLog_Status!=88
+				<include refid="where"></include>
+			</where>
+			order by StudentsLog_CreateTime desc
+			<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+			</if>
+	</select>
+	<select id="getStudentsLogCount" parameterType="map" resultType="int">
+		SELECT
+			Count(1)
+			FROM wtb_StudentsLog
+			<where>
+				1=1 and StudentsLog_Status!=88
+				<include refid="where"></include>
+			</where>
+	</select>
+</mapper>

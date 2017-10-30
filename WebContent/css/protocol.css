@@ -1,0 +1,56 @@
+.protocol_Head {
+  padding: 0 5px;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 0 4px #c8c8c8;
+  line-height: 40px;
+  overflow: hidden;
+  height: 40px;
+  background: #fff
+}
+.protocol_login_head {
+  height: auto;
+  background: #f1f1f1;
+  box-shadow: none
+}
+.protocol_Head p {
+  text-align: center;
+  color: #444;
+  font-size: 18px;
+  text-indent: 10px
+}
+
+
+.protocol_xy_txt {
+  padding: 20px 15px;
+  background: #fff
+}
+
+.protocol_xy_txt h3 {
+  font-size: 14px;
+  color: #000;
+  line-height: 30px;
+  margin-top: 10px
+}
+
+.protocol_xy_txt h5 {
+  font-size: 14px;
+  color: #000;
+  line-height: 30px;
+  margin-top: 10px
+}
+
+.protocol_xy_txt p {
+  font-size: 12px;
+  color: #333;
+  line-height: 20px
+}
+
+.protocol_xy_txt strong {
+  text-decoration: underline
+}
+.protocol_xy_txt h1, h2, h3, h4, h5, h6, em, strong, b {
+  font-weight: bold
+}
+
+

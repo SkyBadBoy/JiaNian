@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="read.core.data.ReadLotteryStatuMapper" >
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.LotteryStatu" >
+    <id column="lottery_id" property="lotteryId" jdbcType="BIGINT" />
+    <result column="lottery_userid" property="lotteryUserid" jdbcType="BIGINT" />
+    <result column="lottery_belongid" property="lotteryBelongid" jdbcType="BIGINT" />
+    <result column="lottery_residuecount" property="lotteryResiduecount" jdbcType="INTEGER" />
+    <result column="lottery_obtainedcount" property="lotteryObtainedcount" jdbcType="INTEGER" />
+    <result column="lottery_totalcount" property="lotteryTotalcount" jdbcType="INTEGER" />
+    <result column="lottery_redundancy" property="lotteryRedundancy" jdbcType="VARCHAR" />
+    <result column="lottery_createtime" property="lotteryCreatetime" jdbcType="TIMESTAMP" />
+    <result column="lottery_modifytime" property="lotteryModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    lottery_id, lottery_userid, lottery_belongid, lottery_residuecount, lottery_obtainedcount, 
+    lottery_totalcount, lottery_redundancy, lottery_createtime, lottery_modifytime
+  </sql>
+  
+  
+  <resultMap type="java.util.Map" id="QueryMessageResultMap"  >
+    <result property="Residuecount" column="lottery_residuecount" />
+    <result property="Obtainedcount" column="lottery_obtainedcount"  />
+    <result property="Modifytime" column="lottery_modifytime" />
+  </resultMap>
+  <sql id="QueryMessage_Column_List" >
+    lottery_residuecount, lottery_obtainedcount, lottery_modifytime
+  </sql>
+  <!-- by Sheryl --><!-- QueryMessageResultMap -->
+<select id="QueryMessage" parameterType="map" resultMap="BaseResultMap">
+	SELECT
+		 <include refid="QueryMessage_Column_List" />
+		FROM wtb_lotterystatu
+		WHERE lottery_userid = #{UserID,jdbcType=BIGINT} 
+		AND #{Rand} = #{Rand}
+		LIMIT 1
+</select>
+<select id="QueryExist" parameterType="java.lang.Long" resultType="java.lang.Integer">
+	SELECT
+		COUNT(*)
+		FROM wtb_lotterystatu
+		WHERE lottery_userid = #{ID,jdbcType=BIGINT} 
+		LIMIT 1
+</select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wtb_lotterystatu
+    where lottery_id = #{lotteryId,jdbcType=BIGINT}
+  </select>
+ 
+</mapper>

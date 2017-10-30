@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.HonorRecordMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.HonorRecord" id="ClassResultMap">
+	<result property="ID" column="HonorRecord_ID"/>
+	<result property="PKID" column="HonorRecord_ID"/>
+	<result property="Type" column="HonorRecord_Type"/>
+	<result property="Memo" column="HonorRecord_Memo"/>
+	<result property="Status" column="HonorRecord_Status"/>
+	<result property="EndTime" column="HonorRecord_EndTime"/>
+	<result property="ModifyTime" column="HonorRecord_ModifyTime"/>
+	<result property="CreateTime" column="HonorRecord_CreateTime"/>
+	<result property="StudentID" column="HonorRecord_StudentID"/>
+</resultMap>
+<sql id="param">
+HonorRecord_ID,
+		HonorRecord_Type,
+		HonorRecord_CreateTime,
+		HonorRecord_ModifyTime,
+		HonorRecord_EndTime,
+		HonorRecord_Status,
+		HonorRecord_Memo,
+		HonorRecord_StudentID
+</sql> 
+<insert id="addHonorRecord" parameterType="wtb.core.model.HonorRecord" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_HonorRecords (
+ <include refid="param"></include>
+		) VALUES (
+			#{ID}, #{Type},now(),now(),#{EndTime} ,#{Status},#{Memo},#{StudentID}
+		)
+</insert>
+<update id="updateHonorRecord" parameterType="wtb.core.model.HonorRecord">
+	UPDATE wtb_HonorRecords 
+		SET
+		HonorRecord_Memo=#{Memo}, 
+		HonorRecord_Status=#{Status},
+		HonorRecord_Type=#{Type},
+		HonorRecord_ModifyTime=now(),
+		HonorRecord_EndTime=#{EndTime},
+		HonorRecord_Memo=#{Memo},
+		HonorRecord_StudentID=#{StudentID}
+		
+			where HonorRecord_ID = #{ID}
+</update>
+<delete id="deleteHonorRecord" parameterType="wtb.core.model.HonorRecord">
+	update  wtb_HonorRecords set HonorRecord_Status=88
+			where
+				 HonorRecord_ID = #{ID}
+			
+</delete>
+</mapper>
+

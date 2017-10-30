@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.OnlineCountMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.OnlineCount" id="ClassResultMap">
+	<result property="ID" column="OnlineCount_ID"/>
+	<result property="CreateTime" column="OnlineCount_CreateTime"/>
+	<result property="Memo" column="OnlineCount_Memo"/>
+	<result property="Status" column="OnlineCount_Status"/>
+	<result property="Type" column="OnlineCount_Type"/>
+	<result property="Count" column="OnlineCount_Count"/>
+	<result property="NewUserCount" column="OnlineCount_NewUserCount"/>
+	<result property="AccessUserCount" column="OnlineCount_AccessUserCount"/>
+	<result property="ModifyTime" column="OnlineCount_ModifyTime"/>
+</resultMap>
+<sql id="param">
+OnlineCount_ID,
+OnlineCount_CreateTime,
+OnlineCount_Type,
+OnlineCount_Count,
+OnlineCount_NewUserCount,
+OnlineCount_AccessUserCount,
+OnlineCount_ModifyTime,
+OnlineCount_Status,
+OnlineCount_Memo
+
+</sql>
+<insert id="addOnlineCount" parameterType="wtb.core.model.OnlineCount" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_OnlineCount (
+
+  <include refid="param"></include>
+		) VALUES (
+			#{ID},now(),#{Type},#{Count},#{NewUserCount},#{AccessUserCount},now(), #{Status}, #{Memo}
+		)
+</insert>
+<update id="updateOnlineCount" parameterType="wtb.core.model.OnlineCount">
+	UPDATE wtb_OnlineCount 
+		SET
+		OnlineCount_Memo=#{Memo}, 
+		OnlineCount_Status=#{Status},
+		OnlineCount_Type=#{Type},
+		OnlineCount_Count=#{Count},
+		OnlineCount_NewUserCount=#{NewUserCount},
+		OnlineCount_AccessUserCount=#{AccessUserCount},
+		OnlineCount_ModifyTime=now()
+				
+			where OnlineCount_ID = #{ID}
+</update>
+
+<update id="updateOnlineCountByToDay" parameterType="wtb.core.model.OnlineCount">
+	UPDATE wtb_OnlineCount 
+		SET
+		OnlineCount_Memo=#{Memo}, 
+		OnlineCount_Status=#{Status},
+		OnlineCount_Type=#{Type},
+		OnlineCount_Count=#{Count},
+		OnlineCount_NewUserCount=#{NewUserCount},
+		OnlineCount_AccessUserCount=#{AccessUserCount},
+		OnlineCount_ModifyTime=now()
+				
+			where  OnlineCount_Type=#{Type} and 
+			year(OnlineCount_CreateTime) = year(now()) and 
+			month(OnlineCount_CreateTime) =month(now()) and 
+			day(OnlineCount_CreateTime) =  day(now())
+</update>
+<delete id="deleteOnlineCount" parameterType="wtb.core.model.OnlineCount">
+	update  wtb_OnlineCount set OnlineCount_Status=88,OnlineCount_ModifyTime=now()
+			where
+				 OnlineCount_ID = #{ID}
+			
+</delete>
+</mapper>
+

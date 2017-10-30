@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadApplyListMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.ApplyList" id="ClassResultMap">
+	<result property="ID" column="ApplyList_ID"/>
+	<result property="PKID" column="ApplyList_ID"/>
+	<result property="Content" column="ApplyList_Content" typeHandler="read.smUtil.MyBlobTypeHandler1" />
+	<result property="UserName" column="ApplyList_UserName"/>
+	<result property="UserPhone" column="ApplyList_UserPhone"/>
+	<result property="CreateTime" column="ApplyList_CreateTime"/>
+	<result property="ModifyTime" column="ApplyList_ModifyTime"/>
+	<result property="Status" column="ApplyList_Status"/>
+	<result property="StudentID" column="ApplyList_StudentID"/>
+	<result property="Type" column="ApplyList_Type"/>
+	<result property="Course" column="ApplyList_Course"/>
+</resultMap>
+
+<sql id="where">
+			<if test="ID != null">
+				and ApplyList_ID = #{ID}
+			</if>
+			<if test="Status != null">
+				and ApplyList_Status = #{Status}
+			</if>
+			<if test="Status == null">
+				and ApplyList_Status = 1
+			</if>
+			<if test="Type != null">
+				and ApplyList_Type = #{Type}
+			</if>
+			<if test="UserPhone != null">
+				and ApplyList_UserPhone = #{UserPhone}
+			</if>
+			<if test="UserName != null">
+				and ApplyList_UserName = #{UserName}
+			</if>
+			<if test="Rand != null">
+				and #{Rand} = #{Rand}
+			</if>
+</sql>
+<sql id="param">
+
+			ApplyList_ID,
+			ApplyList_Content,
+			ApplyList_UserName,
+			ApplyList_UserPhone,
+			ApplyList_CreateTime,
+			ApplyList_ModifyTime,
+			ApplyList_Status,
+			ApplyList_StudentID,
+			ApplyList_Type,
+			ApplyList_Course
+</sql>
+<select id="getApplyListList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="param"></include>
+		from wtb_ApplyList
+		<where>
+			1=1
+			<include refid="where"></include>
+		</where>
+		order by ApplyList_CreateTime 
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getApplyListCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		from wtb_ApplyList
+		<where>
+			1=1
+			<include refid="where"></include>
+		</where>
+		
+</select>
+<select id="getApplyListByID" parameterType="long" resultMap="ClassResultMap">
+	SELECT
+		<include refid="param"></include>
+		from wtb_ApplyList
+		<where>
+			
+				<if test="_parameter != null">
+					and ApplyList_ID = #{_parameter}
+				</if>
+				
+		</where>
+</select>
+</mapper>
+

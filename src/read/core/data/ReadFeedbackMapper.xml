@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadFeedbackMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Feedback" id="ClassResultMap">
+	<result property="ID" column="Feedback_ID"/>
+	<result property="PKID" column="Feedback_ID"/>
+	<result property="UserID" column="Feedback_UserID"/>
+	<result property="CreateTime" column="Feedback_CreateTime"/>
+	<result property="Content" column="Feedback_Content" typeHandler="wtb.smUtil.MyBlobTypeHandler"/>
+	<result property="Status" column="Feedback_Status"/>
+	<association property="Student" column="Feedback_UserID"
+			select="read.core.data.ReadStudentsMapper.getStudentsByIDList" />
+</resultMap>
+<select id="getFeedbackList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Feedback_ID,
+  		Feedback_UserID,
+		Feedback_CreateTime,
+		Feedback_Content,
+		Feedback_Status
+		FROM wtb_Feedback
+		<where>
+			1=1 and Feedback_Status!=88
+			<if test="UserID != null">
+				and Feedback_UserID = #{UserID}
+			</if>	
+		</where>
+		order by Feedback_CreateTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+<select id="getFeedbackCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Feedback
+		<where>
+			1=1 and Feedback_Status!=88	
+		</where>
+	
+</select>
+
+</mapper>
+

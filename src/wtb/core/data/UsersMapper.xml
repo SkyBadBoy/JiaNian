@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.UsersMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<insert id="addUsers" parameterType="wtb.core.model.Users" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Users (
+			Users_ID,
+  Users_LoginName ,
+  Users_PassWord ,
+  Users_Level ,
+  Users_CreateTime,
+  Users_ModifyTime ,
+  Users_ImageID,
+  Users_Name,
+  Users_Status ,
+  Users_WeChatID,
+  Users_AreaID,
+  Users_Phone
+		) VALUES (
+			#{ID}, #{LoginName}, #{PassWord}, #{Level}, #{CreateTime}, #{ModifyTime}, #{ImageID},#{Name}, #{Status}, #{WeChatID},#{AreaID},
+			#{Phone}
+		)
+</insert>
+<update id="updateUsers" parameterType="wtb.core.model.Users">
+	UPDATE wtb_Users 
+		SET
+		Users_ID=#{ID}, 
+		Users_LoginName=#{LoginName}, 
+		Users_PassWord=#{PassWord},
+		Users_Level=#{Level}, 
+		Users_CreateTime=#{CreateTime}, 
+		Users_ModifyTime=#{ModifyTime}, 
+		Users_ImageID=#{ImageID}, 
+		Users_Name=#{Name}, 
+		Users_Status=#{Status},
+		Users_WeChatID=#{WeChatID},
+		Users_Phone=#{Phone},
+		Users_AreaID=#{AreaID}
+			where Users_ID = #{ID}
+</update>
+<delete id="deleteUsers" parameterType="wtb.core.model.Users">
+	update  wtb_Users set Users_Status=88 ,Users_ModifyTime=#{ModifyTime}
+			where
+				 Users_ID = #{ID}
+			
+</delete>
+<update id="ChangePassword" parameterType="wtb.core.model.Users">
+	update  wtb_Users set Users_PassWord=#{NewPassWord},Users_ModifyTime=#{ModifyTime}
+			where
+				 Users_LoginName = #{LoginName} and Users_Status=1 and Users_PassWord=#{OldPassWord}
+			
+</update>
+<update id="enabledUsers" parameterType="wtb.core.model.Users">
+	update  wtb_Users set Users_Status=1,Users_ModifyTime=#{ModifyTime}
+			where
+				 Users_ID = #{ID}
+			
+</update>
+</mapper>
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeChatBindMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<sql id="sql">
+    	WeChatBind_ID,
+		WeChatBind_OpenID,
+		WeChatBind_UnionID,
+		WeChatBind_StudentID,
+		WeChatBind_CreateTime,
+		WeChatBind_ModifyTime,
+		WeChatBind_Status,
+		WeChatBind_Memo
+</sql>
+
+<insert id="addWeChatBind" parameterType="wtb.core.model.WeChatBind" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_WeChatBinds (
+		<include refid="sql"></include>
+		) VALUES (
+			#{ID},  #{OpenID},  #{UnionID}, #{StudentID},now(),now(),#{Status}
+			,#{Memo}
+		)
+</insert>
+<update id="updateWeChatBind" parameterType="wtb.core.model.WeChatBind">
+	UPDATE wtb_WeChatBinds 
+		SET
+		WeChatBind_OpenID=#{OpenID},
+		WeChatBind_UnionID=#{UnionID},
+		WeChatBind_StudentID=#{StudentID},
+		WeChatBind_ModifyTime=now(),
+		WeChatBind_Status=#{Status},
+		WeChatBind_Memo=#{Memo}
+		
+			where WeChatBind_ID = #{ID}
+</update>
+<delete id="deleteWeChatBind" parameterType="wtb.core.model.WeChatBind">
+	update  wtb_WeChatBinds set WeChatBind_Status=88
+			where
+				 WeChatBind_ID = #{_parameter}
+			
+</delete>
+<update id="enabledWeChatBind" parameterType="wtb.core.model.WeChatBind">
+	update  wtb_WeChatBinds set WeChatBind_Status=1
+			where
+				 WeChatBind_ID = #{_parameter}
+			
+</update>
+
+</mapper>
+

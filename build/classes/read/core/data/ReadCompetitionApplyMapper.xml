@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="read.core.data.ReadCompetitionApplyMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.CompetitionApply" id="ClassResultMap">
+	<result property="ID" column="Competition_ID"/>
+	<result property="PKID" column="Competition_ID"/>
+	<result property="Name" column="Competition_Name"/>
+	<result property="Teacher" column="Competition_Teacher"/>
+	<result property="Phone" column="Competition_Phone"/>
+	<result property="StudentID" column="Competition_StudentID" />
+	<result property="AnnexURL" column="Competition_AnnexURL"/>
+	<result property="Status" column="Competition_Status"/>
+	<result property="CreateTime" column="Competition_CreateTime"/>
+	<result property="ModifyTime" column="Competition_ModifyTime"/>
+	
+	<result property="StringParamA" column="Competition_StringParamA"/>
+	<result property="StringParamB" column="Competition_StringParamB"/>
+	<result property="StringParamC" column="Competition_StringParamC"/>
+	<result property="StringParamD" column="Competition_StringParamD"/>
+	<result property="StringParamE" column="Competition_StringParamE"/>
+	<result property="StringParamF" column="Competition_StringParamF"/>
+	<result property="StringParamG" column="Competition_StringParamG"/>
+	<result property="StringParamH" column="Competition_StringParamH"/>
+	<result property="StringParamI" column="Competition_StringParamI"/>
+	<result property="StringParamJ" column="Competition_StringParamJ"/>
+	<result property="StringParamK" column="Competition_StringParamK"/>
+	<result property="IntParamA" column="Competition_IntParamA"/>
+	<result property="IntParamB" column="Competition_IntParamB"/>
+	<result property="IntParamC" column="Competition_IntParamC"/>
+	<result property="IntParamD" column="Competition_IntParamD"/>
+	<result property="IntParamE" column="Competition_IntParamE"/>
+	<result property="DateParamA" column="Competition_DateParamA"/>
+	<result property="DateParamB" column="Competition_DateParamB"/>
+	<result property="DateParamC" column="Competition_DateParamC"/>
+	<result property="BigIntParamA" column="Competition_BigIntParamA"/>
+	<result property="BigIntParamB" column="Competition_BigIntParamB"/>
+	<result property="BigIntParamC" column="Competition_BigIntParamC"/>
+	<result property="Type" column="Competition_Type"/>
+	<result property="BigStringParamA" column="Competition_BigStringParamA" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+	<result property="BigStringParamB" column="Competition_BigStringParamB" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
+
+	<association property="BaseInfo" column="Competition_Status"
+			select="read.core.data.ReadBaseInfoMapper.getBaseInfoList" />
+
+</resultMap>
+
+<sql id="sql">
+		Competition_ID,
+		Competition_Name,
+		Competition_Teacher,
+		Competition_Phone,
+		Competition_StudentID,
+		Competition_AnnexURL,
+		Competition_Status,
+		Competition_CreateTime,
+		Competition_ModifyTime,
+		Competition_StringParamA,
+		Competition_StringParamB,
+		Competition_StringParamC,
+		Competition_StringParamD,
+		Competition_StringParamE,
+		Competition_StringParamF,
+		Competition_StringParamG,
+		Competition_StringParamH,
+		Competition_StringParamI,
+		Competition_StringParamJ,
+		Competition_StringParamK,
+		Competition_IntParamA,
+		Competition_IntParamB,
+		Competition_IntParamC,
+		Competition_IntParamD,
+		Competition_IntParamE,
+		Competition_DateParamA,
+		Competition_DateParamB,
+		Competition_DateParamC,
+		Competition_BigIntParamA,
+		Competition_BigIntParamB,
+		Competition_BigIntParamC,
+		Competition_Type,
+		ifnull(Competition_BigStringParamA,'')  as Competition_BigStringParamA,
+		ifnull(Competition_BigStringParamB,'')  as Competition_BigStringParamB
+		
+</sql>
+ <sql id="where">
+ 	1=1 
+ 	<if test="ID!=null">
+ 		and  Competition_ID=#{ID}
+ 	</if>
+ 	<if test="Name!=null">
+ 		and  Competition_Name=#{Name}
+ 	</if>
+ 	<if test="Teacher!=null">
+ 		and  Competition_Teacher=#{Teacher}
+ 	</if>
+ 	<if test="Phone!=null">
+ 		and  Competition_Phone=#{Phone}
+ 	</if>
+ 	 <if test="StudentID!=null">
+ 		and  Competition_StudentID=#{StudentID}
+ 	</if>
+ 	<if test="Status!=null">
+ 		and  Competition_Status=#{Status}
+ 	</if>
+ 	<if test="Type!=null">
+ 		and  Competition_Type=#{Type}
+ 	</if>
+	<if test="check != null">
+		and (Competition_Name like CONCAT(CONCAT('%', #{check,
+			jdbcType=VARCHAR}),'%') or Competition_Teacher like CONCAT(CONCAT('%', #{check,
+			jdbcType=VARCHAR}),'%'))
+	</if>
+	<if test="StringParamA!=null">
+ 		and  Competition_StringParamA=#{StringParamA}
+ 	</if>
+ 	<if test="StringParamB!=null">
+ 		and  Competition_StringParamB=#{StringParamB}
+ 	</if>
+ 	<if test="StringParamC!=null">
+ 		and  Competition_StringParamC=#{StringParamC}
+ 	</if>
+ 	<if test="StringParamD!=null">
+ 		and  Competition_StringParamD=#{StringParamD}
+ 	</if>
+ 	<if test="StringParamE!=null">
+ 		and  Competition_StringParamE=#{StringParamE}
+ 	</if>
+ 	<if test="StringParamF!=null">
+ 		and  Competition_StringParamF=#{StringParamF}
+ 	</if>
+ 	<if test="Sina != null">
+		and #{Sina} = #{Sina}
+	</if>
+</sql>
+ 
+ <select id="getCompetitionList" parameterType="map" resultMap="ClassResultMap">
+	SELECT 
+		<include refid="sql"></include>
+		FROM wtb_CompetitionApply
+		<where>
+			<include refid="where"></include>
+		</where>
+			order by Competition_CreateTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+<select id="getCompetitionCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_CompetitionApply
+		<where>
+			<include refid="where"></include>
+		</where>
+</select>
+
+</mapper>
+

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.MessagesMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Messages" id="ClassResultMap">
+	<result property="ID" column="Messages_ID"/>
+	<result property="PKID" column="Messages_ID"/>
+	<result property="Title" column="Messages_Title"/>
+	<result property="Content" column="Messages_Content"/>
+	<result property="From" column="Messages_From"/>
+	<result property="CreateTime" column="Messages_CreateTime"/>
+	<result property="ModifyTime" column="Messages_ModifyTime"/>
+	<result property="Status" column="Messages_Status"/>
+	<result property="To" column="Messages_To"/>
+	<result property="IsRead" column="Messages_IsRead"/>
+	<result property="SrcID" column="Messages_SrcID"/>
+	<result property="Type" column="Messages_Type"/>
+	
+	<association property="FromUser" column="Messages_From"
+			select="wtb.core.data.UsersMapper.getUsersListByID" />
+	<association property="ToUser" column="Messages_To"
+			select="wtb.core.data.UsersMapper.getUsersListByID" />
+	<association property="BaseInfo" column="Messages_Status"
+			select="wtb.core.data.BaseInfoMapper.getBaseInfoList" />
+	<!--  association property="Notice" column="Messages_SrcID"
+			select="wtb.core.data.NoticesMapper.getNoticesByID" /-->		
+</resultMap>
+<select id="getMessagesList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Messages_ID,
+  		Messages_Title,
+		Messages_Content,
+		Messages_From,
+		Messages_CreateTime,
+		Messages_ModifyTime,
+		Messages_Status,
+		Messages_To,
+		Messages_IsRead,
+		Messages_SrcID,
+		Messages_Type
+		FROM wtb_Messages
+		<where>
+			1=1
+			<if test="ID != null">
+				and Messages_ID = #{ID}
+			</if>
+			<if test="To != null">
+				and Messages_To = #{To}
+			</if>
+			<if test="IsRead != null">
+				and Messages_IsRead = #{IsRead}
+			</if>
+			<if test="SrcID != null">
+				and Messages_SrcID = #{SrcID}
+			</if>
+			<if test="Status != null">
+				and Messages_Status = #{Status}
+			</if>
+			<if test="Title != null">
+					and Messages_Title like CONCAT(CONCAT('%', #{Title,
+				jdbcType=VARCHAR}),'%')
+					
+				</if>
+		</where>
+		order by Messages_ModifyTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getMessagesCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Messages
+		<where>
+			1=1
+			<if test="ID != null">
+				and Messages_ID = #{ID}
+			</if>
+			<if test="To != null">
+				and Messages_To = #{To}
+			</if>
+			<if test="IsRead != null">
+				and Messages_IsRead = #{IsRead}
+			</if>
+			<if test="SrcID != null">
+				and Messages_SrcID = #{SrcID}
+			</if>
+			<if test="Status != null">
+				and Messages_Status = #{Status}
+			</if>
+				<if test="Title != null">
+					and Messages_Title like CONCAT(CONCAT('%', #{Title,
+				jdbcType=VARCHAR}),'%')
+					
+				</if>
+		</where>
+		
+</select>
+<select id="getMessagesByID" parameterType="long" resultType="wtb.core.model.Messages">
+	SELECT
+		Messages_ID,
+  		Messages_Title,
+		Messages_Content,
+		Messages_From,
+		Messages_CreateTime,
+		Messages_ModifyTime,
+		Messages_Status,
+		Messages_To,
+		Messages_IsRead,
+		Messages_SrcID,
+		Messages_Type
+		FROM wtb_Messages
+		<where>
+			Messages_Status=1
+				<if test="ID != null">
+					and Messages_ID = #{ID}
+				</if>
+				
+		</where>
+</select>
+<insert id="addMessages" parameterType="wtb.core.model.Messages" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Messages (
+			Messages_ID,
+  		Messages_Title,
+		Messages_Content,
+		Messages_From,
+		Messages_CreateTime,
+		Messages_ModifyTime,
+		Messages_Status,
+		Messages_To,
+		Messages_IsRead,
+		Messages_SrcID,
+		Messages_Type
+		) VALUES (
+			#{ID}, #{Title}, #{Content}, #{From},#{CreateTime},#{ModifyTime},#{Status}
+			,#{To},#{IsRead},#{SrcID},#{Type}
+		)
+</insert>
+<update id="updateMessages" parameterType="wtb.core.model.Messages">
+	UPDATE wtb_Messages 
+		SET
+		Messages_ID=#{ID},
+  		Messages_Title=#{Title},
+		Messages_Content=#{Content},
+		Messages_From=#{From},
+		Messages_CreateTime=#{CreateTime},
+		Messages_ModifyTime=#{ModifyTime},
+		Messages_Status=#{Status},
+		Messages_To=#{To},
+		Messages_SrcID=#{SrcID},
+		Messages_IsRead=#{IsRead},
+		Messages_Type=#{Type}
+			where Messages_ID = #{ID}
+</update>
+<delete id="ReadedMessages" parameterType="wtb.core.model.Messages">
+	update  wtb_Messages set Messages_IsRead=1
+			where
+				 Messages_To = #{UserID} and Messages_SrcID = #{SrcID}
+			
+</delete>
+<update id="enabledMessages" parameterType="wtb.core.model.Messages">
+	update  wtb_Messages set Messages_Status=1
+			where
+				 Messages_ID = #{ID}
+			
+</update>
+</mapper>
+
