@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeMoneyRecordMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+     
+<resultMap type="wtb.core.model.WeMoneyRecord" id="ClassResultMap">
+	<result property="ID" column="WeMoneyRecord_ID"/>
+	<result property="PKID" column="WeMoneyRecord_ID"/>
+	<result property="WeMoney" column="WeMoneyRecord_WeMoney"/>
+	<result property="CreateTime" column="WeMoneyRecord_CreateTime"/>
+	<result property="ModifyTime" column="WeMoneyRecord_ModifyTime"/>
+	<result property="Status" column="WeMoneyRecord_Status"/>
+	<result property="UserID" column="WeMoneyRecord_UserID"/>
+	<result property="Deleted" column="WeMoneyRecord_Deleted"/>
+	<result property="Type" column="WeMoneyRecord_Type"/>
+	<result property="Belong" column="WeMoneyRecord_Belong"/>
+	<result property="Reson" column="WeMoneyRecord_Reson"/>
+	<result property="FromUserID" column="WeMoneyRecord_FromUserID"/>
+	<result property="Classify" column="WeMoneyRecord_Classify"/>
+	<result property="RewardLevel" column="WeMoneyRecord_RewardLevel"/>
+	<association property="FromUser" column="WeMoneyRecord_FromUserID" select="wtb.core.data.StudentsMapper.getStudentsByIDNoLink"/>
+	
+</resultMap>
+<select id="getWeMoneyRecordList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		WeMoneyRecord_ID,
+		WeMoneyRecord_WeMoney,
+		WeMoneyRecord_UserID,
+		WeMoneyRecord_Type,
+		WeMoneyRecord_Belong,
+		WeMoneyRecord_Reson,
+		WeMoneyRecord_CreateTime,
+		WeMoneyRecord_FromUserID,
+		WeMoneyRecord_Status,
+		WeMoneyRecord_ModifyTime,
+		WeMoneyRecord_Deleted,
+		WeMoneyRecord_Classify,
+		WeMoneyRecord_RewardLevel
+		FROM wtb_WeMoneyRecord
+		<where>
+			WeMoneyRecord_Status=1
+			<if test="ID != null">
+				and WeMoneyRecord_ID = #{ID}
+			</if>
+			<if test="UserID != null">
+				and WeMoneyRecord_UserID = #{UserID}
+			</if>
+			<if test="Status != null">
+				and WeMoneyRecord_Status = #{Status}
+			</if>
+			<if test="Type != null">
+				and WeMoneyRecord_Type = #{Type}
+			</if>
+			<if test="Reward != null">
+				and (WeMoneyRecord_Type = 2 or WeMoneyRecord_Type = 5)
+			</if>
+			<if test="Belong != null">
+				and WeMoneyRecord_Belong = #{Belong}
+			</if>
+		</where>
+		order by WeMoneyRecord_CreateTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<resultMap type="wtb.core.model.WeMoneyRecord" id="RankingMap">
+	<result property="Belong" column="WeMoneyRecord_Belong"/>
+	<result property="Count" column="count(*)"/>
+	<association property="Notices" column="WeMoneyRecord_Belong" select="wtb.core.data.NoticesMapper.getNoticesByID"/>
+</resultMap>
+<select id="getWeMoneyRecordRankingList" parameterType="map" resultMap="RankingMap">
+	SELECT count(*),wtb_WeMoneyRecord.WeMoneyRecord_Belong
+	FROM
+	wtb_WeMoneyRecord
+	<where>
+		wtb_WeMoneyRecord.WeMoneyRecord_Status != 88 AND
+		wtb_WeMoneyRecord.WeMoneyRecord_Type = 2
+		<if test="startTime!=null and endTime!=null">
+				and  WeMoneyRecord_CreateTime between  #{startTime} and #{endTime}
+		</if>
+	</where>
+	GROUP BY
+		wtb_WeMoneyRecord.WeMoneyRecord_Belong
+	ORDER BY
+		COUNT(*) DESC
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+	
+	<select id="getWeMoneyRecordRankingCount" parameterType="map" resultType="int">
+	SELECT
+	COUNT(*) FROM(
+	SELECT count(*),wtb_WeMoneyRecord.WeMoneyRecord_Belong
+	FROM
+	wtb_WeMoneyRecord
+	<where>
+		wtb_WeMoneyRecord.WeMoneyRecord_Status != 88 AND
+		wtb_WeMoneyRecord.WeMoneyRecord_Type = 2
+		<if test="startTime!=null and endTime!=null">
+				and  WeMoneyRecord_CreateTime between  #{startTime} and #{endTime}
+		</if>
+	</where>
+	GROUP BY
+		wtb_WeMoneyRecord.WeMoneyRecord_Belong
+	ORDER BY
+		COUNT(*) DESC)a
+</select>
+	
+<select id="getWeMoneyRecordCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_WeMoneyRecord
+		<where>
+			WeMoneyRecord_Status=1
+			<if test="ID != null">
+				and WeMoneyRecord_ID = #{ID}
+			</if>
+			<if test="UserID != null">
+				and WeMoneyRecord_UserID = #{UserID}
+			</if>
+			<if test="Status != null">
+				and WeMoneyRecord_Status = #{Status}
+			</if>
+			<if test="Reward != null">
+				and (WeMoneyRecord_Type = 2 or WeMoneyRecord_Type = 5)
+			</if>
+			<if test="Type != null">
+				and WeMoneyRecord_Type = #{Type}
+			</if>
+			<if test="Belong != null">
+				and WeMoneyRecord_Belong = #{Belong}
+			</if>
+		</where>
+		
+</select>
+
+<select id="getWeMoneyRecordSum" parameterType="map" resultType="long">
+	SELECT
+		case count(WeMoneyRecord_WeMoney) when 0 then 0 else sum( WeMoneyRecord_WeMoney) end
+		FROM wtb_WeMoneyRecord
+		<where>
+			WeMoneyRecord_Status=1
+			<if test="ID != null">
+				and WeMoneyRecord_ID = #{ID}
+			</if>
+			<if test="UserID != null">
+				and WeMoneyRecord_UserID = #{UserID}
+			</if>
+			<if test="Status != null">
+				and WeMoneyRecord_Status = #{Status}
+			</if>
+			<if test="Reward != null">
+				and (WeMoneyRecord_Type = 2 or WeMoneyRecord_Type = 5)
+			</if>
+			<if test="Type != null">
+				and WeMoneyRecord_Type = #{Type}
+			</if>
+			<if test="Belong != null">
+				and WeMoneyRecord_Belong = #{Belong}
+			</if>
+		</where>
+		
+</select>
+<select id="getWeMoneyRecordByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		WeMoneyRecord_ID,
+		WeMoneyRecord_WeMoney,
+		WeMoneyRecord_UserID,
+		WeMoneyRecord_Type,
+		WeMoneyRecord_Belong,
+		WeMoneyRecord_Reson,
+		WeMoneyRecord_CreateTime,
+		WeMoneyRecord_FromUserID,
+		WeMoneyRecord_Status,
+		WeMoneyRecord_ModifyTime,
+		WeMoneyRecord_Deleted
+		FROM wtb_WeMoneyRecord
+		<where>
+			WeMoneyRecord_Status=1
+				<if test="ID != null">
+					and WeMoneyRecord_ID = #{ID}
+				</if>
+				
+		</where>
+		order by WeMoneyRecord_CreateTime desc
+		
+</select>
+<insert id="addWeMoneyRecord" parameterType="wtb.core.model.WeMoneyRecord" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_WeMoneyRecord (
+			WeMoneyRecord_ID,
+			WeMoneyRecord_WeMoney,
+			WeMoneyRecord_UserID,
+			WeMoneyRecord_Type,
+			WeMoneyRecord_Belong,
+			WeMoneyRecord_Reson,
+			WeMoneyRecord_CreateTime,
+			WeMoneyRecord_FromUserID,
+			WeMoneyRecord_Status,
+			WeMoneyRecord_ModifyTime,
+			WeMoneyRecord_Deleted,
+			WeMoneyRecord_Classify,
+			WeMoneyRecord_RewardLevel
+		) VALUES (
+			#{ID}, #{WeMoney}, #{UserID},#{Type},#{Belong},#{Reson},now(),#{FromUserID}
+			,#{Status},now(),#{Deleted},#{Classify},#{RewardLevel}
+		)
+</insert>
+<update id="updateWeMoneyRecord" parameterType="wtb.core.model.WeMoneyRecord">
+	UPDATE wtb_WeMoneyRecord 
+		SET
+		
+		WeMoneyRecord_WeMoney=#{WeMoney},
+		WeMoneyRecord_UserID=#{UserID},
+		WeMoneyRecord_Type=#{Type},
+		WeMoneyRecord_Belong=#{Belong},
+		WeMoneyRecord_Reson=#{Reson},
+		WeMoneyRecord_FromUserID=#{FromUserID},
+		WeMoneyRecord_Status=#{Status},
+		WeMoneyRecord_ModifyTime=now(),
+		WeMoneyRecord_Deleted=#{Deleted},
+		WeMoneyRecord_Classify=#{Classify},
+		WeMoneyRecord_RewardLevel=#{RewardLevel}
+		
+		where WeMoneyRecord_ID = #{ID}
+</update>
+<delete id="deleteWeMoneyRecord" parameterType="wtb.core.model.WeMoneyRecord">
+	update  wtb_WeMoneyRecord set WeMoneyRecord_Status=88,WeMoneyRecord_ModifyTime=now()
+			where
+				 WeMoneyRecord_ID = #{ID}
+			
+</delete>
+
+</mapper>
+

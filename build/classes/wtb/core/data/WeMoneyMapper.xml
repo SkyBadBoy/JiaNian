@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeMoneyMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+     
+<insert id="addWeMoney" parameterType="wtb.core.model.WeMoney" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_WeMoney (
+			WeMoney_ID,
+		WeMoney_WeMoney,
+		WeMoney_Status,
+		WeMoney_CreateTime,
+		WeMoney_ModifyTime,
+		WeMoney_UserID,
+		WeMoney_Deleted,
+		WeMoney_ResidualIntegral
+		) VALUES (
+			#{ID}, #{WeMoney}, #{Status},now(),now(),#{UserID}
+			,#{Deleted},#{ResidualIntegral}
+		)
+</insert>
+<update id="updateWeMoney" parameterType="wtb.core.model.WeMoney">
+	UPDATE wtb_WeMoney 
+		SET
+  		WeMoney_WeMoney=#{WeMoney},
+		WeMoney_Status=#{Status},
+		WeMoney_ModifyTime=now(),
+		WeMoney_UserID=#{UserID},
+		WeMoney_Deleted=#{Deleted},
+		WeMoney_ResidualIntegral=#{ResidualIntegral}
+		where WeMoney_ID = #{ID}
+</update>
+<delete id="deleteWeMoney" parameterType="wtb.core.model.WeMoney">
+	update  wtb_WeMoney set WeMoney_Status=88 where WeMoney_ID = #{ID}
+</delete>
+
+
+</mapper>
+

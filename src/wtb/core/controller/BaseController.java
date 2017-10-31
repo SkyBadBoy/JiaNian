@@ -374,7 +374,9 @@ public class BaseController { // 基础控制器
 				break;
 			}
 		}
-		ErrorUtil.HandleError2(String.valueOf(myself != null ? myself.getID() : 0), clazz+"."+method, ex,exception);
+		
+		//先注释掉 错误发送
+		//ErrorUtil.HandleError2(String.valueOf(myself != null ? myself.getID() : 0), clazz+"."+method, ex,exception);
 		request.getRequestDispatcher("/include/500.html").forward(request, response);
 
 	}

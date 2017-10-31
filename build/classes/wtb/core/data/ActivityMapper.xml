@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.ActivityMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<sql id="sql">
+		Activity_ID,
+  		Activity_Title,
+		Activity_Content,
+		Activity_ImageID,
+		Activity_CreateTime,
+		Activity_ModifyTime,
+		Activity_Status,
+		Activity_Hot,
+		Activity_Weight,
+		Activity_WeChatID,
+		Activity_Praise,
+		Activity_EndTime,
+		Activity_Sponsor,
+		Activity_SBrief,
+		Activity_SImage,
+		Activity_ApplyCount,
+		Activity_ApplyLimit,
+		Activity_ApplyMoney,
+		Activity_PayType
+</sql>
+<insert id="addActivity" parameterType="wtb.core.model.Activity" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Activity (
+		<include refid="sql"></include>
+		) VALUES (
+			#{ID}, #{Title}, #{Content}, #{ImageID},now(),now(),#{Status}
+			,#{Hot},#{Weight},#{WeChatID},#{Praise},#{EndTime},#{Sponsor},#{SBrief},#{SImage},#{ApplyCount},#{ApplyLimit},#{ApplyMoney},#{PayType}
+		)
+</insert>
+<update id="updateActivity" parameterType="wtb.core.model.Activity">
+	UPDATE wtb_Activity 
+		SET
+  		Activity_Title=#{Title},
+		Activity_Content=#{Content},
+		Activity_ImageID=#{ImageID},
+		Activity_ModifyTime=now(),
+		Activity_Weight=#{Weight},
+		Activity_WeChatID=#{WeChatID},
+		Activity_Praise=#{Praise},
+		Activity_EndTime=#{EndTime},
+		Activity_Sponsor=#{Sponsor},
+		Activity_SBrief=#{SBrief},
+		Activity_SImage=#{SImage},
+		Activity_ApplyMoney=#{ApplyMoney},
+		Activity_PayType=#{PayType}
+			where Activity_ID = #{ID}
+</update>
+<delete id="deleteActivity" parameterType="wtb.core.model.Activity">
+	update  wtb_Activity set Activity_Status=88
+			where
+				 Activity_ID = #{ID}
+			
+</delete>
+<update id="enabledActivity" parameterType="wtb.core.model.Activity">
+	update  wtb_Activity set Activity_Status=1
+			where
+				 Activity_ID = #{ID}
+			
+</update>
+<update id="TopLevevActivity" parameterType="wtb.core.model.Activity">
+	update  wtb_Activity set Activity_Hot=#{Hot},Activity_ModifyTime=now()
+			where
+				 Activity_ID = #{ID}
+</update>
+<update id="CanCelTopLevevActivity" parameterType="wtb.core.model.Activity">
+	update  wtb_Activity set Activity_Hot=0
+			where
+				 Activity_Hot = 1
+</update>
+<update id="ApplyActivity" parameterType="map">
+	update  wtb_Activity set Activity_ApplyCount=Activity_ApplyCount+1,Activity_ModifyTime=now()
+			where
+				 Activity_ID = #{ID}
+</update>
+
+<update id="CanCelApplyActivity" parameterType="map">
+	update  wtb_Activity set Activity_ApplyCount=Activity_ApplyCount-1,Activity_ModifyTime=now()
+			where
+				 Activity_ID = #{ID}
+</update>
+</mapper>
+

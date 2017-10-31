@@ -659,7 +659,8 @@
 		<script src="<%=basePath %>js/jianianpc/owl.carousel.js"></script>
 		<script src="<%=basePath %>js/jianianpc/jquery.ajaxchimp.min.js"></script>
 		<script src="<%=basePath %>js/jianianpc/script.js"></script>
-		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script src="<%=basePath %>js/jianianpc/swwetalert.min.js"></script>
+	<!-- 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
 		<script type="text/javascript">
 			function a(){
 				console.log("asdf");
@@ -677,7 +678,8 @@
                           'UserName' : UserName,
                           'UserPhone' : UserPhone,
                           'Course' : course,
-                          'Content':content
+                          'Content':content,
+                          'ApplyType':<%=SmBaseGlobal.ApplyWhichType.Official.getid()%>
                     },
                     success : function(obj) {
                     		if(obj.wh_code==0){

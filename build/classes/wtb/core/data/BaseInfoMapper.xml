@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.BaseInfoMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.BaseInfo" id="ClassResultMap">
+	<result property="ID" column="BaseInfo_ID"/>
+	<result property="Name" column="BaseInfo_Name"/>
+	<result property="Memo" column="BaseInfo_Memo"/>
+	<result property="Status" column="BaseInfo_Status"/>
+<result property="ParentID" column="BaseInfo_parentID"/>
+</resultMap>
+<select id="getBaseInfoList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		BaseInfo_ID,
+  BaseInfo_Name,
+  BaseInfo_Memo,
+  BaseInfo_Status,
+  BaseInfo_parentID
+
+		FROM wtb_BaseInfo
+		<where>
+			1=1
+				<if test="_parameter != null">
+					and BaseInfo_ID = #{_parameter}
+				</if>
+				
+		</where>
+</select>
+<select id="getBaseInfoListByID" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		BaseInfo_ID,
+  BaseInfo_Name,
+  BaseInfo_Memo,
+  BaseInfo_Status,
+  BaseInfo_parentID
+
+		FROM wtb_BaseInfo
+		<where>
+			1=1
+				<if test="ID != null">
+					and BaseInfo_ID = #{ID}
+				</if>
+				
+		</where>
+</select>
+<insert id="addBaseInfo" parameterType="wtb.core.model.BaseInfo" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_BaseInfo (
+
+  BaseInfo_Name ,
+  BaseInfo_Memo ,
+  BaseInfo_Status,
+  BaseInfo_parentID
+		) VALUES (
+			#{Name}, #{Memo}, #{Status},#{ParentID}
+		)
+</insert>
+<update id="updateBaseINfo" parameterType="wtb.core.model.BaseInfo">
+	UPDATE wtb_BaseInfo 
+		SET
+		BaseInfo_ID=#{ID}, 
+		BaseInfo_Name=#{Name}, 
+		BaseInfo_Memo=#{Memo}, 
+		BaseInfo_Status=#{Status},
+		BaseInfo_parentID=#{ParentID}
+		
+			where BaseInfo_ID = #{ID}
+</update>
+<delete id="deleteBaseInfo" parameterType="wtb.core.model.BaseInfo">
+	update  wtb_BaseInfo set BaseInfo_Status=88
+			where
+				 BaseInfo_ID = #{ID}
+			
+</delete>
+</mapper>
+

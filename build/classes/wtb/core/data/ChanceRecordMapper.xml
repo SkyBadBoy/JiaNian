@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wtb.core.data.ChanceRecordMapper" >
+  <resultMap id="BaseResultMap" type="wtb.core.model.ChanceRecord" >
+    <id column="record_id" property="recordId" jdbcType="BIGINT" />
+    <result column="record_userid" property="recordUserid" jdbcType="BIGINT" />
+    <result column="record_belongid" property="recordBelongid" jdbcType="BIGINT" />
+    <result column="record_reason" property="recordReason" jdbcType="VARCHAR" />
+    <result column="record_type" property="recordType" jdbcType="INTEGER" />
+    <result column="record_delete" property="recordDelete" jdbcType="INTEGER" />
+    <result column="record_redundancy" property="recordRedundancy" jdbcType="VARCHAR" />
+    <result column="record_createtime" property="recordCreatetime" jdbcType="TIMESTAMP" />
+    <result column="record_modifytime" property="recordModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    record_id, record_userid, record_belongid, record_reason, record_type, record_delete, 
+    record_redundancy, record_createtime, record_modifytime
+  </sql>
+  
+  <!-- by Sheryl -->
+  <insert id="AddNewMessage" parameterType="wtb.core.model.ChanceRecord" >
+    insert into wtb_chancerecord (record_id, record_userid, record_belongid, 
+      record_reason, record_type, record_delete, 
+      record_redundancy, record_createtime, record_modifytime
+      )
+    values (#{recordId,jdbcType=BIGINT}, #{recordUserid,jdbcType=BIGINT}, #{recordBelongid,jdbcType=BIGINT}, 
+      #{recordReason,jdbcType=VARCHAR}, #{recordType,jdbcType=INTEGER}, #{recordDelete,jdbcType=INTEGER}, 
+      #{recordRedundancy,jdbcType=VARCHAR}, now(), now()
+      )
+  </insert>
+  
+  
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wtb_chancerecord
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="wtb.core.model.ChanceRecord" >
+    insert into wtb_chancerecord (record_id, record_userid, record_belongid, 
+      record_reason, record_type, record_delete, 
+      record_redundancy, record_createtime, record_modifytime
+      )
+    values (#{recordId,jdbcType=BIGINT}, #{recordUserid,jdbcType=BIGINT}, #{recordBelongid,jdbcType=BIGINT}, 
+      #{recordReason,jdbcType=VARCHAR}, #{recordType,jdbcType=INTEGER}, #{recordDelete,jdbcType=INTEGER}, 
+      #{recordRedundancy,jdbcType=VARCHAR}, #{recordCreatetime,jdbcType=TIMESTAMP}, #{recordModifytime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="wtb.core.model.ChanceRecord" >
+    insert into wtb_chancerecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        record_id,
+      </if>
+      <if test="recordUserid != null" >
+        record_userid,
+      </if>
+      <if test="recordBelongid != null" >
+        record_belongid,
+      </if>
+      <if test="recordReason != null" >
+        record_reason,
+      </if>
+      <if test="recordType != null" >
+        record_type,
+      </if>
+      <if test="recordDelete != null" >
+        record_delete,
+      </if>
+      <if test="recordRedundancy != null" >
+        record_redundancy,
+      </if>
+      <if test="recordCreatetime != null" >
+        record_createtime,
+      </if>
+      <if test="recordModifytime != null" >
+        record_modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        #{recordId,jdbcType=BIGINT},
+      </if>
+      <if test="recordUserid != null" >
+        #{recordUserid,jdbcType=BIGINT},
+      </if>
+      <if test="recordBelongid != null" >
+        #{recordBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="recordReason != null" >
+        #{recordReason,jdbcType=VARCHAR},
+      </if>
+      <if test="recordType != null" >
+        #{recordType,jdbcType=INTEGER},
+      </if>
+      <if test="recordDelete != null" >
+        #{recordDelete,jdbcType=INTEGER},
+      </if>
+      <if test="recordRedundancy != null" >
+        #{recordRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="recordCreatetime != null" >
+        #{recordCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordModifytime != null" >
+        #{recordModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="wtb.core.model.ChanceRecord" >
+    update wtb_chancerecord
+    <set >
+      <if test="recordUserid != null" >
+        record_userid = #{recordUserid,jdbcType=BIGINT},
+      </if>
+      <if test="recordBelongid != null" >
+        record_belongid = #{recordBelongid,jdbcType=BIGINT},
+      </if>
+      <if test="recordReason != null" >
+        record_reason = #{recordReason,jdbcType=VARCHAR},
+      </if>
+      <if test="recordType != null" >
+        record_type = #{recordType,jdbcType=INTEGER},
+      </if>
+      <if test="recordDelete != null" >
+        record_delete = #{recordDelete,jdbcType=INTEGER},
+      </if>
+      <if test="recordRedundancy != null" >
+        record_redundancy = #{recordRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="recordCreatetime != null" >
+        record_createtime = #{recordCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordModifytime != null" >
+        record_modifytime = #{recordModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="wtb.core.model.ChanceRecord" >
+    update wtb_chancerecord
+    set record_userid = #{recordUserid,jdbcType=BIGINT},
+      record_belongid = #{recordBelongid,jdbcType=BIGINT},
+      record_reason = #{recordReason,jdbcType=VARCHAR},
+      record_type = #{recordType,jdbcType=INTEGER},
+      record_delete = #{recordDelete,jdbcType=INTEGER},
+      record_redundancy = #{recordRedundancy,jdbcType=VARCHAR},
+      record_createtime = #{recordCreatetime,jdbcType=TIMESTAMP},
+      record_modifytime = #{recordModifytime,jdbcType=TIMESTAMP}
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </update>
+</mapper>

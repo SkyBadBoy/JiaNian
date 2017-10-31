@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.ProductMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Product" id="ClassResultMap">
+	<result property="ID" column="Product_ID"/>
+	<result property="PKID" column="Product_ID"/>
+	<result property="Name" column="Product_Name"/>
+	<result property="Content" column="Product_Content"/>
+	<result property="Price" column="Product_Price"/>
+	<result property="Praise" column="Product_Praise"/>
+	<result property="Hot" column="Product_Hot"/>
+	<result property="Specifications" column="Product_Specifications"/>
+	<result property="WeChatID" column="Product_WeChatID"/>
+	<result property="IsNew" column="Product_IsNew"/>
+	<result property="CreateTime" column="Product_CreateTime"/>
+	<result property="ModifyTime" column="Product_ModifyTime"/>
+	<result property="Status" column="Product_Status"/>
+	<result property="Weight" column="Product_Weight"/>
+	<result property="ClickCount" column="Product_ClickCount"/>
+	<result property="ImageID" column="Product_ImageID"/>
+	
+	<association property="Image" column="Product_ImageID"
+			select="wtb.core.data.ProdPictureMapper.getPictureByIDList" />
+	<association property="baseInfo" column="Product_Status"
+			select="wtb.core.data.BaseInfoMapper.getBaseInfoList" />
+	<association property="WeChat" column="Product_WeChatID"
+			select="read.core.data.ReadWeChatPublicMapper.getWeChatPublicForIDList" />
+</resultMap>
+<select id="getProductList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Product_ID,
+		Product_Name,
+		Product_Content,
+		Product_Price,
+		Product_Praise,
+		Product_Hot,
+		Product_Specifications,
+		Product_WeChatID,
+		Product_IsNew,
+		Product_CreateTime,
+		Product_ModifyTime,
+		Product_Status,
+		Product_Weight,
+		Product_ClickCount,
+		Product_ImageID
+		FROM wtb_Product
+		<where>
+			1=1
+				
+				<if test="ID != null">
+					and Product_ID = #{ID}
+				</if>
+				<if test="Status != null">
+					and Product_Status = #{Status}
+				</if>
+				<if test="Name != null">
+					and Product_Name like CONCAT(CONCAT('%', #{Name,
+					jdbcType=VARCHAR}),'%')
+				</if>
+				<if test="WeChatID != null">
+					and Product_WeChatID = #{WeChatID}
+				</if>
+				
+		</where>
+		order by  Product_Weight desc
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+				</if>
+</select>
+
+
+<select id="getProductCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Product
+		<where>
+			1=1
+				
+				<if test="ID != null">
+					and Product_ID = #{ID}
+				</if>
+				<if test="Status != null">
+					and Product_Status = #{Status}
+				</if>
+				<if test="Name != null">
+					and Product_Name like CONCAT(CONCAT('%', #{Name,
+					jdbcType=VARCHAR}),'%')
+				</if>
+				<if test="WeChatID != null">
+					and Product_WeChatID = #{WeChatID}
+				</if>
+				
+		</where>
+		order by  Product_Weight desc
+		
+</select>
+
+
+<select id="getProductByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Product_ID,
+		Product_Name,
+		Product_Content,
+		Product_Price,
+		Product_Praise,
+		Product_Hot,
+		Product_Specifications,
+		Product_WeChatID,
+		Product_IsNew,
+		Product_CreateTime,
+		Product_ModifyTime,
+		Product_Status,
+		Product_Weight,
+		Product_ClickCount,
+		Product_ImageID
+		FROM wtb_Product
+		<where>
+			1=1
+				<if test="_parameter != null">
+					and Product_ID = #{_parameter}
+				</if>
+		</where>
+		order by  Product_Weight desc
+</select>
+<insert id="addProduct" parameterType="wtb.core.model.Product" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Product (
+			Product_ID,
+			Product_Name,
+			Product_Content,
+			Product_Price,
+			Product_Praise,
+			Product_Hot,
+			Product_Specifications,
+			Product_WeChatID,
+			Product_IsNew,
+			Product_CreateTime,
+			Product_ModifyTime,
+			Product_Status,
+			Product_Weight,
+			Product_ClickCount,Product_ImageID
+			
+		) VALUES (
+			#{ID}, #{Name}, #{Content}, #{Price}, #{Praise},#{Hot},#{Specifications}, #{WeChatID}, #{IsNew}, #{CreateTime},#{ModifyTime}
+			,#{Status}, #{Weight}, #{ClickCount}, #{ImageID}
+		)
+</insert>
+<update id="updateProduct" parameterType="wtb.core.model.Product">
+	UPDATE wtb_Product 
+		SET
+		Product_ID=#{ID},
+			Product_Name=#{Name},
+			Product_Content=#{Content},
+			Product_Price=#{Price},
+			Product_Praise=#{Praise},
+			Product_Hot=#{Hot},
+			Product_Specifications=#{Specifications},
+			Product_WeChatID=#{WeChatID},
+			Product_IsNew=#{IsNew},
+			Product_CreateTime=#{CreateTime},
+			Product_ModifyTime=#{ModifyTime},
+			Product_Status=#{Status},
+			Product_Weight=#{Weight},
+			Product_ClickCount=#{ClickCount},
+			Product_ImageID=#{ImageID}
+		
+			where Product_ID = #{ID}
+</update>
+<delete id="deleteProduct" parameterType="wtb.core.model.Product">
+	update  wtb_Product set Product_Status=88
+			where
+				 Product_ID = #{ID}
+			
+</delete>
+<delete id="enabledProduct" parameterType="wtb.core.model.Product">
+	update  wtb_Product set Product_Status=1
+			where
+				 Product_ID = #{ID}
+			
+</delete>
+
+<update id="UpClickCount" parameterType="map">
+	update  wtb_Product set Product_ClickCount=Product_ClickCount+1
+			where
+				 Product_ID = #{ID}
+			
+</update>
+<update id="TopLevevProduct" parameterType="wtb.core.model.Product">
+	update  wtb_Product set Product_Weight=#{Weight},Product_ModifyTime=#{ModifyTime}
+			where
+				 Product_ID = #{ID}
+			
+</update>
+<select id="getProductByMaxList" parameterType="map" resultType="int">
+	SELECT
+		max(Product_Weight)
+		FROM wtb_Product
+		<where>
+			1=1
+				<if test="WeChatID != null">
+					and Product_WeChatID = #{WeChatID}
+				</if>
+		</where>
+		
+</select>
+</mapper>
+

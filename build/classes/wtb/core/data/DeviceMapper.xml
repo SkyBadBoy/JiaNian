@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.DeviceMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<sql id="sql">
+		Device_ID,
+  		Device_Name,
+		Device_UserID,
+		Device_Version,
+		Device_IsUsing,
+		Device_CreateTime,
+		Device_ModifyTime,
+		Device_Status,
+		Device_Type,
+		Device_Model,
+		Device_System,
+		Device_UDID
+</sql>
+<insert id="addDevice" parameterType="wtb.core.model.Device" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Device (
+		<include refid="sql"></include>
+		) VALUES (
+			#{ID}, #{Name}, #{UserID}, #{Version},#{IsUsing},now(),now(),#{Status}
+			,#{Type},#{Model},#{System},#{UDID}
+		)
+</insert>
+<update id="updateDevice" parameterType="wtb.core.model.Device">
+	UPDATE wtb_Device 
+		SET
+  		Device_Name=#{Name},
+		Device_UserID=#{UserID},
+		Device_Version=#{Version},
+		Device_IsUsing=#{IsUsing},
+		Device_ModifyTime=now(),
+		Device_Status=#{Status},
+		Device_Type=#{Type},
+		Device_Model=#{Model},
+		Device_System=#{System},
+		Device_UDID=#{UDID}
+			where Device_ID = #{ID}
+</update>
+<delete id="deleteDevice" parameterType="wtb.core.model.Device">
+	update  wtb_Device set Device_Status=88
+			where
+				 Device_ID = #{ID}
+			
+</delete>
+<delete id="IsNotUsing" parameterType="long">
+	update  wtb_Device set Device_IsUsing=0
+			where
+				 Device_UserID = #{_parameter}
+</delete>
+
+
+</mapper>
+

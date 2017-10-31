@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.AccessActiveMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.AccessActive" id="ClassResultMap">
+	<result property="ID" column="AccessActive_ID"/>
+	<result property="CreateTime" column="AccessActive_CreateTime"/>
+	<result property="Memo" column="AccessActive_Memo"/>
+	<result property="Status" column="AccessActive_Status"/>
+	<result property="Type" column="AccessActive_Type"/>
+	<result property="UserID" column="AccessActive_UserID"/>
+	<result property="IPAddress" column="AccessActive_IPAddress"/>
+	<result property="AccessArea" column="AccessActive_AccessArea"/>
+	<result property="AccessUrl" column="AccessActive_AccessUrl"/>
+	<result property="ModifyTime" column="AccessActive_ModifyTime"/>
+</resultMap>
+<sql id="param">
+	AccessActive_ID,
+	AccessActive_CreateTime,
+	AccessActive_ModifyTime,
+	AccessActive_Status,
+	AccessActive_Memo,
+	AccessActive_UserID,
+	AccessActive_IPAddress,
+	AccessActive_AccessArea,
+	AccessActive_AccessUrl,
+	AccessActive_Type
+</sql>
+
+<insert id="addAccessActive" parameterType="wtb.core.model.AccessActive" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_AccessActive (
+
+  AccessActive_CreateTime,
+	AccessActive_ModifyTime,
+	AccessActive_Status,
+	AccessActive_Memo,
+	AccessActive_UserID,
+	AccessActive_IPAddress,
+	AccessActive_AccessArea,
+	AccessActive_AccessUrl,
+	AccessActive_Type
+		) VALUES (
+			now(),now(), #{Status}, #{Memo},#{UserID},#{IPAddress},#{AccessArea},#{AccessUrl},#{Type}
+		)
+</insert>
+
+<update id="updateAccessActive" parameterType="wtb.core.model.AccessActive">
+	UPDATE wtb_AccessActive 
+		SET
+		AccessActive_Memo=#{Memo}, 
+		AccessActive_Status=#{Status},
+		AccessActive_Type=#{Type},
+		AccessActive_ModifyTime=now(),
+		AccessActive_UserID=#{UserID},
+		AccessActive_IPAddress=#{IPAddress},
+		AccessActive_AccessArea=#{AccessArea},
+		AccessActive_AccessUrl=#{AccessUrl}
+		where AccessActive_ID = #{ID}
+</update>
+<delete id="deleteAccessActive" parameterType="wtb.core.model.AccessActive">
+	update  wtb_AccessActive set AccessActive_Status=88,AccessActive_ModifyTime=now()
+			where
+				 AccessActive_ID = #{ID}
+			
+</delete>
+</mapper>
+

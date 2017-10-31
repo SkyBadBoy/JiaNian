@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.QuestionStatMapper">
+
+
+    <insert id="addQuestionStat" parameterType="wtb.core.model.QuestionStat" keyProperty="QuestionStatID" useGeneratedKeys="true">
+        INSERT INTO wtb_QuestionStats (
+       QuestionStat_ID,
+		QuestionStat_Status,
+		QuestionStat_Memo,
+		QuestionStat_CreateTime,
+		QuestionStat_ModifyTIme,
+		QuestionStat_Version,
+		QuestionStat_StudentID,
+		QuestionStat_RightCount,
+		QuestionStat_FailCount,
+		QuestionStat_Type,
+		QuestionStat_Integral
+        ) VALUES (
+        #{ID}, #{Status}, #{Memo}, NOW(),
+        NOW(), #{Version}, #{StudentID}, #{RightCount}, #{FailCount}, #{Type}, #{Integral}
+        )
+    </insert>
+
+    <update id="changeQuestionStat" parameterType="wtb.core.model.QuestionStat">
+        UPDATE wtb_QuestionStats SET
+       QuestionStat_Status = #{Status},
+		QuestionStat_Memo = #{Memo},
+		QuestionStat_ModifyTIme = NOW(),
+		QuestionStat_Version = QuestionStat_Version + 1,
+		QuestionStat_StudentID = #{StudentID},
+		QuestionStat_Type = #{Type},
+		QuestionStat_Integral = #{Integral}
+		 WHERE QuestionStat_ID = #{ID}  
+    </update>
+
+    <delete id="removeQuestionStat" parameterType="wtb.core.model.QuestionStat">
+        UPDATE wtb_QuestionStats SET
+        QuestionStat_Status =88, QuestionStat_ModifyTime = NOW(),
+        QuestionStat_Version = QuestionStat_Version + 1
+        WHERE QuestionStat_ID = #{ID} 
+    </delete>
+ <update id="changeQuestionStatRightCount" parameterType="wtb.core.model.QuestionStat">
+        UPDATE wtb_QuestionStats SET
+        
+        <if test="RightCount == 0 ">
+            QuestionStat_FailCount=QuestionStat_FailCount+1,
+        </if>
+        <if test="RightCount == 1 ">
+            QuestionStat_RightCount=QuestionStat_RightCount+1,
+        </if>
+         <if test="Integral == 1 ">
+            QuestionStat_Integral=QuestionStat_Integral+1,
+        </if>
+        QuestionStat_ModifyTIme = NOW()
+        WHERE QuestionStat_ID = #{ID} 
+    </update>
+    
+    
+</mapper>

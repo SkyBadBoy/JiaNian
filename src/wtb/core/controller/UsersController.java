@@ -541,9 +541,14 @@ public class UsersController extends BaseController {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView Checklogin(@ModelAttribute("usersForm") Users users, BindingResult result, HttpServletResponse response, HttpSession session,
-			Model model) {
-
-		return new ModelAndView(SmBaseGlobal.BaseViewPath + "login");
+			Model model,HttpServletRequest req) {
+		Users user = (Users) req.getSession().getAttribute("UserName");
+		if (user!=null) {
+			return new ModelAndView(SmBaseGlobal.BaseViewPath + "index");
+		}else {
+			return new ModelAndView(SmBaseGlobal.BaseViewPath + "login");
+		}
+		
 	}
 
 	@RequestMapping(value = "/phonechangepassword", method = RequestMethod.GET)

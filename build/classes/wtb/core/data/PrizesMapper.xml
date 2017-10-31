@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="wtb.core.data.PrizesMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.Prizes" >
+    <id column="prize_id" property="ID" jdbcType="BIGINT" />
+	<result column="prize_id" property="PKID" jdbcType="BIGINT"/>
+	<result column="prize_totalprobability" property="totalProbability" jdbcType="DECIMAL" />
+    <result column="prize_probability" property="prizeProbability" jdbcType="DECIMAL" />
+    <result column="prize_total" property="prizeTotal" jdbcType="INTEGER" />
+    <result column="prize_usecount" property="prizeUsecount" jdbcType="INTEGER" />
+    <result column="prize_residuecount" property="prizeResiduecount" jdbcType="INTEGER" />
+    <result column="prize_notusecount" property="prizeNotusecount" jdbcType="INTEGER" />
+    <result column="prize_merchantid" property="prizeMerchantid" jdbcType="BIGINT" />
+    <result column="prize_vaildstarttime" property="prizeVaildstarttime" jdbcType="TIMESTAMP" />
+    <result column="prize_vaildendtime" property="prizeVaildendtime" jdbcType="TIMESTAMP" />
+    <result column="prize_rolltitle" property="prizeRolltitle" jdbcType="VARCHAR" />
+    <result column="prize_rolldetails" property="prizeRolldetails" jdbcType="VARCHAR" />
+    <result column="prize_rollremark" property="prizeRollremark" jdbcType="VARCHAR" />
+    <result column="prize_discount" property="prizeDiscount" jdbcType="DECIMAL" />
+    <result column="prize_type" property="prizeType" jdbcType="INTEGER" />
+    <result column="prize_delete" property="prizeDelete" jdbcType="INTEGER" />
+    <result column="prize_redundancy" property="prizeRedundancy" jdbcType="VARCHAR" />
+    <result column="prize_createtime" property="prizeCreatetime" jdbcType="TIMESTAMP" />
+    <result column="prize_modifytime" property="prizeModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    prize_id, prize_totalprobability, prize_probability, prize_total, prize_usecount, prize_residuecount, prize_notusecount, 
+    prize_merchantid, prize_vaildstarttime, prize_vaildendtime, prize_rolltitle, prize_rolldetails, 
+    prize_rollremark, prize_discount, prize_type, prize_delete, prize_redundancy, prize_createtime, 
+    prize_modifytime
+  </sql>
+  
+  <!-- by Sheryl -->
+ <update id="CutPrizeCount" parameterType="wtb.core.model.Prizes" >
+    update wtb_prizes
+    <set >
+        prize_residuecount = prize_residuecount - 1
+    </set>
+    where prize_id = #{ID,jdbcType=BIGINT} 
+    <!-- AND UNIX_TIMESTAMP(NOW()) BETWEEN UNIX_TIMESTAMP(prize_vaildstarttime) AND UNIX_TIMESTAMP(prize_vaildendtime) -->
+    LIMIT 1
+  </update> 
+  
+ 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wtb_prizes
+    where prize_id = #{ID,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="wtb.core.model.Prizes" >
+    insert into wtb_prizes (prize_id, prize_totalprobability, prize_probability, prize_total, 
+      prize_usecount, prize_residuecount, prize_notusecount, 
+      prize_merchantid, prize_vaildstarttime, prize_vaildendtime, 
+      prize_rolltitle, prize_rolldetails, prize_rollremark, 
+      prize_discount, prize_type, prize_delete, prize_redundancy, 
+      prize_createtime, prize_modifytime)
+    values (#{ID,jdbcType=BIGINT}, #{totalProbability,jdbcType=DECIMAL}, #{prizeProbability,jdbcType=DECIMAL}, #{prizeTotal,jdbcType=INTEGER}, 
+      #{prizeUsecount,jdbcType=INTEGER}, #{prizeResiduecount,jdbcType=INTEGER}, #{prizeNotusecount,jdbcType=INTEGER}, 
+      #{prizeMerchantid,jdbcType=BIGINT}, #{prizeVaildstarttime,jdbcType=TIMESTAMP}, #{prizeVaildendtime,jdbcType=TIMESTAMP}, 
+      #{prizeRolltitle,jdbcType=VARCHAR}, #{prizeRolldetails,jdbcType=VARCHAR}, #{prizeRollremark,jdbcType=VARCHAR}, 
+      #{prizeDiscount,jdbcType=DECIMAL}, #{prizeType,jdbcType=INTEGER}, #{prizeDelete,jdbcType=INTEGER},#{prizeRedundancy,jdbcType=VARCHAR}, 
+      #{prizeCreatetime,jdbcType=TIMESTAMP}, #{prizeModifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="wtb.core.model.Prizes" >
+    insert into wtb_prizes
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ID != null" >
+        prize_id,
+      </if>
+      <if test="totalProbability != null" >
+        prize_totalprobability,
+      </if>
+      <if test="prizeProbability != null" >
+        prize_probability,
+      </if>
+      <if test="prizeTotal != null" >
+        prize_total,
+      </if>
+      <if test="prizeUsecount != null" >
+        prize_usecount,
+      </if>
+      <if test="prizeResiduecount != null" >
+        prize_residuecount,
+      </if>
+      <if test="prizeNotusecount != null" >
+        prize_notusecount,
+      </if>
+      <if test="prizeMerchantid != null" >
+        prize_merchantid,
+      </if>
+      <if test="prizeVaildstarttime != null" >
+        prize_vaildstarttime,
+      </if>
+      <if test="prizeVaildendtime != null" >
+        prize_vaildendtime,
+      </if>
+      <if test="prizeRolltitle != null" >
+        prize_rolltitle,
+      </if>
+      <if test="prizeRolldetails != null" >
+        prize_rolldetails,
+      </if>
+      <if test="prizeRollremark != null" >
+        prize_rollremark,
+      </if>
+      <if test="prizeDiscount != null" >
+        prize_discount,
+      </if>
+      <if test="prizeType != null" >
+        prize_type,
+      </if>
+      <if test="prizeDelete != null" >
+        prize_delete,
+      </if>
+      <if test="prizeRedundancy != null" >
+        prize_redundancy,
+      </if>
+      <if test="prizeCreatetime != null" >
+        prize_createtime,
+      </if>
+      <if test="prizeModifytime != null" >
+        prize_modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ID != null" >
+        #{ID,jdbcType=BIGINT},
+      </if>
+      <if test="totalProbability != null" >
+        #{totalProbability,jdbcType=DECIMAL},
+      </if>
+      <if test="prizeProbability != null" >
+        #{prizeProbability,jdbcType=DECIMAL},
+      </if>
+      <if test="prizeTotal != null" >
+        #{prizeTotal,jdbcType=INTEGER},
+      </if>
+      <if test="prizeUsecount != null" >
+        #{prizeUsecount,jdbcType=INTEGER},
+      </if>
+      <if test="prizeResiduecount != null" >
+        #{prizeResiduecount,jdbcType=INTEGER},
+      </if>
+      <if test="prizeNotusecount != null" >
+        #{prizeNotusecount,jdbcType=INTEGER},
+      </if>
+      <if test="prizeMerchantid != null" >
+        #{prizeMerchantid,jdbcType=BIGINT},
+      </if>
+      <if test="prizeVaildstarttime != null" >
+        #{prizeVaildstarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prizeVaildendtime != null" >
+        #{prizeVaildendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prizeRolltitle != null" >
+        #{prizeRolltitle,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeRolldetails != null" >
+        #{prizeRolldetails,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeRollremark != null" >
+        #{prizeRollremark,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeDiscount != null" >
+        #{prizeDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="prizeType != null" >
+        #{prizeType,jdbcType=INTEGER},
+      </if>
+      <if test="prizeDelete != null" >
+        #{prizeDelete,jdbcType=INTEGER},
+      </if>
+      <if test="prizeRedundancy != null" >
+        #{prizeRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeCreatetime != null" >
+        #{prizeCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prizeModifytime != null" >
+        #{prizeModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="wtb.core.model.Prizes" >
+    update wtb_prizes
+    <set >
+    <if test="totalProbability != null" >
+        prize_totalprobability = #{totalProbability,jdbcType=DECIMAL},
+      </if>
+      <if test="prizeProbability != null" >
+        prize_probability = #{prizeProbability,jdbcType=DECIMAL},
+      </if>
+      <if test="prizeTotal != null" >
+        prize_total = #{prizeTotal,jdbcType=INTEGER},
+      </if>
+      <if test="prizeUsecount != null" >
+        prize_usecount = #{prizeUsecount,jdbcType=INTEGER},
+      </if>
+      <if test="prizeResiduecount != null" >
+        prize_residuecount = #{prizeResiduecount,jdbcType=INTEGER},
+      </if>
+      <if test="prizeNotusecount != null" >
+        prize_notusecount = #{prizeNotusecount,jdbcType=INTEGER},
+      </if>
+      <if test="prizeMerchantid != null" >
+        prize_merchantid = #{prizeMerchantid,jdbcType=BIGINT},
+      </if>
+      <if test="prizeVaildstarttime != null" >
+        prize_vaildstarttime = #{prizeVaildstarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prizeVaildendtime != null" >
+        prize_vaildendtime = #{prizeVaildendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prizeRolltitle != null" >
+        prize_rolltitle = #{prizeRolltitle,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeRolldetails != null" >
+        prize_rolldetails = #{prizeRolldetails,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeRollremark != null" >
+        prize_rollremark = #{prizeRollremark,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeDiscount != null" >
+        prize_discount = #{prizeDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="prizeType != null" >
+        prize_type = #{prizeType,jdbcType=INTEGER},
+      </if>
+      <if test="prizeDelete != null" >
+        prize_delete = #{prizeDelete,jdbcType=INTEGER},
+      </if>
+      <if test="prizeRedundancy != null" >
+        prize_redundancy = #{prizeRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeCreatetime != null" >
+        prize_createtime = #{prizeCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prizeModifytime != null" >
+        prize_modifytime = #{prizeModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where prize_id = #{ID,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="wtb.core.model.Prizes" >
+    update wtb_prizes
+    set prize_totalprobability = #{totalProbability,jdbcType=DECIMAL},
+      prize_probability = #{prizeProbability,jdbcType=DECIMAL},
+      prize_total = #{prizeTotal,jdbcType=INTEGER},
+      prize_usecount = #{prizeUsecount,jdbcType=INTEGER},
+      prize_residuecount = #{prizeResiduecount,jdbcType=INTEGER},
+      prize_notusecount = #{prizeNotusecount,jdbcType=INTEGER},
+      prize_merchantid = #{prizeMerchantid,jdbcType=BIGINT},
+      prize_vaildstarttime = #{prizeVaildstarttime,jdbcType=TIMESTAMP},
+      prize_vaildendtime = #{prizeVaildendtime,jdbcType=TIMESTAMP},
+      prize_rolltitle = #{prizeRolltitle,jdbcType=VARCHAR},
+      prize_rolldetails = #{prizeRolldetails,jdbcType=VARCHAR},
+      prize_rollremark = #{prizeRollremark,jdbcType=VARCHAR},
+      prize_discount = #{prizeDiscount,jdbcType=DECIMAL},
+      prize_type = #{prizeType,jdbcType=INTEGER},
+      prize_delete = #{prizeDelete,jdbcType=INTEGER},
+      prize_redundancy = #{prizeRedundancy,jdbcType=VARCHAR},
+      prize_createtime = #{prizeCreatetime,jdbcType=TIMESTAMP},
+      prize_modifytime = #{prizeModifytime,jdbcType=TIMESTAMP}
+    where prize_id = #{ID,jdbcType=BIGINT}
+  </update>
+</mapper>

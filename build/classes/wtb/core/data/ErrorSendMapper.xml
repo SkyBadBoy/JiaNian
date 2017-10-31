@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.ErrorSendMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.ErrorSend" id="ClassResultMap">
+	<result property="ID" column="Send_ID"/> 
+	<result property="PKID" column="Send_ID"/> 
+	<result property="Account" column="Send_Account"/>
+	<result property="Message" column="Send_Message"/>
+	<result property="Status" column="Send_Status"/>
+	<result property="IsStatus" column="Send_IsStatus"/>
+	<result property="CreateTime" column="Send_CreateTime"/>
+	<result property="Count" column="Send_Count"/>
+	<result property="Type" column="Send_Type"/>
+	<result property="Phone" column="Send_Phone"/>
+</resultMap>
+
+<select id="getErrorSendList" parameterType="map" resultMap="ClassResultMap">
+	SELECT 
+		Send_ID,
+		Send_Account,
+		Send_Message,
+		Send_Status,
+		case Send_Status when 1 then "开启" else "禁止" end as Send_IsStatus,
+		Send_CreateTime,
+		Send_Count,Send_Type,Send_Phone
+		
+	FROM wtb_errorsend 
+	<where>
+		1=1 and Send_Status!=88
+		<if test="Status!=null">
+			and  Send_Status=#{Status}
+		</if>
+		<if test="ID!=null">
+			and  Send_ID=#{ID}
+		</if>
+		<if test="Type!=null">
+			and  Send_Type=#{Type}
+		</if>
+	</where>
+	ORDER BY Send_Status DESC,Send_CreateTime DESC
+</select>
+<select id="getErrorSendCount" parameterType="map" resultType="int">
+	select COUNT(1) from wtb_errorsend
+		<where>
+		1=1 and Send_Status!=88
+		<if test="Status!=null">
+			and  Send_Status=#{Status}
+		</if>
+		<if test="Type!=null">
+			and  Send_Type=#{Type}
+		</if>
+	</where>
+</select>
+<insert id="addErrorSend" parameterType="wtb.core.model.ErrorSend" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_errorsend(
+	Send_ID, 
+	Send_Account,
+	Send_Message,
+	Send_Status,
+	Send_CreateTime,
+	Send_Count,Send_Type,Send_Phone
+				) VALUES 
+				(#{ID},#{Account},#{Message},#{Status},now(),#{Count},#{Type},#{Phone})
+</insert>
+
+<delete id="deleteErrorSend" parameterType="wtb.core.model.ErrorSend" >
+	update  wtb_errorsend set Send_Status=88
+			where
+				 Send_ID = #{ID}
+</delete>
+<update id="updateErrorSend" parameterType="wtb.core.model.ErrorSend">
+	update  wtb_errorsend set
+			Send_ID=#{ID}, 
+			Send_Account=#{Account},
+			Send_Message=#{Message},
+			Send_Status=#{Status},
+			Send_CreateTime=#{CreateTime},
+			Send_Count=#{Count},
+			Send_Type=#{Type},
+			Send_Phone=#{Phone}
+			where
+				 Send_ID = #{ID}
+</update>
+</mapper>

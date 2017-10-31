@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.NoticesMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+
+<sql id="params">
+		Notices_ID,
+  		Notices_Title,
+		Notices_Content,
+		Notices_PublishUser,
+		Notices_CreateTime,
+		Notices_ModifyTime,
+		Notices_Status,
+		Notices_Author,
+		Notices_Type,
+		Notices_ImageID,
+		Notices_AreaID,
+		Notices_ClickCount,
+		Notices_IsDel,
+		Notices_Region,
+		Notices_IsCity,
+		Notices_IsPro,
+		Notices_WhoSend,
+		Notices_Like,
+		Notices_IsActivity,
+		Notices_VoteCount,
+		Notices_VoteID,
+		Notices_ShareCount,
+		Notices_CaptainComment,
+		Notices_Memo,
+		Notices_IsTop,
+		Notices_ContentType
+</sql>
+
+
+<update id="UpClickCount" parameterType="map">
+	update  wtb_Notices set Notices_ClickCount=Notices_ClickCount+1
+			where
+				 Notices_ID = #{ID}
+</update>
+
+<update id="UpVoteCount" parameterType="map">
+	update  wtb_Notices set Notices_VoteCount=Notices_VoteCount+1
+			where
+				 Notices_ID = #{ID}
+</update>
+
+
+
+<insert id="addNotices" parameterType="wtb.core.model.Notices" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Notices (
+			<include refid="params"></include>
+		) VALUES (
+			#{ID}, #{Title}, #{Content}, #{PublishUser},now(),now(),#{Status}
+			,#{Author},#{Type},#{ImageID},#{AreaID},0,#{IsDel},#{Region},#{IsCity},#{IsPro},#{WhoSend},0,#{IsActivity},0,#{VoteID},0,#{CaptainComment},#{Memo},#{IsTop},#{ContentType}
+		)
+</insert>
+<update id="updateNotices" parameterType="wtb.core.model.Notices">
+	UPDATE wtb_Notices 
+		SET
+  		Notices_Title=#{Title},
+		Notices_Content=#{Content},
+		Notices_PublishUser=#{PublishUser},
+		Notices_ModifyTime=now(),
+		Notices_Status=#{Status},
+		Notices_Author=#{Author},
+		Notices_Type=#{Type},
+		Notices_AreaID=#{AreaID},
+		Notices_ImageID=#{ImageID},
+		Notices_ClickCount=#{ClickCount},
+		Notices_IsDel=#{IsDel},
+		Notices_IsSchool=#{IsSchool},
+		Notices_Region=#{Region},
+		Notices_IsCity=#{IsCity},
+		Notices_IsPro=#{IsPro},
+		Notices_Like=#{Like},
+		Notices_IsActivity = #{IsActivity},
+		Notices_ClickCountTemp = #{ClickCountTemp},
+		Notices_VoteCount=#{VoteCount},
+		Notices_VoteID=#{VoteID},
+		Notices_CaptainComment=#{CaptainComment},
+		Notices_Memo=#{Memo},
+		Notices_ContentType=#{ContentType}
+			where Notices_ID = #{ID}
+</update>
+
+<!-- 这个sql与更新新闻的区别在于创建时间 -->
+<update id="updateNoticesDraft" parameterType="wtb.core.model.Notices">
+	UPDATE wtb_Notices 
+		SET
+  		Notices_Title=#{Title},
+		Notices_Content=#{Content},
+		Notices_PublishUser=#{PublishUser},
+		Notices_ModifyTime=now(),
+		Notices_CreateTime=now(),
+		Notices_Status=#{Status},
+		Notices_Author=#{Author},
+		Notices_Type=#{Type},
+		Notices_AreaID=#{AreaID},
+		Notices_ImageID=#{ImageID},
+		Notices_ClickCount=#{ClickCount},
+		Notices_IsDel=#{IsDel},
+		Notices_IsSchool=#{IsSchool},
+		Notices_Region=#{Region},
+		Notices_IsCity=#{IsCity},
+		Notices_IsPro=#{IsPro},
+		Notices_Like=#{Like},
+		Notices_IsActivity = #{IsActivity},
+		Notices_ClickCountTemp = #{ClickCountTemp},
+		Notices_VoteCount=#{VoteCount},
+		Notices_VoteID=#{VoteID},
+		Notices_CaptainComment=#{CaptainComment},
+		Notices_Memo=#{Memo},
+		Notices_ContentType=#{ContentType}
+			where Notices_ID = #{ID}
+</update>
+
+<update id="updateNoticesActivity" parameterType="wtb.core.model.Notices">
+	UPDATE wtb_Notices 
+		SET
+		Notices_IsActivity =#{IsActivity},
+		Notices_VoteID =#{VoteID}
+			where Notices_ID = #{ID}
+</update>
+
+<delete id="deleteNotices" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set Notices_Status=88,Notices_IsTop=0,Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{ID}
+			
+</delete>
+<delete id="deleteNoticesisDel" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set Notices_IsDel=88,Notices_IsTop=0,Notices_ModifyTime=now(),Notices_Status=88
+			where
+				 Notices_ID = #{ID}
+			
+</delete>
+<update id="enabledNotices" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set Notices_Status=1,Notices_IsTop=1,Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{ID}
+			
+</update>
+<update id="NoPassNotices" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set  Notices_Status=8,Notices_IsTop=0,Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{ID}
+			
+</update>
+<update id="ApplyNotices" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set  Notices_Status=7,Notices_IsTop=0,Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{ID}
+</update>
+<update id="UpDateClickCount" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set Notices_ClickCount=Notices_ClickCount+1,Notices_ClickCountTemp=Notices_ClickCountTemp+1,Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{ID}
+</update>
+<update id="UpDateClickCountTempCount" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set Notices_ClickCountTemp=#{ClickCountTemp},Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{ID}
+			
+</update>
+<update id="UpDateLikeCount" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set Notices_Like=Notices_Like+1,Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{_parameter}
+			
+</update>
+<update id="CancelLikeCount" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set  Notices_Like=Notices_Like-1,Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{_parameter}
+			
+</update>
+
+<update id="UpDateCommentCount" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set Notices_CommentCount=Notices_CommentCount+1,Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{_parameter}
+			
+</update>
+<update id="CancelCommentCount" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set  Notices_CommentCount=Notices_CommentCount-1,Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{_parameter}
+			
+</update>
+
+<update id="UpdateAreaIDForStudents" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set  Notices_AreaID=#{AreaID},Notices_ModifyTime=now()
+			where
+				 Notices_PublishUser = #{PublishUser} and Notices_Status=1
+			
+</update>
+<update id="UpdateAuthorForStudents" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set  Notices_Author=#{Author},Notices_ModifyTime=now()
+			where
+				 Notices_PublishUser = #{PublishUser} and Notices_Status=1
+			
+</update>
+<update id="updateNoticeSortByAreaId" parameterType="map">
+	UPDATE `wtb_Notices` 
+	<if test="school ==1">
+		SET 
+		`Notices_IsSchool`=1,
+		`Notices_Region`=0,
+		`Notices_IsCity`=0,
+		`Notices_IsPro`=0 
+		where Notices_AreaID=#{AreaID} and TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW()) and `Notices_Status`=1
+	</if>
+	
+	<if test="school==2">
+		SET `Notices_Region`=1
+			where 
+			`Notices_ID`IN(SELECT n.`Notices_ID` FROM(select Notices_ID from wtb_Notices where TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW()) and `Notices_AreaID`=#{AreaID} and `Notices_Status`=1 and Notices_IsSchool=1 order by Notices_CreateTime desc,Notices_ClickCount desc limit 0,5)as n)
+	</if>
+	<if test="school==3">
+		SET `Notices_IsCity`=1
+			WHERE 
+			`Notices_ID`IN(SELECT n.`Notices_ID` FROM(select Notices_ID from wtb_Notices where TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW()) and `Notices_AreaID`=#{AreaID} and `Notices_Status`=1 and `Notices_Region`=1 order by Notices_CreateTime desc,Notices_ClickCount desc limit 0,5)as n)
+	</if>
+	<if test="school==4">
+		SET `Notices_IsPro`=1
+			WHERE 
+			`Notices_ID`IN(SELECT n.`Notices_ID` FROM(select Notices_ID from wtb_Notices where TO_DAYS(`Notices_CreateTime`) = TO_DAYS(NOW()) and `Notices_AreaID`=#{AreaID} and `Notices_Status`=1 and `Notices_IsCity`=1 order by Notices_CreateTime desc,Notices_ClickCount desc limit 0,5)as n)
+	</if>
+	
+</update>
+
+<update id="UpdateForAreaLevel" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set Notices_ID=Notices_ID
+	<if test="IsPro!=null">
+		,Notices_IsPro=#{IsPro}
+	</if>
+	<if test="IsCity!=null">
+		,Notices_IsCity=#{IsCity}
+	</if>
+	<if test="Region!=null">
+		,Notices_Region=#{Region}
+	</if>
+	<if test="IsSchool!=null">
+		,Notices_IsSchool=#{IsSchool}
+	</if>
+	<if test="IsDel!=null">
+		,Notices_IsDel=#{IsDel}
+	</if>
+	
+			where
+				 Notices_ID = #{ID}
+			
+</update>
+<update id="UpShareCount" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set  Notices_ShareCount=Notices_ShareCount+1,Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{_parameter}
+			
+</update>
+
+<update id="UpdateCaptainComment" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set  Notices_CaptainComment=#{CaptainComment},Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{ID}
+			
+</update>
+
+<update id="UpdateTop" parameterType="wtb.core.model.Notices">
+	update  wtb_Notices set  Notices_IsTop=#{IsTop},Notices_ModifyTime=now()
+			where
+				 Notices_ID = #{ID}
+			
+</update>
+</mapper>
+

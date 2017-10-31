@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.VideoMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<sql id="params">
+	Video_ID,
+ 	Video_Title,
+	Video_Content,
+	Video_ImageID,
+	Video_CreateTime,
+	Video_ModifyTime,
+	Video_Status,
+	Video_Weight,
+	Video_WeChatID,
+	Video_Praise,
+	Video_VID,
+	Video_Url,
+	Video_AreaID,
+	Video_UserID,
+	Video_VoteCount,
+	Video_VoteID,
+	Video_LikeCount,
+	Video_IsActivity,
+	Video_UserType,
+	Video_AreaName,
+	Video_ClickCount,
+	Video_Hot,
+	Video_CommentCount,
+	Video_Type,
+	Video_BelongID,
+	Video_FileSize,
+	Video_FileTime
+</sql>
+<sql id="where">
+	<if test="ID != null">
+		and Video_ID = #{ID}
+	</if>
+	<if test="AreaID != null and Supper==null">
+		and Video_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_AreaID=#{AreaID})
+	</if>
+	<if test="AreaID != null and Supper!=null">
+		and (Video_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_AreaID=#{AreaID}) or Video_WeChatID=0)
+	</if>
+	<if test="WeChatID != null">
+		and Video_WeChatID =#{WeChatID}
+	</if>
+	<if test="Status != null">
+		and Video_Status = #{Status}
+	</if>
+	<if test="Hot != null">
+		and Video_Hot = #{Hot}
+		
+	</if>
+	<if test="Title != null">
+		and Video_Title like CONCAT(CONCAT('%', #{Title,
+		jdbcType=VARCHAR}),'%')
+		
+	</if>
+</sql>
+
+<insert id="addVideo" parameterType="wtb.core.model.Video" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Video (
+			<include refid="params"></include>
+		) VALUES (
+			#{ID}, #{Title}, #{Content}, #{ImageID},now(),now(),#{Status}
+			,#{Weight},#{WeChatID},#{Praise},#{VID},#{Url},#{AreaID},#{UserID},0,#{VoteID},0,#{IsActivity},#{UserType},#{AreaName},0,0,0,#{Type},#{BelongID},#{FileSize},#{FileTime}
+		)
+</insert>
+<update id="updateVideo" parameterType="wtb.core.model.Video">
+	UPDATE wtb_Video 
+		SET
+  		Video_Title=#{Title},
+		Video_Content=#{Content},
+		Video_ImageID=#{ImageID},
+		Video_ModifyTime=now(),
+		Video_Status=#{Status},
+		Video_VID=#{VID},
+		Video_Url=#{Url},
+		Video_Weight=#{Weight},
+		Video_WeChatID=#{WeChatID},
+		Video_ClickCount=#{ClickCount},
+		Video_Praise=#{Praise},
+		Video_AreaID=#{AreaID},
+		Video_UserID=#{UserID},
+		Video_VoteCount=#{VoteCount},
+		Video_VoteID=#{VoteID},
+		Video_LikeCount=#{LikeCount},
+		Video_IsActivity=#{IsActivity},
+		Video_UserType=#{UserType},
+		Video_AreaName=#{AreaName},
+		Video_Hot=#{Hot},
+		Video_Type=#{Type},
+		Video_BelongID = #{BelongID},
+		Video_FileSize=#{FileSize},
+		Video_FileTime=#{FileTime}
+			where Video_ID = #{ID}
+</update>
+<delete id="deleteVideo" parameterType="wtb.core.model.Video">
+	update  wtb_Video set Video_Status=88,Video_ModifyTime=now()
+			where
+				 Video_ID = #{ID}
+			
+</delete>
+<update id="enabledVideo" parameterType="wtb.core.model.Video">
+	update  wtb_Video set Video_Status=1,Video_ModifyTime=now()
+			where
+				 Video_ID = #{ID}
+			
+</update>
+<update id="UpClickCount" parameterType="map">
+	update  wtb_Video set Video_ClickCount=Video_ClickCount+1,Video_ModifyTime=now()
+			where
+				 Video_ID = #{ID}
+</update>
+<update id="UpLikeCount" parameterType="wtb.core.model.Video">
+	update  wtb_Video set Video_LikeCount=Video_LikeCount+1,Video_ModifyTime=now()
+			where
+				 Video_ID = #{_parameter}
+</update>
+<update id="UpVoteCount" parameterType="wtb.core.model.Video">
+	update  wtb_Video set Video_VoteCount=Video_VoteCount+1,Video_ModifyTime=now()
+			where
+				 Video_ID = #{_parameter}
+</update>
+<update id="CancelLikeCount" parameterType="wtb.core.model.Video">
+		update  wtb_Video set Video_LikeCount=Video_LikeCount-1,Video_ModifyTime=now()
+			where
+				 Video_ID =  #{_parameter}
+			
+</update>
+<update id="SetHotVideo" parameterType="wtb.core.model.Video">
+	update  wtb_Video set Video_Hot=1,Video_ModifyTime=now()
+			where
+				 Video_ID = #{ID}
+			
+</update>
+<update id="CancelHotVideo" parameterType="wtb.core.model.Video">
+	update  wtb_Video set Video_Hot=0,Video_ModifyTime=now()
+			where
+				 Video_ID = #{ID}
+			
+</update>
+
+<update id="UpCommentCount" parameterType="wtb.core.model.Video">
+	update  wtb_Video set Video_CommentCount=Video_CommentCount+1,Video_ModifyTime=now()
+			where
+				 Video_ID = #{_parameter}
+</update>
+<update id="CancelCommentCount" parameterType="wtb.core.model.Video">
+		update  wtb_Video set Video_CommentCount=Video_CommentCount-1,Video_ModifyTime=now()
+			where
+				 Video_ID =  #{_parameter}
+			
+</update>
+<update id="UpdateParentID" parameterType="wtb.core.model.Video">
+		update  wtb_Video set Video_BelongID = #{BelongID},Video_ModifyTime=now()
+			where
+				 Video_ID =  #{ID}
+			
+</update>
+</mapper>
+

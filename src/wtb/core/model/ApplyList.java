@@ -17,6 +17,10 @@ public class ApplyList {
 	private String StudentID;
 	private int Type;
 	private String Course;
+	private long UserID;
+	private String Feedback;
+	private int ApplyType;
+	
 	public long getID() {
 		return ID;
 	}
@@ -90,6 +94,24 @@ public class ApplyList {
 	}
 	public void setCourse(String course) {
 		Course = course;
+	}
+	public long getUserID() {
+		return UserID;
+	}
+	public void setUserID(long userID) {
+		UserID = userID;
+	}
+	public String getFeedback() {
+		return Feedback;
+	}
+	public void setFeedback(String feedback) {
+		Feedback = feedback;
+	}
+	public int getApplyType() {
+		return ApplyType;
+	}
+	public void setApplyType(int applyType) {
+		ApplyType = applyType;
 	}
 	
 	

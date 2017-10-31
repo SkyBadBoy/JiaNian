@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeChatInfoMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.WeChatInfo" id="ClassResultMap">
+	<result property="ID" column="Info_ID"/>
+	<result property="PKID" column="Info_ID"/>
+	<result property="Name" column="Info_Name"/>
+	<result property="AppID" column="Info_AppID"/>
+	<result property="Appsecret" column="Info_Appsecret"/>
+	<result property="CreateTime" column="Info_CreateTime"/>
+	<result property="Status" column="Info_Status" />
+	<result property="AreaID" column="Info_AreaID" />
+	<result property="UID" column="Info_UID"/>
+	<result property="WID" column="Info_WeChaiID"/>
+	<result property="AccessToken" column="Info_AccessToken"/>
+	<result property="ATTime" column="Info_ATTime"/>
+	<result property="Ticket" column="Info_Ticket"/>
+	<result property="TKTime" column="Info_TKTime"/>
+	<result property="MchID" column="Info_MchID"/>
+	<result property="ApiKey" column="Info_ApiKey"/>
+	<result property="Weight" column="Info_Weight"/>
+	<result property="IsPay" column="Info_IsPay"/>
+	<result property="CertificatePath" column="Info_CertificatePath"/>
+	
+	<association property="AreaInfo" column="Info_AreaID" select="wtb.core.data.RegionMapper.getRegionByIDList"/>
+	
+</resultMap>
+<sql id="sql">
+    Info_ID,
+		Info_AppID,
+		Info_Name,
+		Info_Appsecret,
+		Info_CreateTime,
+		Info_Status,
+		Info_AreaID,
+		Info_UID,
+		Info_WeChaiID,
+		Info_AccessToken,
+		Info_ATTime,
+		Info_Ticket,
+		Info_TKTime,
+		Info_MchID,
+		Info_ApiKey,
+		Info_Weight,
+		Info_IsPay,
+		Info_CertificatePath
+</sql>
+<sql id="where">
+				1=1 and Info_Status!=88
+			<if test="ID!=null">
+				and Info_ID=#{ID}
+			</if>
+			<if test="Name!=null">
+				and Info_Name=#{Name}
+			</if>
+			
+			<if test="AppID!=null">
+				and Info_AppID=#{AppID}
+			</if>
+			<if test="UID!=null">
+				and Info_UID=#{UID}
+			</if>
+			<if test="check!=null">
+				and Info_Name like CONCAT(CONCAT('%', #{check,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="AreaIDForQU!=null and AreaIDForQU>0">
+				and (Info_AreaID in (SELECT REGION_ID FROM wtb_Region WHERE PARENT_ID=#{AreaIDForQU}) or Info_AreaID=#{AreaIDForQU})
+			</if>
+			<if test="IsPay!=null">
+			    and Info_IsPay=#{IsPay}
+			</if>
+			<if test="Weight!=null">
+			    and Info_Weight=#{Weight}
+			</if>
+</sql>
+<select id="getWeChatInfo" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+			<include refid="sql"></include>
+		From wtb_wechatinfo
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by Info_CreateTime desc
+		 <if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+		</if> 
+		
+</select>
+
+<select id="getWeChatInfoHome" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		From wtb_wechatinfo
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by Info_CreateTime desc
+		 <if test="limit != null and start !=null ">
+			limit ${start},${limit} 
+		</if> 
+		
+</select>
+
+<select id="getWeChatInfoHomeCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_wechatinfo
+		<where>
+			<include refid="where"></include>
+		</where>
+</select>
+<insert id="addWeChatInfo" parameterType="wtb.core.model.WeChatInfo" keyProperty="ID" useGeneratedKeys="true">
+	INSERT INTO wtb_wechatinfo(
+		<include refid="sql"></include>
+	 	) 
+	  VALUES (#{ID},
+	  #{Name},
+	  #{AppID},
+	  #{Appsecret},
+	  #{CreateTime},
+	  #{Status},
+	  #{AreaID},
+	  #{UID},
+	  #{WID},
+	  #{AccessToken},
+	  #{ATTime},
+	  #{Ticket},
+	  #{TKTime},
+	  #{MchID},
+	  #{ApiKey},
+	  #{Weight},
+	  #{IsPay},
+	  #{CertificatePath}
+	  
+	 )
+</insert>
+<update id="updateWeChatInfo" parameterType="wtb.core.model.WeChatInfo">
+	UPDATE wtb_wechatinfo 
+		SET
+		Info_ID=#{ID},
+  		Info_Name=#{Name},
+		Info_AppID=#{AppID},
+		Info_Appsecret=#{Appsecret},
+		Info_CreateTime=#{CreateTime},
+		Info_Status=#{Status},
+		Info_AreaID=#{AreaID},
+		Info_UID=#{UID},
+		Info_WeChaiID=#{WID},
+		Info_AccessToken=#{AccessToken},
+		Info_ATTime=#{ATTime},
+		Info_Ticket=#{Ticket},
+		Info_TKTime=#{TKTime},
+		Info_MchID=#{MchID},
+		Info_ApiKey=#{ApiKey},
+		Info_Weight=#{Weight},
+		Info_IsPay=#{IsPay},
+		Info_CertificatePath = #{CertificatePath}
+			where Info_ID = #{ID}
+			
+</update>
+<delete id="deleteWeChatInfo" parameterType="wtb.core.model.WeChatInfo">
+	UPDATE wtb_wechatinfo set Info_Status=88
+	where Info_ID=#{ID}
+</delete>
+
+
+<select id="getWeChatInfoByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+	<include refid="sql"></include>
+		From wtb_wechatinfo
+		<where>
+				<if test="_parameter != null">
+					Info_ID = #{_parameter}
+				</if>
+		</where>
+</select>
+<select id="getDefWeChat" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		From wtb_wechatinfo
+		<where>
+			 Info_Status=1 and Info_IsPay=1
+		</where>
+</select>
+<select id="getWeightWeChat" resultMap="ClassResultMap">
+	SELECT
+		<include refid="sql"></include>
+		From wtb_wechatinfo
+		<where>
+		    Info_Status=1
+		</where>
+		
+		ORDER BY Info_Weight ASC
+		LIMIT 1
+</select>
+</mapper>

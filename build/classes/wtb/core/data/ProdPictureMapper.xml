@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.ProdPictureMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.ProdPictures" id="ClassResultMapForList">
+	<result property="ID" column="Picture_ID"/>
+	<result property="PKID" column="Picture_ID"/>
+	<result property="Url" column="Picture_Url"/>
+	<result property="RealUrl" column="Picture_RealUrl"/>
+	<result property="Memo" column="Picture_Memo"/>
+	<result property="Status" column="Picture_Status"/>
+	<result property="Type" column="Picture_Type"/>
+	<result property="ProductID" column="Picture_ProductID"/>
+	<result property="CreateTime" column="Picture_CreateTime"/>
+	<result property="ModifyTime" column="Picture_ModifyTime"/>
+	<result property="IsEnable" column="Picture_IsEnable"/>
+	<result property="IsEnables" column="Picture_IsEnables"/>
+	<result property="PUrl" column="ProdPicture_Url"/>
+	<result property="Title" column="ProdPicture_Title"/>
+	
+</resultMap>
+<resultMap type="wtb.core.model.ProdPictures" id="ClassResultMap">
+	<result property="ID" column="Picture_ID"/>
+	<result property="PKID" column="Picture_ID"/>
+	<result property="Url" column="Picture_Url"/>
+	<result property="RealUrl" column="Picture_RealUrl"/>
+	<result property="Memo" column="Picture_Memo"/>
+	<result property="Status" column="Picture_Status"/>
+	<result property="Type" column="Picture_Type"/>
+	<result property="ProductID" column="Picture_ProductID"/>
+	<result property="CreateTime" column="Picture_CreateTime"/>
+	<result property="ModifyTime" column="Picture_ModifyTime"/>
+	<result property="IsEnable" column="Picture_IsEnable"/>
+	<result property="IsEnables" column="Picture_IsEnables"/>
+	<result property="PUrl" column="ProdPicture_Url"/>
+	<result property="Title" column="ProdPicture_Title"/>
+	<association property="BaseInfo" column="Picture_Status" select="wtb.core.data.BaseInfoMapper.getBaseInfoList"/>
+</resultMap>
+<sql id="params">  
+	Picture_ID,
+  Picture_Url ,
+  Picture_RealUrl ,
+  Picture_Memo ,
+  Picture_Status,
+  Picture_ProductID ,
+  Picture_CreateTime ,
+  Picture_Type ,
+  Picture_WeChatID,
+  Picture_ModifyTime,
+  Picture_IsEnable,
+  ProdPicture_Url,
+  ProdPicture_Title
+</sql>
+<sql id="where"> 
+	<if test="ID != null">
+		and Picture_ID = #{ID}
+	</if>
+	
+	<if test="Status != null and ProductID != null">
+		and Picture_Status = #{Status} and Picture_ProductID = #{ProductID}
+	</if>
+	
+	<if test="Status != null">
+		and Picture_Status = #{Status}
+	</if>
+	<if test="Status == null">
+		and Picture_Status = 1
+	</if>
+	<if test="ProductID != null">
+		and Picture_ProductID = #{ProductID}
+	</if>
+	<if test="Type != null">
+		and Picture_Type = #{Type}
+	</if>
+	<if test="WeChatID != null">
+				and Picture_WeChatID = #{WeChatID} 
+	</if>
+	<if test="AreaID != null">
+		and Picture_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_AreaID=#{AreaID})
+	</if>
+	<if test="searchText != null">
+		and Picture_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_Company like CONCAT(CONCAT('%',
+		#{searchText,
+		jdbcType=VARCHAR}),'%'))
+	</if>
+	<if test="UnEqType != null">
+		and Picture_Type != #{UnEqType}
+	</if>
+	<if test="IsEnable != null">
+		and Picture_IsEnable = #{IsEnable}
+	</if>
+</sql>
+<select id="getPictureList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+			<include refid="params"></include>,
+		  	case Picture_IsEnable when 1 then '启用' else '禁用'end as Picture_IsEnables
+		FROM wtb_ProdPicture
+		<where>
+			1=1
+			<include refid="where"></include>
+		</where>
+		order by Picture_IsEnable desc
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+		</if>
+</select>
+
+
+<select id="getPictureCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_ProdPicture
+		<where>
+			1=1
+			<include refid="where"></include>
+
+		</where>
+		
+</select>
+
+<select id="getPictureEffList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="params"></include>,
+  		case Picture_IsEnable when 1 then '启用' else '禁用'end as Picture_IsEnables
+		FROM wtb_ProdPicture t1
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by Picture_IsEnable desc,Picture_ModifyTime desc
+		<if test="limit != null and start !=null ">
+	        limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getPictureForList" parameterType="map" resultMap="ClassResultMapForList">
+	SELECT
+		<include refid="params"></include>
+		FROM wtb_ProdPicture t1
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by Picture_IsEnable desc,Picture_ModifyTime desc
+		<if test="limit != null and start !=null ">
+	        limit ${start},${limit} 
+		</if>
+</select>
+<select id="getPictureEffCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1) as Count
+		FROM wtb_ProdPicture 
+		<where>
+			<include refid="where"></include>
+		</where>
+
+</select>
+<select id="getPictureByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT 
+		<include refid="params"></include>
+		FROM wtb_ProdPicture
+		<where>
+			Picture_Status=1
+				<if test="_parameter != null">
+					and Picture_ID = #{_parameter}
+				</if>
+		
+				
+		</where>
+</select>
+<insert id="addPicture" parameterType="wtb.core.model.ProdPictures" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_ProdPicture (
+  <include refid="params"></include>
+		) VALUES (
+			#{ID}, #{Url}, #{RealUrl}, #{Memo}, #{Status}, #{ProductID}, now(), #{Type},#{WeChatID},now(),#{IsEnable},#{PUrl},#{Title}
+		)
+</insert>
+<update id="updatePicture" parameterType="wtb.core.model.ProdPictures">
+	UPDATE wtb_ProdPicture 
+		SET
+		Picture_Url=#{Url}, 
+		Picture_RealUrl=#{RealUrl}, 
+		Picture_Memo=#{Memo}, 
+		Picture_Status=#{Status}, 
+		Picture_ProductID=#{ProductID}, 
+		Picture_ModifyTime=now(),
+		Picture_WeChatID=#{WeChatID},
+		Picture_Type=#{Type},
+		Picture_IsEnable=#{IsEnable},
+		ProdPicture_Url=#{PUrl},
+		ProdPicture_Title=#{Title}
+			where Picture_ID = #{ID}
+</update>
+<delete id="deletePicture" parameterType="wtb.core.model.ProdPictures">
+	update  wtb_ProdPicture set Picture_Status=88
+			where
+				Picture_ID = #{ID}
+			
+</delete>
+
+<delete id="DeleteAllPicByProductID" parameterType="wtb.core.model.ProdPictures">
+	update wtb_ProdPicture set Picture_Status=88,Picture_ModifyTime=now()
+			where
+				 Picture_ProductID = #{_parameter}
+</delete>
+
+<update id="enabledPicture" parameterType="wtb.core.model.ProdPictures">
+	update  wtb_ProdPicture set Picture_Status=1
+			where
+				 Picture_ID = #{ID}
+			
+</update>
+
+<update id="UpdateSimplePicture" parameterType="wtb.core.model.ProdPictures">
+	update  wtb_ProdPicture set 
+	Picture_WeChatID=#{WeChatID},
+	Picture_ProductID=#{ProductID},
+	Picture_Type=#{Type}
+			where
+				 Picture_ID = #{ID}
+			
+</update>
+</mapper>
+

@@ -15,6 +15,9 @@
 	<result property="StudentID" column="ApplyList_StudentID"/>
 	<result property="Type" column="ApplyList_Type"/>
 	<result property="Course" column="ApplyList_Course"/>
+	<result property="UserID" column="ApplyList_UserID"/>
+	<result property="Feedback" column="ApplyList_Feedback"/>
+	<result property="ApplyType" column="ApplyList_ApplyType"/>
 </resultMap>
 
 <sql id="where">
@@ -39,6 +42,9 @@
 			<if test="Rand != null">
 				and #{Rand} = #{Rand}
 			</if>
+			<if test="ApplyType != null">
+				and ApplyList_ApplyType = #{ApplyType}
+			</if>
 </sql>
 <sql id="param">
 
@@ -51,7 +57,10 @@
 			ApplyList_Status,
 			ApplyList_StudentID,
 			ApplyList_Type,
-			ApplyList_Course
+			ApplyList_Course,
+			ApplyList_UserID,
+			ApplyList_Feedback,
+			ApplyList_ApplyType
 </sql>
 <select id="getApplyListList" parameterType="map" resultMap="ClassResultMap">
 	SELECT

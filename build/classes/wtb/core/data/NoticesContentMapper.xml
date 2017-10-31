@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.NoticesContentMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<sql id="params">
+	Content_ID,
+	Content_Content,
+	Content_CreateTime,
+	Content_ModifyTime,
+	Content_Status,
+	Content_Memo,
+	Content_Num,
+	Content_SrcID
+</sql>
+
+
+<delete id="DeleteAllContentBySrcID" parameterType="wtb.core.model.NoticesContent">
+	update wtb_NoticesContent set Content_Status=88,Content_ModifyTime=now()
+			where
+				 Content_SrcID = #{_parameter}
+</delete>
+
+<insert id="AddContent" parameterType="wtb.core.model.NoticesContent" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_NoticesContent (
+			<include refid="params"></include>
+		) VALUES (
+			#{ID}, #{Content}, now(),now(),#{Status},#{Memo},#{Num},#{SrcID}
+		)
+</insert>
+<update id="UpdateContent" parameterType="wtb.core.model.NoticesContent">
+	UPDATE wtb_NoticesContent 
+		SET
+	  	Content_Content=#{Content},
+		Content_ModifyTime=now(),
+		Content_Status=#{Status},
+		Content_Memo=#{Memo},
+		Content_Num=#{Num},
+		Content_SrcID=#{SrcID}
+			where Content_ID = #{ID}
+</update>
+</mapper>
+

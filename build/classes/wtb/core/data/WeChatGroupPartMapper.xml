@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeChatGroupPartMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<resultMap type="wtb.core.model.WeChatGroupPart" id="ClassResultMap">
+	<result property="ID" column="WeChatGroupPart_ID"/>
+	<result property="PKID" column="WeChatGroupPart_ID"/>
+	<result property="WeChatID" column="WeChatGroupPart_WeChatID"/>
+	<result property="Memo" column="WeChatGroupPart_Memo"/>
+	<result property="GroupID" column="WeChatGroupPart_GroupID"/>
+	<result property="CreateTime" column="WeChatGroupPart_CreateTime"/>
+	<result property="ModifyTime" column="WeChatGroupPart_ModifyTime"/>
+	<result property="QRCodeURL" column="WeChatPublic_QRCodeURL"/>
+	<result property="Status" column="WeChatGroupPart_Status"/>
+	
+	<association property="WeChat" column="WeChatGroupPart_WeChatID" select="read.core.data.ReadWeChatPublicMapper.getWeChatPublicForIDList"/>
+</resultMap>
+<select id="getWeChatGroupPartList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		WeChatGroupPart_ID ,
+  WeChatGroupPart_GroupID ,
+  WeChatGroupPart_WeChatID ,
+  WeChatGroupPart_Memo ,
+  WeChatGroupPart_CreateTime ,
+  WeChatGroupPart_ModifyTime ,
+  WeChatGroupPart_Status 
+		FROM wtb_WeChatGroupPart
+		<where>
+			1=1
+				<if test="ID != null">
+					and WeChatGroupPart_ID = #{ID}
+				</if>
+				<if test="WeChatID != null">
+					and WeChatGroupPart_WeChatID = #{WeChatID}
+				</if>
+				<if test="GroupID != null">
+					and WeChatGroupPart_GroupID = #{GroupID}
+				</if>
+				<if test="Memo != null">
+					and WeChatGroupPart_Memo = #{Memo}
+				</if>
+				<if test="CreateTime != null">
+					and WeChatGroupPart_CreateTime = #{CreateTime}
+				</if>
+				<if test="ModifyTime != null">
+					and WeChatGroupPart_ModifyTime = #{ModifyTime}
+				</if>
+				<if test="Status != null">
+					and WeChatGroupPart_Status = #{Status}
+				</if>
+				
+				
+		</where>
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+				</if>
+</select>
+
+
+<select id="getWeChatGroupPartCounter" parameterType="map" resultType="int">
+	SELECT
+		count(1)
+		FROM wtb_WeChatGroupPart
+		<where>
+				<if test="_parameter != null">
+					and WeChatGroupPart_GroupID = #{_parameter}
+				</if>
+		</where>
+</select>
+
+<insert id="addWeChatGroupPart" parameterType="wtb.core.model.WeChatGroupPart" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_WeChatGroupPart (
+			WeChatGroupPart_ID ,
+  WeChatGroupPart_WeChatID ,
+  WeChatGroupPart_Memo ,
+  WeChatGroupPart_GroupID ,
+  WeChatGroupPart_CreateTime ,
+  WeChatGroupPart_ModifyTime ,
+  WeChatGroupPart_Status 
+		) VALUES (
+			#{ID}, #{WeChatID}, #{Memo}, #{GroupID},
+			 #{CreateTime}, #{ModifyTime},  #{Status}
+		)
+</insert>
+<update id="updateWeChatGroupPart" parameterType="wtb.core.model.WeChatGroupPart">
+	UPDATE wtb_WeChatGroupPart 
+		SET
+		WeChatGroupPart_ID=#{ID}, WeChatGroupPart_WeChatID=#{WeChatID}, WeChatGroupPart_Memo=#{Memo}, WeChatGroupPart_GroupID=#{GroupID}, 
+		WeChatGroupPart_CreateTime=#{CreateTime}, WeChatGroupPart_ModifyTime=#{ModifyTime}, WeChatGroupPart_Memo=#{Memo}, 
+		WeChatGroupPart_Status=#{Status}
+			where WeChatGroupPart_ID = #{ID}
+			
+</update>
+<delete id="deleteWeChatGroupPart" parameterType="wtb.core.model.WeChatGroupPart">
+	update  wtb_WeChatGroupPart set WeChatGroupPart_Status=88 ,WeChatGroupPart_ModifyTime =#{ModifyTime}
+			where WeChatGroupPart_ID = #{ID}
+			
+</delete>
+
+<delete id="enabledWeChatGroupPart" parameterType="wtb.core.model.WeChatGroupPart">
+	update  wtb_WeChatGroupPart set WeChatGroupPart_Status=1 ,WeChatGroupPart_ModifyTime =#{ModifyTime}
+			where WeChatGroupPart_ID = #{ID}
+			
+</delete>
+</mapper>
+

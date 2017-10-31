@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="wtb.core.data.LotteryChanceMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <resultMap id="BaseResultMap" type="wtb.core.model.LotteryChance" >
+  	<id column="chance_id" property="ID" jdbcType="BIGINT" />
+	<result column="chance_id" property="PKID" jdbcType="BIGINT"/>
+    <result column="chance_userid" property="chanceUserid" jdbcType="BIGINT" />
+    <result column="chance_belongid" property="chanceBelongid" jdbcType="INTEGER" />
+    <result column="chance_type" property="chanceType" jdbcType="INTEGER" />
+    <result column="chance_delete" property="chanceDelete" jdbcType="INTEGER" />
+    <result column="chance_redundancy" property="chanceRedundancy" jdbcType="VARCHAR" />
+    <result column="chance_createtime" property="chanceCreatetime" jdbcType="TIMESTAMP" />
+    <result column="chance_modifytime" property="chanceModifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    chance_id, chance_userid, chance_belongid, chance_type, chance_delete, chance_redundancy, 
+    chance_createtime, chance_modifytime
+  </sql>
+  
+  <!-- by Sheryl -->
+  <insert id="AddNewMessage" parameterType="wtb.core.model.LotteryChance" >
+    insert into wtb_lotterychance (chance_id, chance_userid, chance_belongid, 
+      chance_type, chance_delete, chance_redundancy, 
+      chance_createtime, chance_modifytime)
+    values (#{ID,jdbcType=BIGINT}, #{chanceUserid,jdbcType=BIGINT}, #{chanceBelongid,jdbcType=INTEGER}, 
+      #{chanceType,jdbcType=INTEGER}, #{chanceDelete,jdbcType=INTEGER}, #{chanceRedundancy,jdbcType=VARCHAR}, 
+     now(), now())
+  </insert>
+  
+  <update id="AddChanceCount" parameterType="map" >
+    UPDATE wtb_lotterychance
+    <set >
+      chance_belongid = chance_belongid + 1
+    </set>
+    WHERE chance_userid = #{ID,jdbcType=BIGINT} AND date_format(chance_createtime, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+    AND chance_type = #{type,jdbcType=INTEGER}
+  </update>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wtb_lotterychance
+    where chance_id = #{ID,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="wtb.core.model.LotteryChance" >
+    insert into wtb_lotterychance (chance_id, chance_userid, chance_belongid, 
+      chance_type, chance_delete, chance_redundancy, 
+      chance_createtime, chance_modifytime)
+    values (#{ID,jdbcType=BIGINT}, #{chanceUserid,jdbcType=BIGINT}, #{chanceBelongid,jdbcType=INTEGER}, 
+      #{chanceType,jdbcType=INTEGER}, #{chanceDelete,jdbcType=INTEGER}, #{chanceRedundancy,jdbcType=VARCHAR}, 
+      #{chanceCreatetime,jdbcType=TIMESTAMP}, #{chanceModifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="wtb.core.model.LotteryChance" >
+    insert into wtb_lotterychance
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ID != null" >
+        chance_id,
+      </if>
+      <if test="chanceUserid != null" >
+        chance_userid,
+      </if>
+      <if test="chanceBelongid != null" >
+        chance_belongid,
+      </if>
+      <if test="chanceType != null" >
+        chance_type,
+      </if>
+      <if test="chanceDelete != null" >
+        chance_delete,
+      </if>
+      <if test="chanceRedundancy != null" >
+        chance_redundancy,
+      </if>
+      <if test="chanceCreatetime != null" >
+        chance_createtime,
+      </if>
+      <if test="chanceModifytime != null" >
+        chance_modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ID != null" >
+        #{ID,jdbcType=BIGINT},
+      </if>
+      <if test="chanceUserid != null" >
+        #{chanceUserid,jdbcType=BIGINT},
+      </if>
+      <if test="chanceBelongid != null" >
+        #{chanceBelongid,jdbcType=INTEGER},
+      </if>
+      <if test="chanceType != null" >
+        #{chanceType,jdbcType=INTEGER},
+      </if>
+      <if test="chanceDelete != null" >
+        #{chanceDelete,jdbcType=INTEGER},
+      </if>
+      <if test="chanceRedundancy != null" >
+        #{chanceRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="chanceCreatetime != null" >
+        #{chanceCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chanceModifytime != null" >
+        #{chanceModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="wtb.core.model.LotteryChance" >
+    update wtb_lotterychance
+    <set >
+      <if test="chanceUserid != null" >
+        chance_userid = #{chanceUserid,jdbcType=BIGINT},
+      </if>
+      <if test="chanceBelongid != null" >
+        chance_belongid = #{chanceBelongid,jdbcType=INTEGER},
+      </if>
+      <if test="chanceType != null" >
+        chance_type = #{chanceType,jdbcType=INTEGER},
+      </if>
+      <if test="chanceDelete != null" >
+        chance_delete = #{chanceDelete,jdbcType=INTEGER},
+      </if>
+      <if test="chanceRedundancy != null" >
+        chance_redundancy = #{chanceRedundancy,jdbcType=VARCHAR},
+      </if>
+      <if test="chanceCreatetime != null" >
+        chance_createtime = #{chanceCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chanceModifytime != null" >
+        chance_modifytime = #{chanceModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where chance_id = #{ID,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="wtb.core.model.LotteryChance" >
+    update wtb_lotterychance
+    set chance_userid = #{chanceUserid,jdbcType=BIGINT},
+      chance_belongid = #{chanceBelongid,jdbcType=INTEGER},
+      chance_type = #{chanceType,jdbcType=INTEGER},
+      chance_delete = #{chanceDelete,jdbcType=INTEGER},
+      chance_redundancy = #{chanceRedundancy,jdbcType=VARCHAR},
+      chance_createtime = #{chanceCreatetime,jdbcType=TIMESTAMP},
+      chance_modifytime = #{chanceModifytime,jdbcType=TIMESTAMP}
+    where chance_id = #{ID,jdbcType=BIGINT}
+  </update>
+</mapper>

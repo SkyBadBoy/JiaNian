@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.VoteRecordsMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.VoteRecords" id="ClassResultMap">
+	<result property="ID" column="VoteRecords_ID"/>
+	<result property="PKID" column="VoteRecords_ID"/>
+	<result property="UnionID" column="VoteRecords_StudentUnionID"/>
+	<result property="NoticeID" column="VoteRecords_NoticeID"/>
+	<result property="CreateTime" column="VoteRecords_CreateTime"/>
+	<result property="ModifyTime" column="VoteRecords_ModifyTime"/>
+	<result property="Status" column="VoteRecords_Status"/>
+</resultMap>
+<select id="getVoteRecordsList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		VoteRecords_ID,
+		VoteRecords_CreateTime,
+		VoteRecords_ModifyTime,
+		VoteRecords_Status,
+		VoteRecords_NoticeID,
+		VoteRecords_StudentUnionID
+		FROM wtb_VoteRecords
+		<where>
+			1=1
+				<if test="ID != null">
+					and VoteRecords_ID = #{ID}
+				</if>
+				<if test="UnionID != null">
+					and VoteRecords_StudentUnionID = #{UnionID}
+				</if>
+				<if test="NoticeID != null">
+					and VoteRecords_NoticeID = #{NoticeID}
+				</if>
+				<if test="Status != null">
+					and VoteRecords_Status = #{Status}
+				</if>
+		</where>
+		order by VoteRecords_ModifyTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getVoteRecordsCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_VoteRecords
+		<where>
+			1=1
+				<if test="ID != null">
+					and VoteRecords_ID = #{ID}
+				</if>
+				<if test="UnionID != null">
+					and VoteRecords_StudentUnionID = #{UnionID}
+				</if>
+				<if test="NoticeID != null">
+					and VoteRecords_NoticeID = #{NoticeID}
+				</if>
+				<if test="Status != null">
+					and VoteRecords_Status = #{Status}
+				</if>
+				 <if test="Rand != null">
+					and #{Rand} =#{Rand}
+				</if>
+				
+		</where>
+		
+</select>
+<select id="getVoteRecordsByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+			VoteRecords_ID,
+		VoteRecords_CreateTime,
+		VoteRecords_ModifyTime,
+		VoteRecords_Status,
+		VoteRecords_NoticeID,
+		VoteRecords_StudentUnionID
+		FROM wtb_VoteRecords
+		<where>
+	<if test="ID != null">
+					and VoteRecords_ID = #{ID}
+				</if>
+				<if test="UnionID != null">
+					and VoteRecords_StudentUnionID = #{UnionID}
+				</if>
+				<if test="NoticeID != null">
+					and VoteRecords_NoticeID = #{NoticeID}
+				</if>
+				<if test="Status != null">
+					and VoteRecords_Status = #{Status}
+				</if>
+		</where>
+		order by VoteRecords_CreateTime desc
+		
+</select>
+<insert id="addVoteRecords" parameterType="wtb.core.model.VoteRecords" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_VoteRecords (
+			VoteRecords_ID,
+		VoteRecords_CreateTime,
+		VoteRecords_ModifyTime,
+		VoteRecords_Status,
+		VoteRecords_NoticeID,
+		VoteRecords_StudentUnionID
+		) VALUES (
+			#{ID}, now(),now(),#{Status},#{NoticeID}
+			,#{UnionID}
+		)
+</insert>
+<update id="updateVoteRecords" parameterType="wtb.core.model.VoteRecords">
+	UPDATE wtb_VoteRecords 
+		SET
+		VoteRecords_ModifyTime=now(),
+		VoteRecords_Status=#{Status},
+		VoteRecords_NoticeID=#{NoticeID},
+		VoteRecords_StudentUnionID=#{UnionID}
+		
+			where VoteRecords_ID = #{ID}
+</update>
+<delete id="deleteVoteRecords" parameterType="wtb.core.model.VoteRecords">
+	update  wtb_VoteRecords set VoteRecords_Status=88
+			where
+				 VoteRecords_ID = #{ID}
+			
+</delete>
+<update id="enabledVoteRecords" parameterType="wtb.core.model.VoteRecords">
+	update  wtb_VoteRecords set VoteRecords_Status=1
+			where
+				 VoteRecords_ID = #{ID}
+			
+</update>
+
+</mapper>
+

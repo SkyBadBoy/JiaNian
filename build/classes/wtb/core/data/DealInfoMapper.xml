@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.DealInfoMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.DealInfo" id="ClassResultMap">
+	<result property="ID" column="DealInfo_ID"/>
+	<result property="PKID" column="DealInfo_ID"/>
+	<result property="Type" column="DealInfo_Type"/>
+	<result property="ParentID" column="DealInfo_ParentID"/>
+	<result property="ResultStatus" column="DealInfo_ResultStatus"/>
+	<result property="CreateTime" column="DealInfo_CreateTime"/>
+	<result property="Result" column="DealInfo_Result"/>
+	<result property="CheckerID" column="DealInfo_CheckerID"/>
+	
+	
+	<association property="Checker" column="DealInfo_CheckerID"
+			select="wtb.core.data.UsersMapper.getUsersListByID" />
+	<association property="BaseInfo" column="DealInfo_ResultStatus"
+			select="wtb.core.data.BaseInfoMapper.getBaseInfoList" />
+</resultMap>
+<select id="getDealInfoList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		DealInfo_ID,
+		DealInfo_Type,
+		DealInfo_ParentID,
+		DealInfo_CreateTime,
+		DealInfo_ResultStatus,
+		DealInfo_Result,
+		DealInfo_CheckerID
+		from wtb_DealInfo
+		<where>
+			1=1
+			<if test="ID != null">
+				and DealInfo_ID = #{ID}
+			</if>
+			<if test="ParentID != null">
+				and DealInfo_ParentID = #{ParentID}
+			</if>
+			
+		</where>
+		order by DealInfo_CreateTime desc
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getDealInfoCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		from wtb_DealInfo
+		<where>
+			1=1
+			<if test="ID != null">
+				and DealInfo_ID = #{ID}
+			</if>
+			<if test="ParentID != null">
+				and DealInfo_ParentID = #{ParentID}
+			</if>
+				
+		</where>
+		
+</select>
+<select id="getDealInfoByID" parameterType="long" resultType="wtb.core.model.DealInfo">
+	SELECT
+		DealInfo_ID,
+		DealInfo_Type,
+		DealInfo_ParentID,
+		DealInfo_CreateTime,
+		DealInfo_ResultStatus,
+		DealInfo_Result,
+		DealInfo_CheckerID
+		from wtb_DealInfo
+		<where>
+			DealInfo_Status=1
+				<if test="ID != null">
+					and DealInfo_ID = #{ID}
+				</if>
+				
+		</where>
+</select>
+<insert id="addDealInfo" parameterType="wtb.core.model.DealInfo" keyProperty="id" useGeneratedKeys="true">
+	INSERT into wtb_DealInfo (
+		DealInfo_ID,
+		DealInfo_Type,
+		DealInfo_ParentID,
+		DealInfo_CreateTime,
+		DealInfo_ResultStatus,
+		DealInfo_Result,
+		DealInfo_CheckerID
+		) VALUES (
+			#{ID},#{Type}, #{ParentID}, #{CreateTime},#{ResultStatus},#{Result},#{CheckerID}
+		)
+</insert>
+<update id="updateDealInfo" parameterType="wtb.core.model.DealInfo">
+	UPDATE wtb_DealInfo 
+		SET
+		DealInfo_ID=#{ID},
+		DealInfo_Type=#{Type},
+		DealInfo_ParentID=#{ParentID},
+		DealInfo_CreateTime=#{CreateTime},
+		DealInfo_ResultStatus=#{ResultStatus},
+		DealInfo_Result=#{Result},
+		DealInfo_CheckerID=#{CheckerID}
+			where DealInfo_ID = #{ID}
+</update>
+<delete id="deleteDealInfo" parameterType="wtb.core.model.DealInfo">
+	update  wtb_DealInfo set DealInfo_Status=88
+			where
+				 DealInfo_ID = #{ID}
+			
+</delete>
+<update id="enabledDealInfo" parameterType="wtb.core.model.DealInfo">
+	update  wtb_DealInfo set DealInfo_Status=1
+			where
+				 DealInfo_ID = #{ID}
+			
+</update>
+</mapper>
+

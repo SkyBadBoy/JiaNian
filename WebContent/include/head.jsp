@@ -67,9 +67,9 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <meta http-equiv="pragma" content="no-store">
-    <title>校播科技 - 微新闻社后台管理主页</title>
+    <title>嘉念网络科技 - 人人学车后台管理主页</title>
 
-    <meta name="keywords" content="微新闻社">
+    <meta name="keywords" content="人人学车">
     <meta name="description" content="微新闻社后台管理主页">
 
     <!--[if lt IE 8]>
@@ -138,12 +138,25 @@
 	                            </li>      
 	                        </ul>
 	                    </li>
-	                    
-	                    
 	                    <li>
 	                        <a class="J_menuItem" href="<%=path%>/Users/UserList"><i class="fa fa-user"></i> <span class="nav-label">管理员列表</span></a>
 	                    </li>
-	                   
+	                    <li>
+	                        <a href="#"><i class="fa fa-bank"></i> <span class="nav-label">官网管理</span><span class="fa arrow"></span></a>
+	                        <ul class="nav nav-second-level">
+	                            <li>
+	                            	<a class="J_menuItem" href="<%=path%>/Setting/SettingList?parentID=0&sina=<%= SmBaseUtil.Random() %>">基础设置</a>
+	                            </li>      
+	                        </ul>
+	                    </li>
+	                     <li>
+	                        <a href="#"><i class="fa fa-file-text-o"></i> <span class="nav-label">驾考管理</span><span class="fa arrow"></span></a>
+	                        <ul class="nav nav-second-level">
+	                            <li>
+	                          	  <a class="J_menuItem" href="<%=path%>/ApplyList/ApplyListList?type=<%=SmBaseGlobal.DealInfoType.CorrectList.getid() %>&sina=<%= SmBaseUtil.Random() %>">报名管理</a>
+	                            </li>      
+	                        </ul>
+	                    </li>
 	                    <li>
 	                        <a href="#"><i class="fa fa-bell"></i> <span class="nav-label">新闻管理</span><span class="fa arrow"></span></a>
 	                        <ul class="nav nav-second-level">

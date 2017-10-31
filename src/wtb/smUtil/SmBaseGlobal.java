@@ -100,6 +100,11 @@ public class SmBaseGlobal {
 	public static boolean IOpen=true;
 	
 	
+	/**
+	 * 报名管理
+	 * @author MaJian
+	 *
+	 */
 	public enum ApplyType {
 		/**
 		 * 已经处理
@@ -116,9 +121,43 @@ public class SmBaseGlobal {
 			public int getid() {
 				return 2;
 			}
+		},
+		/**
+		 *  等待处理
+		 */
+		LoadDispose {
+			public int getid() {
+				return 3;
+			}
 		};
 		public abstract int getid();
 	}
+	
+	/**
+	 * 
+	 * @author MaJian
+	 *	从哪个地方报名的
+	 */
+	public enum ApplyWhichType {
+		/**
+		 * 官网
+		 */
+		Official {
+			public int getid() {
+				return 1;
+			}
+		},	
+		/**
+		 *  手机端 微官网
+		 */
+		Mobile {
+			public int getid() {
+				return 2;
+			}
+		};
+		public abstract int getid();
+	}
+	
 	
 	/**
 	 * 状态类型 

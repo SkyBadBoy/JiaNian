@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.QuestionRecordMapper">
+
+
+    <insert id="addQuestionRecord" parameterType="wtb.core.model.QuestionRecord" keyProperty="QuestionRecordID" useGeneratedKeys="true">
+        INSERT INTO wtb_QuestionRecords (
+        QuestionRecord_ID,
+		QuestionRecord_Status,
+		QuestionRecord_Memo,
+		QuestionRecord_CreateTime,
+		QuestionRecord_ModifyTIme,
+		QuestionRecord_Version,
+		QuestionRecord_StudentID,
+		QuestionRecord_QuestionID,
+		QuestionRecord_AnswerResult,
+		QuestionRecord_Type,
+		QuestionRecord_ContinuedTime
+        ) VALUES (
+        #{ID}, #{Status}, #{Memo}, NOW(),
+        NOW(), #{Version}, #{StudentID}, #{QuestionID}, #{AnswerResult}, #{Type}, #{ContinuedTime}
+        )
+    </insert>
+
+    <update id="changeQuestionRecord" parameterType="wtb.core.model.QuestionRecord">
+        UPDATE wtb_QuestionRecords SET
+       QuestionRecord_Status = #{Status},
+		QuestionRecord_Memo = #{Memo},
+		QuestionRecord_ModifyTIme = NOW(),
+		QuestionRecord_Version = QuestionRecord_Version + 1,
+		QuestionRecord_StudentID = #{StudentID},
+		QuestionRecord_QuestionID = #{QuestionID},
+		QuestionRecord_AnswerResult = #{AnswerResult},
+		QuestionRecord_Type = #{Type},
+		QuestionRecord_ContinuedTime = #{ContinuedTime}
+		 WHERE QuestionRecord_ID = #{ID} 
+    </update>
+
+    <delete id="removeQuestionRecord" parameterType="wtb.core.model.QuestionRecord">
+        UPDATE wtb_QuestionRecords SET
+        QuestionRecord_Status =88, QuestionRecord_ModifyTime = NOW(),
+        QuestionRecord_Version = QuestionRecord_Version + 1
+        WHERE QuestionRecord_ID = #{ID} 
+    </delete>
+
+    
+</mapper>

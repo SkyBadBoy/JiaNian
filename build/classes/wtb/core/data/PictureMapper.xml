@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.PictureMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Pictures" id="ClassResultMap">
+	<result property="ID" column="Picture_ID"/>
+	<result property="PKID" column="Picture_ID"/>
+	<result property="Url" column="Picture_Url"/>
+	<result property="RealUrl" column="Picture_RealUrl"/>
+	<result property="Memo" column="Picture_Memo"/>
+	<result property="Status" column="Picture_Status"/>
+	<result property="WeChatID" column="Picture_WeChatID"/>
+	<result property="CreateTime" column="Picture_CreateTime"/>
+	<result property="ModifyTime" column="Picture_ModifyTime"/>
+	
+	<association property="BaseInfo" column="Picture_Status" select="wtb.core.data.BaseInfoMapper.getBaseInfoList"/>
+	<association property="WeChat" column="Picture_WeChatID"
+			select="read.core.data.ReadWeChatPublicMapper.getSimpleWeChatPublicList" />
+</resultMap>
+<select id="getPictureList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Picture_ID,
+  Picture_Url ,
+  Picture_RealUrl ,
+  Picture_Memo ,
+  Picture_Status,
+  Picture_WeChatID ,
+  Picture_CreateTime ,
+  Picture_ModifyTime
+		FROM wtb_Picture
+		<where>
+			1=1
+				<if test="_parameter != null">
+					and Picture_ID = #{_parameter}
+				</if>
+				
+				
+		</where>
+</select>
+<select id="getPictureEffList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Picture_ID,
+  Picture_Url ,
+  Picture_RealUrl ,
+  Picture_Memo ,
+  Picture_Status,
+  Picture_WeChatID ,
+  Picture_CreateTime ,
+  Picture_ModifyTime
+		FROM wtb_Picture
+		<where>
+			Picture_Status=1
+			<if test="WeChatID != null">
+				and Picture_WeChatID = #{WeChatID} 
+			</if>
+			<if test="AreaID != null">
+				and Picture_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_AreaID=#{AreaID})
+			</if>
+			<if test="searchText != null">
+				and Picture_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_Company like CONCAT(CONCAT('%',
+				#{searchText,
+				jdbcType=VARCHAR}),'%'))
+			</if>
+			<if test="ID != null">
+				and Picture_ID = #{ID}
+			</if>
+		</where>
+		order by Picture_ModifyTime desc
+		<if test="limit != null and start !=null ">
+	        limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getPictureEffCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1) as Count
+		FROM wtb_Picture
+		<where>
+			Picture_Status=1
+			<if test="WeChatID != null">
+				and Picture_WeChatID = #{WeChatID}
+			</if>
+			<if test="AreaID != null">
+				and Picture_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_AreaID=#{AreaID})
+			</if>
+			<if test="searchText != null">
+				and Picture_WeChatID in(select WeChatPublic_ID from wtb_WeChatPublic where WeChatPublic_Company like CONCAT(CONCAT('%',
+				#{searchText,
+				jdbcType=VARCHAR}),'%'))
+			</if>
+			<if test="ID != null">
+				and Picture_ID = #{ID}
+			</if>
+		</where>
+
+</select>
+<insert id="addPicture" parameterType="wtb.core.model.Pictures" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Picture (
+			Picture_ID,
+  Picture_Url ,
+  Picture_RealUrl ,
+  Picture_Memo ,
+  Picture_Status,
+  Picture_WeChatID ,
+  Picture_CreateTime ,
+  Picture_ModifyTime
+		) VALUES (
+			#{ID}, #{Url}, #{RealUrl}, #{Memo}, #{Status}, #{WeChatID}, #{CreateTime}, #{ModifyTime}
+		)
+</insert>
+<update id="updatePicture" parameterType="wtb.core.model.Pictures">
+	UPDATE wtb_Picture 
+		SET
+		Picture_ID=#{ID}, 
+		Picture_Url=#{Url}, 
+		Picture_RealUrl=#{RealUrl}, 
+		Picture_Memo=#{Memo}, 
+		Picture_Status=#{Status}, 
+		Picture_WeChatID=#{WeChatID}, 
+		Picture_CreateTime=#{CreateTime}
+		Picture_ModifyTime=#{ModifyTime}
+			where Picture_ID = #{ID}
+</update>
+<delete id="deletePicture" parameterType="wtb.core.model.Pictures">
+	update  wtb_Picture set Picture_Status=88
+			where
+				 Picture_ID = #{ID}
+			
+</delete>
+
+<update id="enabledPicture" parameterType="wtb.core.model.Pictures">
+	update  wtb_Picture set Picture_Status=1
+			where
+				 Picture_ID = #{ID}
+			
+</update>
+
+<select id="getPictureByIDList" parameterType="map" resultMap="ClassResultMap">
+	SELECT 
+		Picture_ID,
+  Picture_Url ,
+  Picture_RealUrl ,
+  Picture_Memo ,
+  Picture_Status,
+  Picture_WeChatID ,
+  Picture_CreateTime ,
+  Picture_ModifyTime
+		FROM wtb_Picture
+		<where>
+			Picture_Status=1
+				<if test="_parameter != null">
+					and Picture_ID = #{_parameter}
+				</if>
+		
+				
+		</where>
+</select>
+</mapper>
+

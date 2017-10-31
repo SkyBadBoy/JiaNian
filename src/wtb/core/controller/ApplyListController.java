@@ -53,6 +53,7 @@ public class ApplyListController extends BaseController {
 		String UserPhone=request.getParameter("UserPhone");
 		String Course=request.getParameter("Course");
 		String Content=request.getParameter("Content");
+		String ApplyType=request.getParameter("ApplyType");
 		ApplyList applyList=new ApplyList();
 		if (!SmBaseUtil.CheckIsNull(UserName)) {
 			return ResultUtil.otherError("请输入你的名字~");
@@ -83,8 +84,7 @@ public class ApplyListController extends BaseController {
 		if (Integer.parseInt(Course)==0) {
 			return ResultUtil.otherError("请选择报班课程~");
 		}
-		
-		
+		applyList.setApplyType(Integer.parseInt(ApplyType));
 		applyList.setID(SmBaseUtil.CreateNewID());
 		applyList.setCourse(Course);
 		applyList.setStatus(SmBaseGlobal.CheckStatus.Effective.getid());
@@ -97,8 +97,18 @@ public class ApplyListController extends BaseController {
 		}
 	}
 	
-	
-	
+	/**
+	 * 
+		 * 
+		 * @Author 作者：马健
+		 * @Phone  联系qq：1039510196
+		 * @CreateTime 创建时间：2017年10月31日 上午10:01:42 
+		 * @Details 报名申请列表
+	 */
+	@RequestMapping(value = "/ApplyListList", method = RequestMethod.GET)
+	public ModelAndView WeChatPublicList(HttpServletResponse response, HttpServletRequest request, HttpSession session, Model model) {
+		return new ModelAndView(SmBaseGlobal.WebViewPath + "ApplyList");
+	}
 	
 	@RequestMapping(value = "/phoneAreaManageApply", method = RequestMethod.GET)
 	public ModelAndView phoneAreaManageApply(HttpServletResponse response, @ModelAttribute("ApplyListForm") ApplyList ApplyList, BindingResult result,
@@ -198,23 +208,7 @@ public class ApplyListController extends BaseController {
 //		return new ModelAndView(SmBaseGlobal.MobileViewPath + "phoneApplyAuthorize");
 //	}
 
-	@RequestMapping(value = "/ApplyListList", method = RequestMethod.GET)
-	public ModelAndView WeChatPublicList(HttpServletResponse response, HttpServletRequest request, HttpSession session, Model model) {
-		Map<String, Object> responseMap = new HashMap<String, Object>();
-		Users user = null;
-		user = (Users) session.getAttribute("UserName");
-		String PID = request.getParameter("pid");
-		String type = request.getParameter("type");
-		model.addAttribute("ApplyID", PID);
-		model.addAttribute("TypeID", type);
-		responseMap.put("SrcID", PID);
-		responseMap.put("UserID", user.getID());
-		MessagesService.ReadedMessages(responseMap);
-		if(type!=null && type.equals(String.valueOf(SmBaseGlobal.DealInfoType.CorrectList.getid()))){
-			return new ModelAndView(SmBaseGlobal.WebViewPath + "ApplyList");
-		}
-		return new ModelAndView(SmBaseGlobal.WebViewPath + "ApplyListList");
-	}
+
 
 	@RequestMapping(value = "/getApplyListList", method = RequestMethod.GET)
 	public @ResponseBody

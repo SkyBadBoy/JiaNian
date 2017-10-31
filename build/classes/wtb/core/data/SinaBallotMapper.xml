@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.SinaBallotMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.SinaBallot" id="ClassResultMap">
+	<result property="ID" column="SinaBallot_ID"/>
+	<result property="PKID" column="SinaBallot_ID"/>
+	<result property="Title" column="SinaBallot_Title"/>
+	<result property="EssayID" column="SinaBallot_EssayID"/>
+	<result property="Memo" column="SinaBallot_Memo"/>
+	<result property="Status" column="SinaBallot_Status"/>
+	<result property="CreateTime" column="SinaBallot_CreateTime"/>
+	
+</resultMap>
+<select id="getSinaBallotList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		SinaBallot_Title,
+SinaBallot_ID,
+SinaBallot_EssayID,
+SinaBallot_CreateTime,
+SinaBallot_Status,
+SinaBallot_Memo
+
+		FROM wtb_SinaBallot
+		<where>
+			1=1
+				<if test="EssayID != null">
+					and SinaBallot_EssayID = #{EssayID}
+				</if>
+				<if test="ID != null">
+					and SinaBallot_ID = #{ID}
+				</if>
+				<if test="Status != null">
+					and SinaBallot_Status = #{Status}
+				</if>
+				
+		</where>
+</select>
+
+<select id="getSinaBallotEffCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1) as Count
+		FROM wtb_SinaBallot
+		<where>
+			1=1
+				<if test="EssayID != null">
+					and SinaBallot_EssayID = #{EssayID}
+				</if>
+				<if test="ID != null">
+					and SinaBallot_ID = #{ID}
+				</if>
+				<if test="Status != null">
+					and SinaBallot_Status = #{Status}
+				</if>
+		</where>
+
+</select>
+<insert id="addSinaBallot" parameterType="wtb.core.model.SinaBallot" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_SinaBallot (
+			SinaBallot_ID,
+SinaBallot_EssayID,
+SinaBallot_CreateTime,
+SinaBallot_Status,
+SinaBallot_Memo,
+SinaBallot_Title
+		) VALUES (
+			#{ID}, #{EssayID}, #{CreateTime}, #{Status}, #{Memo}, #{Title}
+		)
+</insert>
+<update id="updateSinaBallot" parameterType="wtb.core.model.SinaBallot">
+	UPDATE wtb_SinaBallot 
+		SET
+		SinaBallot_ID=#{ID}, 
+		SinaBallot_EssayID=#{EssayID}, 
+		SinaBallot_CreateTime=#{CreateTime}, 
+		SinaBallot_Status=#{Status}, 
+		SinaBallot_Memo=#{Memo}, 
+		SinaBallot_Title=#{Title}
+			where SinaBallot_ID = #{ID}
+</update>
+<delete id="deleteSinaBallot" parameterType="wtb.core.model.SinaBallot">
+	update  wtb_SinaBallot set SinaBallot_Status=88
+			where
+				 SinaBallot_ID = #{ID}
+			
+</delete>
+
+<update id="enabledSinaBallot" parameterType="wtb.core.model.SinaBallot">
+	update  wtb_SinaBallot set SinaBallot_Status=1
+			where
+				 SinaBallot_ID = #{ID}
+			
+</update>
+
+
+</mapper>
+

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.MoneyRecordMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+     
+<resultMap type="wtb.core.model.MoneyRecord" id="ClassResultMap">
+	<result property="ID" column="MoneyRecord_ID"/>
+	<result property="PKID" column="MoneyRecord_ID"/>
+	<result property="ActivityID" column="MoneyRecord_ActivityID"/>
+	<result property="StudentID" column="MoneyRecord_StudentID"/>
+	<result property="Money" column="MoneyRecord_Money"/>
+	<result property="PayTime" column="MoneyRecord_PayTime"/>
+	<result property="RefundTime" column="MoneyRecord_RefundTime"/>
+	<result property="Type" column="MoneyRecord_Type"/>
+	<result property="BusinessID" column="MoneyRecord_BusinessID"/>
+	<result property="RefundID" column="MoneyRecord_RefundID"/>
+	
+	<association property="Student" column="MoneyRecord_StudentID" select="wtb.core.data.StudentsMapper.getStudentsByIDList"/>
+	
+	<association property="BaseInfo" column="MoneyRecord_Type"
+			select="wtb.core.data.BaseInfoMapper.getBaseInfoList" />
+	<association property="WeChatInfo" column="MoneyRecord_BusinessID"
+			select="wtb.core.data.WeChatInfoMapper.getWeChatInfoByIDList" />
+			
+	
+</resultMap> 
+
+<sql id="params">
+		MoneyRecord_ID,
+		MoneyRecord_StudentID,
+		MoneyRecord_ActivityID,
+		MoneyRecord_Money,
+		MoneyRecord_PayTime,
+		MoneyRecord_RefundTime,
+		MoneyRecord_Type,
+		MoneyRecord_BusinessID,
+		MoneyRecord_RefundID
+</sql>
+
+<sql id="where">
+		1=1
+		<if test="ID != null">
+			and MoneyRecord_ID = #{ID}
+		</if>
+		<if test="StudentID != null">
+			and MoneyRecord_StudentID = #{StudentID}
+		</if>
+		<if test="Type != null">
+			and MoneyRecord_Type = #{Type}
+		</if>
+		<if test="ActivityID !=null">
+			and MoneyRecord_ActivityID =#{ActivityID}
+		</if>
+		<if test="RefundID !=null">
+			and MoneyRecord_RefundID =#{RefundID}
+		</if>
+
+</sql>
+
+<select id="getMoneyRecordList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		<include refid="params"></include>
+		FROM wtb_MoneyRecord
+		<where>
+			<include refid="where"></include>
+		</where>
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getMoneyRecordCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_MoneyRecord
+</select>
+
+<insert id="addMoneyRecord" parameterType="wtb.core.model.MoneyRecord" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_MoneyRecord (
+				<include refid="params"></include>
+		) VALUES (
+			#{ID}, #{StudentID}, #{ActivityID},#{Money},now(),now(),#{Type}
+			,#{BusinessID},#{RefundID}
+		)
+</insert>
+
+<update id="refundMoneyRecord" parameterType="wtb.core.model.MoneyRecord">
+	update  wtb_MoneyRecord set MoneyRecord_Type=12,MoneyRecord_RefundTime=now(),MoneyRecord_RefundID=#{RefundID} where MoneyRecord_ID = #{ID}
+</update>
+
+</mapper>
+

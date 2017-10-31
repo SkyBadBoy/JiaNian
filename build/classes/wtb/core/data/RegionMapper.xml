@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.RegionMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Region" id="ClassResultMap">
+	<result property="ID" column="REGION_ID"/>
+	<result property="text" column="REGION_NAME"/>
+	<result property="Code" column="REGION_CODE"/>
+	<result property="Name" column="REGION_NAME"/>
+	<result property="ParentID" column="PARENT_ID"/>
+	<result property="Level" column="REGION_LEVEL"/>
+	<result property="Order" column="REGION_ORDER"/>
+	<result property="Name_En" column="REGION_NAME_EN"/>
+	<result property="ShortName_En" column="REGION_SHORTNAME_EN"/>
+</resultMap>
+<sql id="where">
+		<if test="ID != null and ID != 0">
+			and wtb_Region.rEGION_ID = #{ID}
+		</if>
+		<if test="Code != null">
+			and wtb_Region.rEGION_CODE = #{Code}
+		</if>
+		<if test="Name != null">
+			and wtb_Region.rEGION_NAME = #{Name}
+		</if>
+		<if test="ParentID != null">
+			and wtb_Region.pARENT_ID = #{ParentID}
+		</if>
+		<if test="ParentID2 != null">
+			and REGION_ID in(SELECT Notices_AreaID FROM `wtb_Notices` GROUP BY `Notices_AreaID` HAVING(COUNT(`Notices_AreaID`)>0)) GROUP BY `PARENT_ID` HAVING(COUNT(`PARENT_ID`)>0)
+		</if>
+		<if test="Level != null">
+			and wtb_Region.rEGION_LEVEL = #{Level}
+		</if>
+		<if test="Order != null">
+			and wtb_Region.rEGION_ORDER = #{Order}
+		</if>
+		<if test="Name_En != null">
+			and wtb_Region.rEGION_NAME_EN = #{Name_En}
+		</if>
+		<if test="check!=null">
+			and (REGION_NAME like CONCAT(CONCAT('%', #{check,jdbcType=VARCHAR}),'%')
+			or REGION_CODE like CONCAT(CONCAT('%', #{check,jdbcType=VARCHAR}),'%'))
+		</if>
+		<if test="ShortName_En != null">
+			and wtb_Region.rEGION_SHORTNAME_EN = #{ShortName_En}
+		</if>
+</sql>
+<select id="getRegionList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		REGION_ID, REGION_CODE, REGION_NAME, PARENT_ID, REGION_LEVEL, REGION_ORDER, REGION_NAME_EN, REGION_SHORTNAME_EN
+		FROM wtb_Region
+		<where>
+			1=1
+			<include refid="where"></include>
+				
+		</where>
+		<if test="GROUP!=null">
+			GROUP BY `PARENT_ID` HAVING(COUNT(`PARENT_ID`)>0)
+		</if>
+				order by wtb_Region.rEGION_NAME_EN 
+		<if test="limit != null and start !=null ">
+			 limit ${start},${limit} 
+		</if>
+
+		
+</select>
+<select id="getRegionCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Region
+		<where>
+			1=1
+			<include refid="where"></include>
+		</where>
+</select>
+<select id="getRegionByIDList" parameterType="String" resultMap="ClassResultMap">
+	SELECT
+		REGION_ID, REGION_CODE, REGION_NAME, PARENT_ID, REGION_LEVEL, REGION_ORDER, REGION_NAME_EN, REGION_SHORTNAME_EN
+		FROM wtb_Region
+		<where>
+			1=1
+				<if test="_parameter != null">
+					and wtb_Region.rEGION_ID = #{_parameter}
+				</if>
+		</where>
+</select>
+<insert id="addRegion" parameterType="wtb.core.model.Region" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Region (
+			REGION_ID, REGION_CODE, REGION_NAME, PARENT_ID, REGION_LEVEL, REGION_ORDER, REGION_NAME_EN, REGION_SHORTNAME_EN
+		) VALUES (
+			#{ID}, #{Code}, #{Name}, #{ParentID}, #{Level}, #{Order}, #{Name_En}, #{ShortName_En}
+		)
+</insert>
+<update id="updateRegion" parameterType="wtb.core.model.Region">
+	UPDATE wtb_Region 
+		SET
+		REGION_ID=#{ID}, REGION_CODE=#{Code}, REGION_NAME=#{Name}, PARENT_ID=#{ParentID}, REGION_LEVEL=#{Level}, REGION_ORDER=#{Order}, REGION_NAME_EN=#{Name_En}, REGION_SHORTNAME_EN=#{ShortName_En}
+			where wtb_Region.rEGION_ID = #{ID}
+		
+</update>
+<delete id="deleteRegion" parameterType="wtb.core.model.Region">
+	DELETE from wtb_Region 
+			where wtb_Region.rEGION_ID = #{ID}
+			
+</delete>
+</mapper>
+

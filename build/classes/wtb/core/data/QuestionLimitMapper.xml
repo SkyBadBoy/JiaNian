@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.QuestionLimitMapper">
+
+    <insert id="addQuestionLimit" parameterType="wtb.core.model.QuestionLimit" keyProperty="QuestionLimitID" useGeneratedKeys="true">
+        INSERT INTO wtb_QuestionLimits (
+        QuestionLimit_ID,
+		QuestionLimit_Status,
+		QuestionLimit_Memo,
+		QuestionLimit_CreateTime,
+		QuestionLimit_ModifyTIme,
+		QuestionLimit_Version,
+		QuestionLimit_StudentID,
+		QuestionLimit_LimitNumber,
+		QuestionLimit_LimitTime,
+		QuestionLimit_Type,
+		QuestionLimit_LimitNo
+        ) VALUES (
+        #{ID}, #{Status}, #{Memo}, NOW(),
+        NOW(), #{Version}, #{StudentID}, #{LimitNumber}, #{LimitTime}, #{Type}, #{LimitNo}
+        )
+    </insert>
+
+    <update id="changeQuestionLimit" parameterType="wtb.core.model.QuestionLimit">
+        UPDATE wtb_QuestionLimits SET
+       QuestionLimit_Status = #{Status},
+		QuestionLimit_Memo = #{Memo},
+		QuestionLimit_ModifyTIme = NOW(),
+		QuestionLimit_Version = QuestionLimit_Version + 1,
+		QuestionLimit_StudentID = #{StudentID},
+		QuestionLimit_LimitNumber = #{LimitNumber},
+		QuestionLimit_LimitTime = #{LimitTime},
+		QuestionLimit_Type = #{Type},
+		QuestionLimit_LimitNo = #{LimitNo}
+		 WHERE QuestionLimit_ID = #{ID} 
+    </update>
+
+    <delete id="removeQuestionLimit" parameterType="wtb.core.model.QuestionLimit">
+        UPDATE wtb_QuestionLimits SET
+        QuestionLimit_Status =88, QuestionLimit_ModifyTime = NOW(),
+        QuestionLimit_Version = QuestionLimit_Version + 1
+        WHERE QuestionLimit_ID = #{ID} 
+    </delete>
+
+    
+</mapper>

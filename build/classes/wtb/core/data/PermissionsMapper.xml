@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.PermissionsMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Permissions" id="ClassResultMap">
+	<result property="ID" column="Permission_ID"/>
+	<result property="PKID" column="Permission_ID"/>
+	<result property="PowerCode" column="Permission_PowerCode"/>
+	<result property="WeChatGroupID" column="Permission_WeChatGroupID"/>
+	<result property="Memo" column="Permission_Memo"/>
+	<result property="CreateTime" column="Permission_CreateTime"/>
+	<result property="ModifyTime" column="Permission_ModifyTime"/>
+	<result property="Status" column="Permission_Status"/>
+	<result property="AreaID" column="Permission_AreaID"/>
+	
+</resultMap>
+<select id="getPermissionsList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		Permission_ID,
+  Permission_PowerCode ,
+  Permission_WeChatGroupID ,
+  Permission_Memo,
+  Permission_CreateTime,
+  Permission_ModifyTime,
+  Permission_Status,
+  Permission_AreaID
+		FROM wtb_Permissions
+		<where>
+			1=1
+				<if test="ID != null">
+					and Permission_ID = #{ID}
+				</if>
+				<if test="Status != null">
+					and Permission_Status = #{Status}
+				</if>
+				<if test="WeChatGroupID != null">
+					and Permission_WeChatGroupID = #{WeChatGroupID}
+				</if>
+				<if test="PowerCode != null">
+					and Permission_PowerCode = #{PowerCode}
+				</if>
+				<if test="AreaID != null">
+					and Permission_AreaID = #{AreaID}
+				</if>
+				
+		</where>
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+		</if>
+</select>
+
+<select id="getPermissionsCount" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_Permissions
+		<where>
+			1=1
+				<if test="ID != null">
+					and Permission_ID = #{ID}
+				</if>
+				<if test="Status != null">
+					and Permission_Status = #{Status}
+				</if>
+				<if test="WeChatGroupID != null">
+					and Permission_WeChatGroupID = #{WeChatGroupID}
+				</if>
+				<if test="PowerCode != null">
+					and Permission_PowerCode = #{PowerCode}
+				</if>
+				<if test="AreaID != null">
+					and Permission_AreaID = #{AreaID}
+				</if>
+				
+		</where>
+		
+</select>
+<insert id="addPermissions" parameterType="wtb.core.model.Permissions" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Permissions (
+			Permission_ID,
+  Permission_PowerCode ,
+  Permission_WeChatGroupID ,
+  Permission_Memo,
+  Permission_CreateTime,
+  Permission_ModifyTime,
+  Permission_Status,
+  Permission_AreaID
+		) VALUES (
+			#{ID}, #{PowerCode}, #{WeChatGroupID}, #{Memo},#{CreateTime},#{ModifyTime},#{Status},#{AreaID}
+		)
+</insert>
+<update id="updatePermissions" parameterType="wtb.core.model.Permissions">
+	UPDATE wtb_Permissions 
+		SET
+		Permission_ID=#{ID}, 
+		Permission_PowerCode=#{PowerCode}, 
+		Permission_WeChatGroupID=#{WeChatGroupID}, 
+		Permission_Memo=#{Memo},
+		Permission_CreateTime=#{CreateTime},
+		Permission_ModifyTime=#{ModifyTime},
+		Permission_Status=#{Status},
+		Permission_AreaID=#{AreaID}
+		
+			where Permission_ID = #{ID}
+</update>
+<delete id="deletePermissions" parameterType="wtb.core.model.Permissions">
+	update  wtb_Permissions set Permission_Status=88
+			where
+				 Permission_ID = #{ID}
+			
+</delete>
+
+<update id="enabledPermissions" parameterType="wtb.core.model.Permissions">
+	update  wtb_Permissions set Permission_Status=1
+			where
+				 Permission_ID = #{ID}
+			
+</update>
+</mapper>
+

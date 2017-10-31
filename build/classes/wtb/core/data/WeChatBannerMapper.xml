@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeChatBannerMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<resultMap type="wtb.core.model.WeChatBanner" id="ClassResultMap">
+		<result property="ID" column="WeChatBanner_ID" />
+		<result property="AreaID" column="WeChatBanner_AreaID" />
+		<result property="Title" column="WeChatBanner_Title" />
+		<result property="CreateTime" column="WeChatBanner_CreateTime" />
+		<result property="ModifyTime" column="WeChatBanner_ModifyTime" />
+		<result property="Year" column="WeChatBanner_Year" />
+		<result property="Month" column="WeChatBanner_Month" />
+		<result property="URL" column="WeChatBanner_URL" />
+		<result property="Status" column="WeChatBanner_Status" />
+		<result property="hasUsed" column="hasUsed" />
+		<result property="PKID" column="WeChatBanner_ID" />
+		<result property="QRCodeURLID" column="WeChatBanner_QRCodeURLID" />
+		<result property="WeChatID" column="WeChatBanner_WeChatID" />
+
+		<association property="BaseInfo" column="WeChatBanner_Status"
+			select="wtb.core.data.BaseInfoMapper.getBaseInfoList" />
+		<association property="Area" column="WeChatBanner_AreaID"
+			select="wtb.core.data.RegionMapper.getRegionByIDList" />
+		<association property="WeChat" column="WeChatBanner_WeChatID"
+			select="read.core.data.ReadWeChatPublicMapper.getWeChatPublicForIDList" />
+		<association property="QRCodeURL" column="WeChatBanner_QRCodeURLID"
+			select="wtb.core.data.PictureMapper.getPictureList" />
+	</resultMap>
+	<select id="getWeChatBannerList" parameterType="map" resultMap="ClassResultMap">
+		SELECT
+		WeChatBanner_ID ,
+
+		WeChatBanner_AreaID,
+		WeChatBanner_Title ,
+		WeChatBanner_CreateTime ,
+		WeChatBanner_ModifyTime ,
+		WeChatBanner_Year ,
+		WeChatBanner_Month,
+		WeChatBanner_URL ,
+		WeChatBanner_Status ,
+		WeChatBanner_QRCodeURLID,
+		WeChatBanner_WeChatID
+		FROM wtb_WeChatBanner
+		<where>
+			1=1
+			<if test="ID != null">
+				and WeChatBanner_ID = #{ID}
+			</if>
+			<if test="AreaID != null">
+				and WeChatBanner_AreaID = #{AreaID}
+			</if>
+			<if test="Title != null">
+				and WeChatBanner_Title = #{Title}
+			</if>
+			<if test="CreateTime != null">
+				and WeChatBanner_CreateTime = #{CreateTime}
+			</if>
+			<if test="ModifyTime != null">
+				and WeChatBanner_ModifyTime = #{ModifyTime}
+			</if>
+			<if test="Year != null">
+				and WeChatBanner_Year = #{Year}
+			</if>
+			<if test="Month != null">
+				and WeChatBanner_Month = #{Month}
+			</if>
+			<if test="URL != null">
+				and WeChatBanner_URL = #{URL}
+			</if>
+			<if test="Status != null">
+				and WeChatBanner_Status = #{Status}
+			</if>
+		</where>
+		<if test="limit != null and start !=null ">
+			        limit ${start},${limit} 
+				</if>
+	</select>
+	
+	<select id="getWeChatBannerCount" parameterType="map" resultType="int">
+		SELECT
+		Count(1)
+		FROM wtb_WeChatBanner
+		<where>
+			1=1
+			<if test="ID != null">
+				and WeChatBanner_ID = #{ID}
+			</if>
+			<if test="AreaID != null">
+				and WeChatBanner_AreaID = #{AreaID}
+			</if>
+			<if test="Title != null">
+				and WeChatBanner_Title = #{Title}
+			</if>
+			<if test="CreateTime != null">
+				and WeChatBanner_CreateTime = #{CreateTime}
+			</if>
+			<if test="ModifyTime != null">
+				and WeChatBanner_ModifyTime = #{ModifyTime}
+			</if>
+			<if test="Year != null">
+				and WeChatBanner_Year = #{Year}
+			</if>
+			<if test="Month != null">
+				and WeChatBanner_Month = #{Month}
+			</if>
+			<if test="URL != null">
+				and WeChatBanner_URL = #{URL}
+			</if>
+			<if test="Status != null">
+				and WeChatBanner_Status = #{Status}
+			</if>
+		</where>
+	</select>
+	<insert id="addWeChatBanner" parameterType="wtb.core.model.WeChatBanner"
+		keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO wtb_WeChatBanner (
+		WeChatBanner_ID ,
+		WeChatBanner_AreaID,
+		WeChatBanner_Title ,
+		WeChatBanner_CreateTime ,
+		WeChatBanner_ModifyTime ,
+		WeChatBanner_Year ,
+		WeChatBanner_Month,
+		WeChatBanner_URL ,
+		WeChatBanner_Status,
+		WeChatBanner_QRCodeURLID,
+		WeChatBanner_WeChatID
+		) VALUES (
+		#{ID}, #{AreaID}, #{Title},
+		#{CreateTime}, #{ModifyTime}, #{Year},#{Month},
+		#{URL}, #{Status},#{QRCodeURLID}, #{WeChatID}
+		)
+	</insert>
+	<update id="updateWeChatBanner" parameterType="wtb.core.model.WeChatBanner">
+		UPDATE wtb_WeChatBanner
+		SET
+		WeChatBanner_ID=#{ID},
+		WeChatBanner_AreaID=#{AreaID},
+		WeChatBanner_Title=#{Title},
+		WeChatBanner_CreateTime=#{CreateTime},
+		WeChatBanner_ModifyTime=#{ModifyTime},
+		WeChatBanner_Year=#{Year},
+		WeChatBanner_Month=#{Month},
+		WeChatBanner_URL=#{URL},
+		WeChatBanner_Status=#{Status},
+		WeChatBanner_QRCodeURLID=#{QRCodeURLID},
+		WeChatBanner_WeChatID=#{WeChatID}
+		where WeChatBanner_ID = #{ID}
+	</update>
+	<delete id="deleteWeChatBanner" parameterType="wtb.core.model.WeChatBanner">
+		update wtb_WeChatBanner set WeChatBanner_Status=88,WeChatBanner_ModifyTime
+		=#{ModifyTime}
+		where
+		WeChatBanner_ID = #{ID}
+
+	</delete>
+
+	<update id="enabledWeChatBanner" parameterType="wtb.core.model.WeChatBanner">
+		update wtb_WeChatBanner set WeChatBanner_Status=1,WeChatBanner_ModifyTime
+		=#{ModifyTime}
+		where
+		WeChatBanner_ID = #{ID}
+
+	</update>
+</mapper>
+

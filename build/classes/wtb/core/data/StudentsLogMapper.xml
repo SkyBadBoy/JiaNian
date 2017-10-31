@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.StudentsLogMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	
+	<insert id="addStudentsLog" parameterType="wtb.core.model.StudentsLog" keyProperty="ID" useGeneratedKeys="true">
+		INSERT INTO wtb_StudentsLog (
+			StudentsLog_ID,
+			StudentsLog_CreateTime,
+			StudentsLog_NewID,
+			StudentsLog_StudentsID,
+			StudentsLog_Status,
+			StudentsLog_URL,
+			StudentsLog_Request,
+			StudentsLog_Type
+			)VALUES (
+				#{ID}, now(), #{NewID}, #{StudentsID},#{Status},#{URL},#{Request},#{Type}
+			)
+	</insert>
+	<update id="updateStudentsLog" parameterType="wtb.core.model.StudentsLog">
+		UPDATE wtb_StudentsLog
+			SET
+			StudentsLog_NewID= #{NewID},
+			StudentsLog_StudentsID=#{StudentsID},
+			StudentsLog_Status=#{Status},
+			StudentsLog_URL=#{URL},
+			StudentsLog_Request=#{Request},
+			StudentsLog_Type=#{Type}
+				where StudentsLog_ID = #{ID}
+	</update>
+	<delete id="deleteStudentsLog" parameterType="wtb.core.model.StudentsLog">
+		update  wtb_StudentsLog set StudentsLog_Status=88
+				where
+					 StudentsLog_ID = #{ID}
+	</delete>
+</mapper>

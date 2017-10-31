@@ -43,7 +43,7 @@
 			<div class="col-lg-12">
 				<ol class="breadcrumb">
 					<li><a href="<%=path%>/home" target="_self">主页</a></li>
-					<li><strong>作文批改申请列表</strong></li>
+					<li><strong>报名列表</strong></li>
 				</ol>
 			</div>
 			<br/>
@@ -60,16 +60,15 @@
 					<div id="collapseThree" class="panel-collapse collapse in"
 						aria-expanded="true">
 						<div class="panel-body">
-						<input type="hidden" name="Company" value="${KeyWord}" id="Company" iscon="true" />
 							<div class="col-md-3">
 								<label>状态</label>
 								<select class="form-control m-b" onchange="getQueryList()" iscon="true"
 									id="Status" name="Status">
-									<option value="<%= SmBaseGlobal.CheckStatus.Default.getid() %>">未批改</option>
-									<option value="<%= SmBaseGlobal.CheckStatus.Effective.getid() %>">已批改</option>
+									<option value="<%= SmBaseGlobal.ApplyType.NoDispose.getid() %>">未处理</option>
+									<option value="<%= SmBaseGlobal.ApplyType.LoadDispose.getid() %>">待确认</option>
+									<option value="<%= SmBaseGlobal.ApplyType.Dispose.getid() %>">已确认</option>
 								</select>
 							</div>
-
 						</div>
 
 					</div>
@@ -102,16 +101,11 @@
 								<tr>
 									<th  data-field="state" data-checkbox="true"></th>
 									<th   data-field="pkid">ID</th>
-									<th   data-field="userName">申请人</th>
-									<th   data-field="grade">班级</th>
-									<th   data-field="area">批改机构</th>
-									<!-- th   data-width="100" data-field="imagesUrl">配图</th> -->
-									<th    data-field="content">批改内容</th>
-									<th   data-field="createTime">申请日期</th>
-									<th   data-field="correctTeacher">批改教师</th>
-									<th    data-field="modifyTime">批改日期</th>
-									<th    data-field="checkResult">批注</th>
-									<th    data-field="memo">查看</th>
+									<th   data-field="userName">用户名字</th>
+									<th   data-field="userPhone">用户手机号</th>
+									<th   data-field="content">报名建议</th>
+									<th   data-field="createTime">报名时间</th>
+									<th   data-field="feedback">报名进度</th>
 									
 								</tr>
 							</thead>

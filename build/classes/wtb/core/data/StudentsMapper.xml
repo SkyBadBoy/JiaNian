@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.StudentsMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.Students" id="ClassResultMapByID">
+	<result property="ID" column="Students_ID"/>
+	<result property="PKID" column="Students_ID"/>
+	<result property="Name" column="Students_Name" typeHandler="wtb.smUtil.MyBlobTypeHandler"/>
+	<result property="Age" column="Students_Age"/>
+	<result property="Sex" column="Students_Sex"/>
+	<result property="IsSex" column="Students_IsSex"/>
+	<result property="Level" column="Students_Level"/>
+	<result property="ImageID" column="Students_ImageID"/>
+	<result property="QRImageID" column="Students_QRImageID"/>
+	<result property="Phone" column="Students_Phone"/>
+	<result property="School" column="Students_School"/>
+	<result property="No" column="Students_No"/>
+	<result property="CreateTime" column="Students_CreateTime"/>
+	<result property="Status" column="Students_Status"/>
+	<result property="PassWord" column="Students_PassWord"/>
+	<result property="AreaID" column="Students_AreaID"/>
+	<result property="LoginName" column="Students_LoginName"/>
+	<result property="OpenID" column="Students_OpenID"/>
+	<result property="UnionID" column="Students_UnionID"/>
+	<result property="Integration" column="Students_Integration"/>
+	<result property="Count" column="Students_Integration"/>
+	<result property="ParentName" column="Students_ParentName"/>
+	<result property="Email" column="Students_Email"/>
+	<result property="Grade" column="Students_Grade"/>
+	<result property="Habit" column="Students_Habit"/>
+	<result property="NoticeCount" column="Students_NoticeCount"/>
+	<result property="ImageUrl" column="Students_ImageUrl"/>
+	<result property="Official" column="Students_Official"/>
+	<result property="Chief" column="Students_Chief"/>
+	<result property="HonorCount" column="Students_HonorCount"/>
+</resultMap>
+
+<sql id="params">
+	Students_ID,
+ 	Students_Name,
+	Students_Age,
+	Students_Sex,
+	Students_CreateTime,
+	Students_Level,
+	Students_Status,
+	Students_ImageID,
+	Students_QRImageID,
+	Students_Phone,
+	Students_School,
+	Students_No,
+	Students_PassWord,
+	Students_AreaID,
+	Students_LoginName,
+	Students_OpenID,
+	Students_UnionID,
+	Students_Integration,
+	Students_ParentName,
+	Students_Email,
+	Students_Grade,
+	Students_Habit,
+	Students_NoticeCount,
+	Students_ImageUrl
+	
+</sql>
+<sql id="update">
+	Students_Name=#{Name},
+	Students_Age=#{Age},
+	Students_ImageID=#{ImageID},
+	Students_Sex=#{Sex},
+	Students_ModifyTime = now(),
+	Students_Status=#{Status},
+	Students_Level=#{Level},
+	Students_QRImageID=#{QRImageID},
+	Students_Phone=#{Phone},
+	Students_School=#{School},
+	Students_No=#{No},
+	Students_AreaID=#{AreaID},
+	Students_LoginName=#{LoginName},
+	Students_OpenID=#{OpenID},
+	Students_UnionID=#{UnionID},
+	Students_ParentName=#{ParentName},
+	Students_Email=#{Email},
+	Students_Grade=#{Grade},
+	Students_Habit=#{Habit},
+	Students_NoticeCount=#{NoticeCount},
+	Students_ImageUrl=#{ImageUrl},
+	Students_PassWord = #{PassWord}
+</sql>
+
+<insert id="addStudents" parameterType="wtb.core.model.Students" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_Students (
+		<include refid="params"></include>
+		) VALUES (
+			#{ID}, #{Name}, #{Age}, #{Sex},now(),#{Level},#{Status}
+			,#{ImageID},#{QRImageID},#{Phone},#{School},#{No},#{PassWord},#{AreaID},#{LoginName},#{OpenID},#{UnionID},#{Integration},#{ParentName},#{Email},#{Grade},#{Habit},0,#{ImageUrl}
+		)
+</insert>
+<update id="updateStudents" parameterType="wtb.core.model.Students">
+	UPDATE wtb_Students 
+		SET
+  		<include refid="update"></include>  
+			where Students_ID = #{ID}
+</update>
+<update id="updateStudentsForOpenID" parameterType="wtb.core.model.Students">
+	UPDATE wtb_Students 
+		SET
+		Students_ID=#{ID},
+  		<include refid="update"></include>  
+			where Students_OpenID = #{OpenID}
+</update>
+<delete id="deleteStudents" parameterType="wtb.core.model.Students">
+	update  wtb_Students set Students_Status=88,Students_OpenID=concat(Students_ID,'_Del'),Students_ModifyTime = now(),Students_UnionID=concat(Students_ID,'_Del')
+			where
+			1=2 
+			<if test="OpenID != null">
+				or Students_OpenID = #{OpenID}
+			</if>
+			<if test="UnionID != null">
+				or Students_UnionID = #{UnionID}
+			</if>
+			<if test="ID != null">
+				or Students_ID = #{ID}
+			</if>
+			
+</delete>
+<update id="enabledStudents" parameterType="wtb.core.model.Students">
+	update  wtb_Students set Students_Status=1,Students_ModifyTime = now()
+			where
+				 Students_ID = #{ID}
+			
+</update>
+<update id="updateLevelStudents" parameterType="wtb.core.model.Students">
+	update  wtb_Students set Students_Level=#{Level},Students_Integration=#{Integration},Students_Official=#{Official},Students_ModifyTime = now()
+			where
+				 Students_ID = #{ID}
+			
+</update>
+
+<update id="ChangePassword" parameterType="wtb.core.model.Students" >
+	update  wtb_Students set Students_PassWord=#{PassWord},Students_ModifyTime = now()
+			where
+				 Students_ID = #{ID} and Students_Status=1
+			
+</update>
+
+
+
+
+	
+<update id="UpNoticeCount" parameterType="wtb.core.model.Students">
+	update  wtb_Students set Students_NoticeCount= (select count(1) from wtb_Notices where Notices_Status=1 and Notices_PublishUser=Students_ID),Students_ModifyTime=now()
+			where
+				 Students_ID = #{_parameter}
+</update>
+<update id="CancelNoticeCount" parameterType="wtb.core.model.Students">
+		update  wtb_Students set Students_NoticeCount=Students_NoticeCount-1,Students_ModifyTime=now()
+			where
+				 Students_ID =  #{_parameter}
+			
+</update>
+<update id="UpdateOfficial" parameterType="wtb.core.model.Students">
+		update  wtb_Students set Students_Official=1,Students_ModifyTime=now()
+			where
+				 Students_ID =  #{_parameter}
+			
+</update>
+<update id="CancelOfficial" parameterType="wtb.core.model.Students">
+		update  wtb_Students set Students_Official=0,Students_ModifyTime=now()
+			where
+				 Students_ID =  #{_parameter}
+			
+</update>
+
+<update id="UpdateChief" parameterType="wtb.core.model.Students">
+		update  wtb_Students set Students_Chief=#{Chief},Students_ModifyTime=now()
+			where
+				 Students_ID =  #{ID}
+			
+</update>
+
+<update id="UpHonorCount" parameterType="wtb.core.model.Students">
+	update  wtb_Students set Students_HonorCount=Students_HonorCount+1,Students_ModifyTime=now()
+			where
+				 Students_ID = #{_parameter}
+</update>
+<update id="CancelHonorCount" parameterType="wtb.core.model.Students">
+		update  wtb_Students set Students_HonorCount=(select count(1) from wtb_HonorRecords where HonorRecord_Status=1 and  HonorRecord_StudentID=Students_ID),Students_ModifyTime=now()
+			where
+				 Students_ID =  #{_parameter}
+			
+</update>
+<update id="UpSendCount" parameterType="wtb.core.model.Students">
+	update  wtb_Students set Students_SendCount=Students_SendCount+1
+			where
+				 Students_ID = #{_parameter}
+</update>
+<update id="UupdateBirthDayRemind" parameterType="wtb.core.model.Students">
+	update  wtb_Students set Students_BirthDayRemind=now()
+			where
+				 Students_ID = #{_parameter}
+</update>
+
+</mapper>
+

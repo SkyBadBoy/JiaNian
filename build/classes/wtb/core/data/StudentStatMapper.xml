@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.StudentStatMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<resultMap type="wtb.core.model.StudentStat" id="ClassResultMap">
+	<result property="ID" column="StudentStat_ID"/>
+	<result property="CreateTime" column="StudentStat_CreateTime"/>
+	<result property="Memo" column="StudentStat_Memo"/>
+	<result property="Status" column="StudentStat_Status"/>
+	<result property="Type" column="StudentStat_Type"/>
+	<result property="UserID" column="StudentStat_UserID"/>
+	<result property="IPAddress" column="StudentStat_IPAddress"/>
+	<result property="AccessArea" column="StudentStat_AccessArea"/>
+	<result property="AccessUrl" column="StudentStat_AccessUrl"/>
+	<result property="ModifyTime" column="StudentStat_ModifyTime"/>
+</resultMap>
+<sql id="param">
+	StudentStat_ID,
+	StudentStat_CreateTime,
+	StudentStat_ModifyTime,
+	StudentStat_Status,
+	StudentStat_Memo,
+	StudentStat_StudentID,
+	StudentStat_Glamour,
+	StudentStat_Year,
+	StudentStat_Month
+	
+	
+</sql>
+
+<insert id="addStudentStat" parameterType="wtb.core.model.StudentStat" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_StudentStat (
+
+  <include refid="param"></include>
+		) VALUES (
+			#{ID},now(),now(), #{Status}, #{Memo},#{StudentID},#{Glamour},#{Year},#{Month}
+		)
+</insert>
+
+<update id="updateStudentStat" parameterType="wtb.core.model.StudentStat">
+	UPDATE wtb_StudentStat 
+		SET
+		StudentStat_Memo=#{Memo}, 
+		StudentStat_Status=#{Status},
+		StudentStat_ModifyTime=now(),
+		StudentStat_StudentID=#{StudentID},
+		StudentStat_Glamour=#{Glamour},
+		StudentStat_Year=#{Year},
+		StudentStat_Month=#{Month}
+		where StudentStat_ID = #{ID}
+</update>
+<delete id="deleteStudentStat" parameterType="wtb.core.model.StudentStat">
+	update  wtb_StudentStat set StudentStat_Status=88,StudentStat_ModifyTime=now()
+			where
+				 StudentStat_ID = #{ID}
+			
+</delete>
+</mapper>
+

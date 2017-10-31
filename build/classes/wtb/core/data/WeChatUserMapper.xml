@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.WeChatUserMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+<resultMap type="wtb.core.model.WeChatUser" id="ClassResultMap">
+	<result property="ID" column="WeChatUser_ID"/>
+	<result property="PKID" column="WeChatUser_ID"/>
+	<result property="OpenID" column="WeChatUser_OpenID"/>
+	<result property="UnionID" column="WeChatUser_UnionID"/>
+	<result property="NickName" column="WeChatUser_NickName" typeHandler="wtb.smUtil.MyBlobTypeHandler"/>
+	<result property="Language" column="WeChatUser_Language"/>
+	<result property="Sex" column="WeChatUser_Sex"/>
+	<result property="City" column="WeChatUser_City"/>
+	<result property="Province" column="WeChatUser_Province"/>
+	<result property="HeadImgUrl" column="WeChatUser_HeadImgUrl"/>
+	<result property="CreateTime" column="WeChatUser_CreateTime"/>
+	<result property="Privilege" column="WeChatUser_Privilege"/>
+	<result property="Status" column="WeChatUser_Status"/>
+	
+</resultMap>
+<select id="getWeChatUserList" parameterType="map" resultMap="ClassResultMap">
+	SELECT
+		WeChatUser_OpenID,
+		WeChatUser_NickName,
+		WeChatUser_Language,
+		WeChatUser_Sex,
+		WeChatUser_City,
+		WeChatUser_Province,
+		WeChatUser_HeadImgUrl,
+		WeChatUser_CreateTime,
+		WeChatUser_ID,
+		WeChatUser_Privilege,
+		WeChatUser_Status,
+		WeChatUser_UnionID
+		FROM wtb_WeChatUser
+		<where>
+			1=1
+				<if test="OpenID != null">
+					and WeChatUser_OpenID = #{OpenID}
+				</if>
+				<if test="UnionID != null">
+					and WeChatUser_UnionID = #{UnionID}
+				</if>
+				<if test="NickName != null">
+					and WeChatUser_NickName = #{NickName}
+				</if>
+				<if test="isLoginIntervals">
+					and TIMESTAMPDIFF(MINUTE,now(),WeChatUser_CreateTime)&gt;-#{isLoginIntervals} 
+				</if>
+				<if test="Sex != null">
+					and WeChatUser_Sex = #{Sex}
+				</if>
+				<if test="City != null">
+					and WeChatUser_City = #{City}
+				</if>
+				<if test="Province != null">
+					and WeChatUser_Province = #{Province}
+				</if>
+				<if test="Status != null">
+					and WeChatUser_Status = #{Status}
+				</if>
+				<if test="ID != null">
+					and WeChatUser_ID = #{ID}
+				</if>
+				
+		</where>
+</select>
+
+<select id="getWeChatUserEffCount" parameterType="map" resultType="int">
+	SELECT
+		Count(distinct WeChatUser_OpenID) as Count
+		FROM wtb_WeChatUser
+		<where>
+			1=1
+				<if test="OpenID != null">
+					and WeChatUser_OpenID = #{OpenID}
+				</if>
+				<if test="UnionID != null">
+					and WeChatUser_UnionID = #{UnionID}
+				</if>
+				<if test="Sex != null">
+					and WeChatUser_Sex = #{Sex}
+				</if>
+				<if test="City != null">
+					and WeChatUser_City = #{City}
+				</if>
+				<if test="NickName != null">
+					and WeChatUser_NickName = #{NickName}
+				</if>
+				<if test="isLoginIntervals">
+					and TIMESTAMPDIFF(MINUTE,now(),WeChatUser_CreateTime)&gt;-#{isLoginIntervals}  
+		
+				</if>
+				<if test="Province != null">
+					and WeChatUser_Province = #{Province}
+				</if>
+				<if test="Status != null">
+					and WeChatUser_Status = #{Status}
+				</if>
+				<if test="ID != null">
+					and WeChatUser_ID = #{ID}
+				</if>
+		</where>
+
+</select>
+<insert id="addWeChatUser" parameterType="wtb.core.model.WeChatUser" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_WeChatUser (
+			WeChatUser_OpenID,
+		WeChatUser_NickName,
+		WeChatUser_Language,
+		WeChatUser_Sex,
+		WeChatUser_City,
+		WeChatUser_Province,
+		WeChatUser_HeadImgUrl,
+		WeChatUser_CreateTime,
+		WeChatUser_ID,
+		WeChatUser_Privilege,
+		WeChatUser_Status,
+		WeChatUser_IPAddress,
+		WeChatUser_WeChat,
+		WeChatUser_UnionID
+		) VALUES (
+			#{OpenID}, #{NickName}, #{Language}, #{Sex}, #{City}, #{Province}, #{HeadImgUrl}, #{CreateTime}, #{ID}, #{Privilege}, #{Status}, #{IpAddress}, #{WeChat},#{UnionID}
+		)
+</insert>
+<update id="updateWeChatUser" parameterType="wtb.core.model.WeChatUser">
+	UPDATE wtb_WeChatUser 
+		SET
+		WeChatUser_OpenID=#{OpenID}, 
+		WeChatUser_NickName=#{NickName}, 
+		WeChatUser_Language=#{Language}, 
+		WeChatUser_Sex=#{Sex}, 
+		WeChatUser_City=#{City}, 
+		WeChatUser_Province=#{Province},
+		WeChatUser_HeadImgUrl=#{HeadImgUrl},
+		WeChatUser_Privilege=#{Privilege},
+		WeChatUser_Status=#{Status},
+		WeChatUser_UnionID=#{UnionID}
+			where WeChatUser_ID = #{ID}
+</update>
+<delete id="deleteWeChatUser" parameterType="wtb.core.model.WeChatUser">
+	update  wtb_WeChatUser  set WeChatUser_Status=88
+			where
+				 WeChatUser_ID = #{ID}
+			
+</delete>
+
+<update id="enabledWeChatUser" parameterType="wtb.core.model.WeChatUser">
+	update  wtb_WeChatUser  set WeChatUser_Status=1
+			where
+				 WeChatUser_ID = #{ID}
+			
+</update>
+
+
+</mapper>
+

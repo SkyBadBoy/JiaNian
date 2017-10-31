@@ -18,7 +18,7 @@ request.setAttribute("path", path);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
 
-    <title>微新闻社后台管理系统 - 登录</title>
+    <title>人人学车后台管理系统 - 登录</title>
    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="<%=basePath%>css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
@@ -46,12 +46,10 @@ request.setAttribute("path", path);
     <div class="middle-box text-center loginscreen  animated fadeInDown">
         <div>
             <div>
-
-                <h5 class="logo-name" style="font-size:80px">微新闻社</h5>
-
+                <h5 class="logo-name" style="font-size:80px">人人学车</h5>
             </div>
             <br/>
-            <h3>欢迎使用微新闻社</h3>
+            <h3>欢迎使用人人学车</h3>
 
             <form:form class="m-t"  id="usersForm" modelAttribute="usersForm" role="form" method="post" target="_self" action="${path}/Users/login">
                 <div class="form-group">

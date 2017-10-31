@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.ScenicMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<sql id="sql">
+	scenic_id,
+	scenic_name,
+	scenic_areaid,
+	scenic_phone,
+	scenic_business,
+	scenic_businessid,
+	scenic_content,
+	scenic_status,
+	scenic_createtime,
+	scenic_modifytime
+</sql>
+<insert id="addScenic" parameterType="wtb.core.model.Scenic" keyProperty="id" useGeneratedKeys="true">
+	INSERT INTO wtb_scenic (
+		<include refid="sql"></include>
+		) VALUES (
+			#{id}, #{name}, #{areaid}, #{phone},#{business},#{businessid},#{content},#{status},now(),now()
+		)
+</insert>
+<update id="updateScenic" parameterType="wtb.core.model.Scenic">
+	UPDATE wtb_scenic 
+		SET
+			scenic_name=#{name},
+			scenic_areaid=#{areaid},
+			scenic_phone=#{phone},
+			scenic_business=#{business},
+			scenic_businessid=#{businessid},
+			scenic_content=#{content},
+			scenic_status=#{status},
+			scenic_modifytime=now()
+			where scenic_id = #{id}
+</update>
+<delete id="deleteScenic" parameterType="wtb.core.model.Scenic">
+	update  wtb_scenic set scenic_status=88
+			where
+				 scenic_id = #{id}
+</delete>
+</mapper>
+
