@@ -32,4 +32,9 @@ public class CommentService {
 	 public int addComment(Comment Comment){
 		 return mapper.addComment(Comment);
 	 }
+	
+	@Transactional()
+	 public int updateComment(Comment Comment) {
+		return mapper.updateComment(Comment);
+	}
 }

@@ -33,7 +33,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 
+import com.tencent.a.a.a.a.c;
+
 import wtb.core.model.AccessActive;
+import wtb.core.model.Combo;
+import wtb.core.model.Comment;
 import wtb.core.model.DisplayWeNewsPhoneData;
 import wtb.core.model.Integration;
 import wtb.core.model.JsonModel;
@@ -64,9 +68,33 @@ public class IndexController extends BaseController {
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView login(HttpServletResponse response, HttpServletRequest req, HttpSession session, Model model) {
+		//获取套餐详细表
+		Map<String, Object> map=new HashMap<>();
+		map.put("Rand", SmBaseUtil.Random());
+		List<Combo> combos=ComboService.FindCombosByCondition(map);
+		model.addAttribute("Combos", combos);
+		//查询7条评论
+		map=new HashMap<>();
+		map.put("Rand", SmBaseUtil.Random());
+		map.put("start", 0);
+		map.put("limit", 4);
+		map.put("Status", 1);
+		List<Comment> comments=ReadCommentService.getCommentList(map);
+		model.addAttribute("Comment1", comments);
+		
+		map=new HashMap<>();
+		map.put("Rand", SmBaseUtil.Random());
+		map.put("start", 4);
+		map.put("limit", 7);
+		map.put("Status", 1);
+		comments=ReadCommentService.getCommentList(map);
+		model.addAttribute("Comment2", comments);
+		
+		
 		return new ModelAndView(SmBaseGlobal.JIANIANPC + "index");
 	}
 	
+
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public ModelAndView test(HttpServletResponse response, HttpServletRequest req, HttpSession session, Model model) throws IOException, SAXException, ParserConfigurationException, DocumentException {
 		/*********轻松装************/

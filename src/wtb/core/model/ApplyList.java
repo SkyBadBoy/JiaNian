@@ -1,5 +1,6 @@
 package wtb.core.model;
 
+import wtb.smUtil.SmBaseGlobal;
 import wtb.smUtil.SmBaseUtil;
 
 public class ApplyList {
@@ -20,6 +21,8 @@ public class ApplyList {
 	private long UserID;
 	private String Feedback;
 	private int ApplyType;
+	private String ApplyTypeStr;
+	private Users User;
 	
 	public long getID() {
 		return ID;
@@ -113,6 +116,25 @@ public class ApplyList {
 	public void setApplyType(int applyType) {
 		ApplyType = applyType;
 	}
+	public Users getUser() {
+		return User;
+	}
+	public void setUser(Users user) {
+		User = user;
+	}
+	public String getApplyTypeStr() {
+		if (ApplyType==SmBaseGlobal.ApplyWhichType.Mobile.getid()) {
+			return "手机端";
+		}else if(ApplyType==SmBaseGlobal.ApplyWhichType.Official.getid()){
+			return "官网";
+		}else {
+			return "其他";
+		}
+	}
+	public void setApplyTypeStr(String applyTypeStr) {
+		ApplyTypeStr = applyTypeStr;
+	}
+	
 	
 	
 	

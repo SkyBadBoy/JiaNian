@@ -132,8 +132,6 @@ public class CommentController extends BaseController {
 		for (int i = 0; i < comments.size(); i++) {
 			Comment comment = comments.get(i);
 			if (Long.parseLong(comment.getUserID()) == 0) {
-				comment.setUserName("游客");
-				comment.setUserImage(basePath + "img/tx_default.jpg");
 			} else {
 				responseMap = new HashMap<String, Object>();
 				responseMap.put("ID", comment.getUserID());
@@ -145,7 +143,6 @@ public class CommentController extends BaseController {
 					user.setName("游客");
 				}
 				String img;
-				comment.setUserName(user.getName());
 				if (user.getImage() != null) {
 					img = user.getImage().getUrl().split(",")[0];
 				} else {
@@ -155,7 +152,6 @@ public class CommentController extends BaseController {
 						img = basePath + "img/tx_default.jpg";
 					}
 				}
-				comment.setUserImage(img);
 			}
 			comment.setFromtTime(SmBaseUtil.format(sdf.parse(comment.getCreateTime())));
 		}
@@ -184,18 +180,13 @@ public class CommentController extends BaseController {
 		for (int i = 0; i < comments.size(); i++) {
 			Comment comment = comments.get(i);
 			if (Long.parseLong(comment.getUserID()) == 0) {
-				comment.setUserName("游客");
-				comment.setUserImage(basePath + SmBaseGlobal.UserDefaultImageUrl);
 			} else {
 				responseMap = new HashMap<String, Object>();
 				responseMap.put("ID", comment.getUserID());
 				List<Students> students = ReadStudentsService.getStudentsList(responseMap);
 				if(students.size()>0){
 					Students user = students.get(0);
-					comment.setUserName(user.getName());
 				}else{
-					comment.setUserName("游客");
-					comment.setUserImage(basePath + SmBaseGlobal.UserDefaultImageUrl);
 				}
 				
 			}

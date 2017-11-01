@@ -90,70 +90,39 @@
 						</div>
 					</div>
 				</div>
+				
+				
+				
 				<div class="row">
-					<div class="col-md-4">
-						<div class="pricing-table">
-							<div class="pricing-header">
-								<div class="pt-price">￥3480<small>/元</small></div>
-								<div class="pt-name">团报班</div>
-							</div>
-							<div class="pricing-body">
-								<ul>
-									<li><i class="fa fa-check"></i> 精准的服务</li>
-									<li><i class="fa fa-times"></i> 各科现场免费补考一次 </li>
-									<li><i class="fa fa-times"></i> 体检物料、学车用具</li>
-									<li><i class="fa fa-times"></i> 优先安排学车</li>
-									<li><i class="fa fa-times"></i> 一对一教学、配学车顾问一名</li>
-								
-								</ul>
-							</div>
-							<div class="pricing-footer">
-								<a href="#" class="btn btn-default">立即报名</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="pricing-table">
-							<div class="pricing-header">
-									<div class="pt-price">￥3580<small>/元</small></div>
-									<div class="pt-name">普通班</div>
-							</div>
-							<div class="pricing-body">
-								<ul>
-									<li><i class="fa fa-check"></i> 精准的服务</li>
-									<li><i class="fa fa-check"></i> 各科现场免费补考一次 </li>
-									<li><i class="fa fa-check"></i> 体检物料、学车用具</li>
-									<li><i class="fa fa-check"></i> 优先安排学车</li>
-									<li><i class="fa fa-times"></i> 一对一教学、配学车顾问一名</li>
-						
-								</ul>
-							</div>
-							<div class="pricing-footer">
-								<a href="#" class="btn btn-default">立即报名</a>
+				
+				<c:forEach items="${Combos }" var="Combos">
+						<div class="col-md-4">
+							<div class="pricing-table <c:if test="${Combos.comboBest eq 1 } ">featured</c:if>">
+								<div class="pricing-header">
+									<div class="pt-price">￥${Combos.comboPrice }<small>/元</small></div>
+									<div class="pt-name">${Combos.comboTitle }</div>
+									<c:if test="${Combos.comboBest eq 1 } ">
+										<div class="featured-text">Best Value</div>
+									</c:if>
+									
+								</div>
+								<div class="pricing-body">
+									<ul>
+										<li><i class="fa <c:if test="${Combos.comboParameter1 eq 1 }">fa-check</c:if><c:if test="${Combos.comboParameter1 eq 0 }">fa-times</c:if>"></i> 精准的服务</li>
+										<li><i class="fa <c:if test="${Combos.comboParameter2 eq 1 }">fa-check</c:if><c:if test="${Combos.comboParameter2 eq 0 }">fa-times</c:if>"></i> 各科现场免费补考一次 </li>
+										<li><i class="fa <c:if test="${Combos.comboParameter3 eq 1 }">fa-check</c:if><c:if test="${Combos.comboParameter3 eq 0 }">fa-times</c:if>"></i> 体检物料、学车用具</li>
+										<li><i class="fa <c:if test="${Combos.comboParameter4 eq 1 }">fa-check</c:if><c:if test="${Combos.comboParameter4 eq 0 }">fa-times</c:if>"></i> 优先安排学车</li>
+										<li><i class="fa <c:if test="${Combos.comboParameter5 eq 1 }">fa-check</c:if><c:if test="${Combos.comboParameter5 eq 0 }">fa-times</c:if>"></i> 一对一教学、配学车顾问一名</li>
+									</ul>
+								</div>
+								<div class="pricing-footer">
+									<a href="#contact" class="btn btn-default">立即报名</a>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="pricing-table featured">
-							<div class="pricing-header">
-									<div class="pt-price">￥3880<small>/元</small></div>
-									<div class="pt-name">挂科无忧班</div>
-									<div class="featured-text">Best Value</div>
-							</div>
-							<div class="pricing-body">
-								<ul>
-										<li><i class="fa fa-check"></i> 精准的服务</li>
-										<li><i class="fa fa-check"></i> 各科现场免费补考一次 </li>
-										<li><i class="fa fa-check"></i> 体检物料、学车用具</li>
-										<li><i class="fa fa-check"></i> 优先安排学车、随到随学</li>
-										<li><i class="fa fa-check"></i> 一对一教学、配学车顾问一名</li>
-								</ul>
-							</div>
-							<div class="pricing-footer">
-								<a href="#" class="btn btn-main">立即报名</a>
-							</div>
-						</div>
-					</div>
+				</c:forEach>
+
+					
 					<div style="color: #fff;">以上费用均不包括车管所费用￥1000元</div>
 					<div style="text-align: center;">以上费用均不包括车管所费用￥1000元</div>
 				</div>
@@ -178,42 +147,18 @@
 							<p>"我们可以，你也可以"</p>
 						</div>
 						<div class="row">
-							<div class="col-md-3">
-								<div class="st-feature">
-									<div class="st-feature-icon" style="background-color: #fff;">
-											<img width="80" height="80" style="border-radius: 45px;" src="<%=basePath %>images/photos/land-head3.png">
+							<c:forEach var="comment" items="${Comment1}">
+								<div class="col-md-3">
+									<div class="st-feature">
+										<div class="st-feature-icon" style="background-color: #fff;">
+												<img width="80" height="80" style="border-radius: 45px;" src="${comment.imageUrl}">
+										</div>
+										<strong class="st-feature-title">${comment.name}</strong>
+										<p>${comment.content}</p>
 									</div>
-									<strong class="st-feature-title">周**</strong>
-									<p>非常好，服务特别好，11号报名的，23号考科目一，已经领取上车卡了，真心很快，而且接我去体检的师傅也很好。</p>
 								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="st-feature" style="background-color: #fff;">
-									<div class="st-feature-icon" style="background-color: #fff;">
-										<img width="80" height="80" style="border-radius: 45px;" src="<%=basePath %>images/photos/land-head1.png">
-									</div>
-									<strong class="st-feature-title">朱**</strong>
-									<p>在地推活动上的报的名，当时讲得很细致，还减了300报名费。第二天就安排师傅来接我报名体检了。现在已经上车，教练非 常好！真心赞</p>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="st-feature">
-									<div class="st-feature-icon" style="background-color: #fff;">
-											<img width="80" height="80" style="border-radius: 45px;" src="<%=basePath %>images/photos/land-head2.png">
-									</div>
-									<strong class="st-feature-title">张**</strong>
-									<p>人人学车，服务真好！赞！报的是精英班，平时练车也接送的，一点都不麻烦。</p>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="st-feature">
-									<div class="st-feature-icon" style="background-color: #fff;">
-											<img width="80" height="80" style="border-radius: 45px;" src="<%=basePath %>images/photos/land-head4.png">
-									</div>
-									<strong class="st-feature-title">马**</strong>
-									<p>我是在微信上看到的，微信宣传服务很好，果然没骗人。超细心超耐心。</p>
-								</div>
-							</div>
+							
+							</c:forEach>	
 						</div>
 				
 					</div>
@@ -319,39 +264,19 @@
 					<div class="col-md-12">
 						<div class="testimonials-carousel">
 							<ul>
-								<li>
-									<div class="testimonial">
-										<div class="testimonial-img">
-											<img width="100" height="100" src="<%=basePath %>images/photos/land-head5.png" alt="">
+								<c:forEach var="comment2" items="${Comment2 }">
+									<li>
+										<div class="testimonial">
+											<div class="testimonial-img">
+												<img width="100" height="100" src="${comment2.imageUrl }" alt="">
+											</div>
+											<blockquote>
+												<p>${comment2.content }</p>
+												<footer>${comment2.name }<cite title="Source Title"></cite></footer>
+											</blockquote>
 										</div>
-										<blockquote>
-											<p>网上看到的人人学车，咨询了一下客服，客服态度很好很耐心。保姆式报名服务很好，不然自己真的不知道怎么操作。现在已经制卡了，等着上车。网上看到的人人学车，咨询了一下客服，客服态度很好很耐心。保姆式报名服务很好，不然自己真的不知道怎么操作。现在已经制卡了，等着上车。</p>
-											<footer>李** <cite title="Source Title"></cite></footer>
-										</blockquote>
-									</div>
-								</li>
-								<li>
-									<div class="testimonial">
-										<div class="testimonial-img">
-											<img width="100" height="100" src="<%=basePath %>images/photos/land-head6.png" alt="">
-										</div>
-										<blockquote>
-											<p>网上看到的人人学车，咨询了一下客服，客服态度很好很耐心。保姆式报名服务很好，不然自己真的不知道怎么操作。现在已经制卡了，等着上车。网上看到的人人学车，咨询了一下客服，客服态度很好很耐心。保姆式报名服务很好，不然自己真的不知道怎么操作。现在已经制卡了，等着上车。</p>
-											<footer>马** <cite title="Source Title"></cite></footer>
-										</blockquote>
-									</div>
-								</li>
-								<li>
-									<div class="testimonial">
-										<div class="testimonial-img">
-											<img width="100" height="100" src="<%=basePath %>images/photos/land-head7.png" alt="">
-										</div>
-										<blockquote>
-											<p>网上看到的人人学车，咨询了一下客服，客服态度很好很耐心。保姆式报名服务很好，不然自己真的不知道怎么操作。现在已经制卡了，等着上车。网上看到的人人学车，咨询了一下客服，客服态度很好很耐心。保姆式报名服务很好，不然自己真的不知道怎么操作。现在已经制卡了，等着上车。</p>
-											<footer>张** <cite title="Source Title"></cite></footer>
-										</blockquote>
-									</div>
-								</li>
+									</li>
+								</c:forEach>
 							</ul>
 						</div>
 					</div>
@@ -664,7 +589,6 @@
 		<script type="text/javascript">
 			function a(){
 				console.log("asdf");
-				
 			}
 			$("#send").click(function(){
 				var UserName=$("#username").val();

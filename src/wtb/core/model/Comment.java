@@ -10,18 +10,13 @@ public class Comment {
 	private int Status;
 	private int Type;
 	private String NewTitle;
-	private String UserName;
-	private String UserImage;
 	private String FromtTime;
-	private Notices Notice;
 	private Students Student;
 
-	public Notices getNotice() {
-		return (Notice==null)?new Notices():Notice;
-	}
-	public void setNotice(Notices notice) {
-		Notice = notice;
-	}
+	private String Name;
+	private long ImageID;
+	private String ImageUrl;
+
 	public String getPKID() {
 		return PKID;
 	}
@@ -33,18 +28,6 @@ public class Comment {
 	}
 	public void setFromtTime(String fromtTime) {
 		FromtTime = fromtTime;
-	}
-	public String getUserImage() {
-		return UserImage;
-	}
-	public void setUserImage(String userImage) {
-		UserImage = userImage;
-	}
-	public String getUserName() {
-		return UserName;
-	}
-	public void setUserName(String userName) {
-		UserName = userName;
 	}
 	public long getID() {
 		return ID;
@@ -101,6 +84,25 @@ public class Comment {
 	public void setStudent(Students student) {
 		Student = student;
 	}
+	public String getName() {
+		return Name;
+	}
+	public void setName(String name) {
+		Name = name;
+	}
+	public long getImageID() {
+		return ImageID;
+	}
+	public void setImageID(long imageID) {
+		ImageID = imageID;
+	}
+	public String getImageUrl() {
+		return ImageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		ImageUrl = imageUrl;
+	}
+	
 	
 	
 	

@@ -107,7 +107,15 @@ public class SmBaseGlobal {
 	 */
 	public enum ApplyType {
 		/**
-		 * 已经处理
+		 * 已经处理(报名)
+		 */
+		NoApply{
+			public int getid() {
+				return 0;
+			}
+		},
+		/**
+		 * 已经处理(报名)
 		 */
 		Dispose {
 			public int getid() {

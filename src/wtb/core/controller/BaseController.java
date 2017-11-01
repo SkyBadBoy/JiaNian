@@ -25,6 +25,7 @@ import wtb.core.service.ApplyListService;
 import wtb.core.service.BaseInfoService;
 import wtb.core.service.ChanceRecordService;
 import wtb.core.service.ClickListService;
+import wtb.core.service.ComboService;
 import wtb.core.service.CompetitionApplyService;
 import wtb.core.service.CommentService;
 import wtb.core.service.DealInfoService;
@@ -96,6 +97,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class BaseController { // 基础控制器
 
+	@Autowired
+	protected ComboService ComboService;
+	
+	
 	@Autowired
 	protected ActivityService ActivityService;
 	@Autowired
@@ -374,9 +379,8 @@ public class BaseController { // 基础控制器
 				break;
 			}
 		}
-		
 		//先注释掉 错误发送
-		//ErrorUtil.HandleError2(String.valueOf(myself != null ? myself.getID() : 0), clazz+"."+method, ex,exception);
+		ErrorUtil.HandleError2(String.valueOf(myself != null ? myself.getID() : 0), clazz+"."+method, ex,exception);
 		request.getRequestDispatcher("/include/500.html").forward(request, response);
 
 	}

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.ComboMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+	<!-- search result -->
+	<resultMap id="combo" type="wtb.core.model.Combo">
+		<result property="comboId" column="combo_id" />
+		<result property="comboTitle" column="combo_title" />
+		<result property="comboPrice" column="combo_price" />
+		<result property="comboCreatetime" column="combo_createtime" />
+		<result property="comboModifytime" column="combo_modifytime" />
+		<result property="comboStatus" column="combo_status" />
+		<result property="comboWeight" column="combo_weight" />
+		<result property="comboBest" column="combo_best" />
+		<result property="comboParameter1" column="combo_parameter1" />
+		<result property="comboParameter2" column="combo_parameter2" />
+		<result property="comboParameter3" column="combo_parameter3" />
+		<result property="comboParameter4" column="combo_parameter4" />
+		<result property="comboParameter5" column="combo_parameter5" />
+		<result property="comboParameter6" column="combo_parameter6" />
+		<result property="comboParameter7" column="combo_parameter7" />
+		<result property="comboParameter8" column="combo_parameter8" />
+		<result property="comboParameter9" column="combo_parameter9" />
+		<result property="comboParameter10" column="combo_parameter10" />
+	</resultMap>
+<sql id="sql">
+	combo_id,combo_title,combo_Price,combo_createtime,combo_modifytime,combo_status,combo_weight,combo_best,combo_parameter1,combo_parameter2,combo_parameter3,combo_parameter4,combo_parameter5,combo_parameter6,combo_parameter7,combo_parameter8,combo_parameter9,combo_parameter10
+</sql>
+<sql id="where">
+	1=1
+	<if test="combo_id!=null">
+				and combo_id = ${combo_id}
+</if>
+<if test="combo_title!=null">
+				and combo_title = ${combo_title}
+</if>
+<if test="combo_createtime!=null">
+				and combo_createtime = ${combo_createtime}
+</if>
+<if test="combo_modifytime!=null">
+				and combo_modifytime = ${combo_modifytime}
+</if>
+<if test="combo_status!=null">
+				and combo_status = ${combo_status}
+</if>
+<if test="combo_weight!=null">
+				and combo_weight = ${combo_weight}
+</if>
+<if test="combo_best!=null">
+				and combo_best = ${combo_best}
+</if>
+<if test="combo_parameter1!=null">
+				and combo_parameter1 = ${combo_parameter1}
+</if>
+<if test="combo_parameter2!=null">
+				and combo_parameter2 = ${combo_parameter2}
+</if>
+<if test="combo_parameter3!=null">
+				and combo_parameter3 = ${combo_parameter3}
+</if>
+<if test="combo_parameter4!=null">
+				and combo_parameter4 = ${combo_parameter4}
+</if>
+<if test="combo_parameter5!=null">
+				and combo_parameter5 = ${combo_parameter5}
+</if>
+<if test="combo_parameter6!=null">
+				and combo_parameter6 = ${combo_parameter6}
+</if>
+<if test="combo_parameter7!=null">
+				and combo_parameter7 = ${combo_parameter7}
+</if>
+<if test="combo_parameter8!=null">
+				and combo_parameter8 = ${combo_parameter8}
+</if>
+<if test="combo_parameter9!=null">
+				and combo_parameter9 = ${combo_parameter9}
+</if>
+<if test="combo_parameter10!=null">
+				and combo_parameter10 = ${combo_parameter10}
+</if>
+<if test="Rand!=null">
+    and #{Rand}=#{Rand}
+</if>
+</sql>
+	
+	<select id="FindByComboId" resultType="wtb.core.model.Combo"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM mj_combo
+		<where>
+			combo_id = #{_parameter}
+		</where>
+	</select>
+
+	<select id="FindCombosByCondition"  resultMap="combo"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM mj_combo
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by combo_createtime desc
+		
+		<if test="limit != null and start !=null ">
+			limit ${start},${limit} 
+		</if>
+	</select>
+
+<select id="getCountByCondition" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM mj_combo
+		<where>
+			<include refid="where"></include>
+		</where>
+		
+</select>
+
+	<!-- insert sql -->
+	<insert id="addCombo" parameterType="wtb.core.model.Combo"  keyProperty="ID" useGeneratedKeys="true">
+		insert into mj_combo(combo_id,combo_title,comboPrice,combo_createtime,combo_modifytime,combo_status,combo_weight,combo_best,combo_parameter1,combo_parameter2,combo_parameter3,combo_parameter4,combo_parameter5,combo_parameter6,combo_parameter7,combo_parameter8,combo_parameter9,combo_parameter10)
+		values(
+${comboId},${comboTitle},${comboPrice},${comboCreatetime},${comboModifytime},${comboStatus},${comboWeight},${comboBest},${comboParameter1},${comboParameter2},${comboParameter3},${comboParameter4},${comboParameter5},${comboParameter6},${comboParameter7},${comboParameter8},${comboParameter9},${comboParameter10})
+	</insert>
+
+
+	<update id="UpdateCombo"
+		parameterType="wtb.core.model.Combo">
+		update mj_combo set combo_id = ${comboId},combo_title = ${comboTitle},combo_price = ${comboPrice},combo_createtime = ${comboCreatetime},combo_modifytime = ${comboModifytime},combo_status = ${comboStatus},combo_weight = ${comboWeight},combo_best = ${comboBest},combo_parameter1 = ${comboParameter1},combo_parameter2 = ${comboParameter2},combo_parameter3 = ${comboParameter3},combo_parameter4 = ${comboParameter4},combo_parameter5 = ${comboParameter5},combo_parameter6 = ${comboParameter6},combo_parameter7 = ${comboParameter7},combo_parameter8 = ${comboParameter8},combo_parameter9 = ${comboParameter9},combo_parameter10 = ${comboParameter10}
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+
+	<delete id="DeleteComboById"
+		parameterType="wtb.core.model.Combo">
+		update mj_combo set status=88
+		<where>
+			<include refid="where"></include>
+		</where>
+	</delete>
+
+	<delete id="EnabledComboById"
+		parameterType="wtb.core.model.Combo">
+		update mj_combo set status=1
+		<where>
+			<include refid="where"></include>
+		</where>
+	</delete>
+</mapper>

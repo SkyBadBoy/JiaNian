@@ -8,14 +8,13 @@ import wtb.core.model.Comment;
 
 public interface CommentMapper {
 
-	 /**
-	 * ɾ���¼
-	 */
+
 	 public int deleteComment(Map<String,Object> params);
-	 /**
-	 * ��Ӽ�¼
-	 */
+
 	 public int addComment(Comment Comment);
+	 
+	 public int updateComment(Comment Comment);
+	 
 	 
 
 }

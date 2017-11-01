@@ -8,15 +8,18 @@
 
 <insert id="addComment" parameterType="wtb.core.model.Comment" keyProperty="id" useGeneratedKeys="true">
 	INSERT INTO wtb_Comment (
-			Comment_ID,
+		Comment_ID,
   		Comment_UserID,
 		Comment_NoticesID,
 		Comment_CreateTime,
 		Comment_Content,
 		Comment_Status,
-		Comment_Type
+		Comment_Type,
+		Comment_Name,
+		Comment_ImageID,
+		Comment_ImageUrl
 		) VALUES (
-			#{ID}, #{UserID}, #{NoticesID}, #{CreateTime},#{Content},#{Status},#{Type}
+			#{ID}, #{UserID}, #{NoticesID}, now(),#{Content},#{Status},#{Type},#{Name},#{ImageID},#{ImageUrl}
 		)
 </insert>
 <delete id="deleteComment" parameterType="wtb.core.model.Comment">
@@ -24,5 +27,20 @@
 			where
 				 Comment_ID = #{ID}
 </delete>
+
+<update id="updateComment" parameterType="wtb.core.model.Comment">
+	UPDATE wtb_Comment 
+		SET
+  		Comment_UserID=#{UserID},
+		Comment_NoticesID=#{NoticesID},
+		Comment_CreateTime=now(),
+		Comment_Content=#{Content},
+		Comment_Status=#{Status},
+		Comment_Type=#{Type},
+		Comment_Name=#{Name},
+		Comment_ImageID=#{ImageID},
+		Comment_ImageUrl=#{ImageUrl}
+			where Device_ID = #{ID}
+</update>
 </mapper>
 

@@ -702,14 +702,7 @@ public class ProductController extends BaseController {
 			if(comment.getUserID()==null || comment.getUserID().isEmpty()){
 				comment.setUserID("0");
 			}
-			if (Long.parseLong(comment.getUserID()) == 0) {
-				comment.setUserName("游客");
-				comment.setUserImage(defaultImage);
-			} else {
-				if (comment.getUserImage()==null ||  comment.getUserImage().isEmpty()) {
-					comment.setUserImage(defaultImage);
-				}
-			}
+		
 			sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			try{
 				comment.setFromtTime(SmBaseUtil.format(sdf.parse(comment.getCreateTime())));
@@ -1041,14 +1034,7 @@ public class ProductController extends BaseController {
 			if(comment.getUserID()==null || comment.getUserID().isEmpty()){
 				comment.setUserID("0");
 			}
-			if (Long.parseLong(comment.getUserID()) == 0) {
-				comment.setUserName("游客");
-				comment.setUserImage(defaultImage);
-			} else {
-				if (comment.getUserImage()==null ||  comment.getUserImage().isEmpty()) {
-					comment.setUserImage(defaultImage);
-				}
-			}
+		
 			sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			try{
 				comment.setFromtTime(SmBaseUtil.format(sdf.parse(comment.getCreateTime())));

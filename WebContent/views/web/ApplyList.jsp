@@ -63,10 +63,11 @@
 							<div class="col-md-3">
 								<label>状态</label>
 								<select class="form-control m-b" onchange="getQueryList()" iscon="true"
-									id="Status" name="Status">
+									id="Type" name="Type">
 									<option value="<%= SmBaseGlobal.ApplyType.NoDispose.getid() %>">未处理</option>
 									<option value="<%= SmBaseGlobal.ApplyType.LoadDispose.getid() %>">待确认</option>
-									<option value="<%= SmBaseGlobal.ApplyType.Dispose.getid() %>">已确认</option>
+									<option value="<%= SmBaseGlobal.ApplyType.Dispose.getid() %>">已确认(报名)</option>
+									<option value="<%= SmBaseGlobal.ApplyType.NoApply.getid() %>">已确认(未报名)</option>
 								</select>
 							</div>
 						</div>
@@ -84,29 +85,35 @@
 							role="alert"></div>
 						<div class="btn-group hidden-xs" id="exampleTableEventsToolbar"
 							role="group">
-							<button type="button"  
-								onclick="SuccessApply()"
-								class="btn btn-outline btn-default">
-								<i class="fa fa-check" title="审核通过" aria-hidden="true"></i>
-								确认批改
+							<button type="button" onclick="ModifyApply(<%=SmBaseGlobal.ApplyType.Dispose.getid() %>)"   class="btn btn-outline btn-default">
+								<i class="fa fa-check"  title="已确认(报名)"  aria-hidden="true"></i>
+								已确认(报名)
 							</button>
-							<button type="button" onclick="ModifyApply()"   class="btn btn-outline btn-default">
-								<i class="fa fa-close"  title="批改作文"  aria-hidden="true"></i>
-								批改作文
+							<button type="button"  
+								onclick="ModifyApply(<%=SmBaseGlobal.ApplyType.LoadDispose.getid() %>)"
+								class="btn btn-outline btn-default">
+								<i class="fa fa-close" title="待确认" aria-hidden="true"></i>
+								待确认
+							</button>
+							<button type="button" onclick="ModifyApply(<%=SmBaseGlobal.ApplyType.NoApply.getid() %>)"   class="btn btn-outline btn-default">
+								<i class="fa fa-close"  title="已确认(未报名)"  aria-hidden="true"></i>
+								已确认(未报名)
 							</button>
 						</div>
 						<table id="exampleTableEvents" data-height="<%=SmBaseGlobal.ScreenHeight %>"
 							data-mobile-responsive="true">
 							<thead>
 								<tr>
-									<th  data-field="state" data-checkbox="true"></th>
+									<th   data-field="state" data-radio="true"></th>
 									<th   data-field="pkid">ID</th>
 									<th   data-field="userName">用户名字</th>
 									<th   data-field="userPhone">用户手机号</th>
 									<th   data-field="content">报名建议</th>
 									<th   data-field="createTime">报名时间</th>
+									<th   data-field="applyTypeStr">报名渠道</th>
 									<th   data-field="feedback">报名进度</th>
-									
+									<th   data-field="modifyTime">进度时间</th>
+									<th   data-field="user.name">跟进人员</th>
 								</tr>
 							</thead>
 						</table>
@@ -120,13 +127,13 @@
 	
 	
 	
-	<div class="modal" id="myModal" style="overflow: auto;" tabindex="-1">
+	<div class="modal" id="myModal" style="overflow: auto; " tabindex="-1" >
 		<div class="modal-dialog">
-			<div class="modal-content" style="width: 800px;left: -200px;">
+			<div class="modal-content" style="width: 800px;left: -150px;height: 450px">
 				<div class="modal-header">
 					<a type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">&times;</a>
-					<h4 class="modal-title">作文批改</h4>
+					<h4 class="modal-title">进度填写</h4>
 				</div>
 				<div class="modal-body">
 				<div  id="ErrorMessageResult"
@@ -134,23 +141,11 @@
 				<form id="contentForm" action="#">
 				<label style="display: none;" id="pkid"></label>
 					<div class="row">
-						<input type="text" class="form-control" placeholder="请输入批改机构" name="Area"   id="Area"  /><br/>
-					</div>
-					<div class="row">
-						<input type="text" class="form-control" placeholder="请输入批改教师" name="CorrectTeacher"  id="CorrectTeacher" /><br/>
-					</div>
-					<div class="row">
-						
-							<textarea class="form-control" placeholder="请输入您的批注" id="CheckResult" name="CheckResult"  rows="3" ></textarea>
-						<br/>
-					</div>
-					<div class="row">
 						<div class="ibox-content no-padding">
-							<div class="summernote" style="height:400px;">${Content}</div>
+							<div class="summernote" style="height:200px;">${Content}</div>
 						</div>
 						<br/>
 					</div>
-					
 				</form>
 					<br/>
 					<button id="referWechat" 
@@ -169,7 +164,7 @@
          <a class="play-pause"></a>
          <ol class="indicator"></ol>
      </div>
-	
+	<input type="hidden" id="flags" >
 	<jsp:include page="/include/commonJs.jsp" />
 	<script type="text/javascript">
 	
@@ -189,7 +184,7 @@
 					showRefresh : !0,
 					showToggle : !0,
 					showColumns : !0,
-					formatSearch:function(){return "请输入申请人姓名"},
+					formatSearch:function(){return "请输入姓名或手机号"},
 					sidePagination : "server", //服务端请求
 					queryParams : queryParams,
 					responseHandler : responseHandler,
@@ -204,8 +199,6 @@
 				DataTable.on("dbl-click-row.bs.table",
 								function(e, t, o) {
 									if(CheckhasChecked(DataTable)==true){
-										var url='<%=path%>/ApplyList/addApplyList?sina=<%= SmBaseUtil.Random() %>&pid=';
-										viewOrModifyByPKID(DataTable,url);
 									}
 								}).on("search.bs.table", function(e, t, o) {
 									getQueryList(t);
@@ -268,20 +261,14 @@
 				});
 			};
 		}
-				
-
 		}
 		function ModifyApply(flag) {
 			if(CheckhasChecked(DataTable)){
+				$("#flags").val(flag);
 				var DataTableObj=DataTable.bootstrapTable("getSelections");
-				
-				$("#CorrectTeacher").val(DataTableObj[0].correctTeacher)
-				$("#Area").val(DataTableObj[0].area)
-				$(".note-editable").html(DataTableObj[0].content)
-				$("#CheckResult").val(DataTableObj[0].checkResult)
+				$(".note-editable").html(DataTableObj[0].feedback)
 				$('#myModal').modal('show');
 				$("#referWechat").click(function(){
-					
 					if(!$("#contentForm").validate().form()){
 						return 
 					}
@@ -291,16 +278,20 @@
 							url : "<%=path%>/ApplyList/ModifyApplyResult",
 							type:'POST',
 							data : {
+								'Type':flag,
 								'pid' : wids,
-								'Content':$(".note-editable").code(),
-								'CheckResult':$("#CheckResult").val(),
-								'Area':$("#Area").val(),
-								'CorrectTeacher':$("#CorrectTeacher").val()
+								'Content':$(".note-editable").code()
 							},
-							success : function() {
-								ViewSuccess();
-								getQueryList();
-								$('#myModal').modal('hide');
+							success : function(obj) {
+								if (obj.Status>0) {
+									ViewSuccess();
+									getQueryList();
+									$('#myModal').modal('hide');
+								}else{
+									swal("","哎呦，发生点意外呦", "warning", {
+		                  				  button: "重试",
+		                  			}); 
+								}
 							}
 						});
 					} 
@@ -317,18 +308,14 @@
 			});
 		}
 		function queryParams(params) {
-			
-		var ParamJson=MakeQueryParamJson($(".panel"));
-		ParamJson.pageSize=params.limit;
-		ParamJson.pageNumber=params.offset;
-		ParamJson.Type=<%=SmBaseGlobal.DealInfoType.CorrectList.getid() %>;
-		return ParamJson;
-
+			var ParamJson=MakeQueryParamJson($(".panel"));
+			ParamJson.pageSize=params.limit;
+			ParamJson.pageNumber=params.offset;
+			return ParamJson;
 		}
-		
 		 $(".summernote").summernote({
 		        lang: "zh-CN",
-		        height:300
+		        height:200
 		    })
 	
 	</script>

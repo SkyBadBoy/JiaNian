@@ -15,10 +15,9 @@
 	<result property="Status" column="Comment_Status"/>
 	<result property="Type" column="Comment_Type"/>
 	<result property="NewTitle" column="Comment_NewTitle"/>
-	<result property="UserName" column="Comment_UserName" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
-	<result property="UserImage" column="Comment_UserImage"/>
-	<association property="Notice" column="Comment_NoticesID"
-			select="read.core.data.ReadNoticesMapper.getNoticesByID" />
+	<result property="Name" column="Comment_Name"/>
+	<result property="ImageID" column="Comment_ImageID"/>
+	<result property="ImageUrl" column="Comment_ImageUrl"/>
 	
 </resultMap>
 <resultMap type="wtb.core.model.Comment" id="ClassResultMapByNoticeID">
@@ -30,8 +29,9 @@
 	<result property="Content" column="Comment_Content" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
 	<result property="Status" column="Comment_Status"/>
 	<result property="Type" column="Comment_Type"/>
-	<result property="UserName" column="Comment_UserName" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
-	<result property="UserImage" column="Comment_UserImage"/>
+	<result property="Name" column="Comment_Name"/>
+	<result property="ImageID" column="Comment_ImageID"/>
+	<result property="ImageUrl" column="Comment_ImageUrl"/>
 	
 
 
@@ -47,6 +47,8 @@
 	<result property="Content" column="Comment_Content" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
 	<result property="Status" column="Comment_Status"/>
 	<result property="Type" column="Comment_Type"/>
+	<result property="Name" column="Comment_Name"/>
+	<result property="ImageUrl" column="Comment_ImageUrl"/>
 	<association property="Student" column="Comment_UserID"
 			select="read.core.data.ReadStudentsMapper.getStudentsByIDList" />
 	
@@ -62,19 +64,20 @@
 		Comment_Content,
 		Comment_Status,
 		Comment_Type,
-		ifnull((select Students_Name from wtb_Students where Students_ID=Comment_UserID),'游客') as Comment_UserName,
-		ifnull((select Students_ImageUrl from wtb_Students where Students_ID=Comment_UserID),'') as Comment_UserImage,
-		case Comment_Type when 1 THEN
-(select Video_Title from wtb_Video where Video_ID=Comment_NoticesID)
-else 
-(select Notices_Title from wtb_Notices where Notices_ID=Comment_NoticesID)
-end
- as Comment_NewTitle
+		Comment_Name,
+		Comment_ImageID,
+		Comment_ImageUrl
 		FROM wtb_Comment
 		<where>
-			1=1 and Comment_Status!=88
+			1=1 
 			<if test="NoticesID != null">
 				and Comment_NoticesID = #{NoticesID}
+			</if>	
+			<if test="Status != null">
+				and Comment_Status = #{Status}
+			</if>	
+			<if test="Rand != null">
+				and #{Rand} = #{Rand}
 			</if>	
 		</where>
 		order by Comment_CreateTime desc

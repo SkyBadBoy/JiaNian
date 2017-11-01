@@ -41,5 +41,5 @@
 <script src="<%=basePath%>js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="<%=basePath%>js/plugins/nestable/jquery.nestable.js"></script>
 <script src="<%=basePath%>js/plugins/easypiechart/jquery.easypiechart.js"></script>
-
+<%-- <script src="<%=basePath %>js/jianianpc/swwetalert.min.js"></script> --%>
 

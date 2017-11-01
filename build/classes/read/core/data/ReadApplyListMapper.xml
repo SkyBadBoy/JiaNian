@@ -16,8 +16,9 @@
 	<result property="Type" column="ApplyList_Type"/>
 	<result property="Course" column="ApplyList_Course"/>
 	<result property="UserID" column="ApplyList_UserID"/>
-	<result property="Feedback" column="ApplyList_Feedback"/>
+	<result property="Feedback" column="ApplyList_Feedback" typeHandler="read.smUtil.MyBlobTypeHandler1"/>
 	<result property="ApplyType" column="ApplyList_ApplyType"/>
+	<association property="User" column="ApplyList_UserID" select="read.core.data.ReadUsersMapper.getUsersListByID" />
 </resultMap>
 
 <sql id="where">
@@ -39,6 +40,13 @@
 			<if test="UserName != null">
 				and ApplyList_UserName = #{UserName}
 			</if>
+			
+			<if test="check != null">
+				and (ApplyList_UserName like CONCAT(CONCAT('%', #{check,
+				jdbcType=VARCHAR}),'%') or ApplyList_UserPhone like CONCAT(CONCAT('%', #{check,
+				jdbcType=VARCHAR}),'%'))
+			</if>
+			
 			<if test="Rand != null">
 				and #{Rand} = #{Rand}
 			</if>

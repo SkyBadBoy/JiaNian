@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sun.org.apache.xml.internal.security.Init;
+
 import wtb.core.model.ApplyList;
 import wtb.core.model.DealInfo;
 import wtb.core.model.Notices;
@@ -89,6 +91,7 @@ public class ApplyListController extends BaseController {
 		applyList.setCourse(Course);
 		applyList.setStatus(SmBaseGlobal.CheckStatus.Effective.getid());
 		applyList.setType(SmBaseGlobal.ApplyType.NoDispose.getid());
+		applyList.setFeedback("");
 		int i=ApplyListService.addApplyList(applyList);
 		if (i>0) {
 			return ResultUtil.resultMap(0, "报名成功，稍后我们将会联系你", null);
@@ -231,7 +234,7 @@ public class ApplyListController extends BaseController {
 			checkParammap.put("Status", state);
 		}
 		if (Title != null && !Title.isEmpty()) {
-			checkParammap.put("UserName", Title);
+			checkParammap.put("check", Title);
 		}
 		if (Type != null && !Type.isEmpty()) {
 			checkParammap.put("Type", Type);
@@ -257,25 +260,20 @@ public class ApplyListController extends BaseController {
 	public @ResponseBody
 	Map<String, Object> ModifyApplyResult(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws UnsupportedEncodingException {
 		Map<String, Object> responseMap = new HashMap<String, Object>();
+		Users userID=(Users) session.getAttribute("UserName");
 		String WeChat = request.getParameter("pid");
-		String CorrectTeacher =  SmBaseUtil.URLDecoderString(request.getParameter("CorrectTeacher"));
-		String Area =  SmBaseUtil.URLDecoderString(request.getParameter("Area"));
+		String type=request.getParameter("Type");
 		String Content =  SmBaseUtil.URLDecoderString(request.getParameter("Content"));
-		String CheckResult =  SmBaseUtil.URLDecoderString(request.getParameter("CheckResult"));
 		int result = 0;
 		if (!WeChat.isEmpty()) {
 			responseMap.put("ID", WeChat);
-			responseMap.put("Status", SmBaseGlobal.CheckStatus.Default.getid());
-			responseMap.put("Type", SmBaseGlobal.DealInfoType.CorrectList.getid());
+			responseMap.put("Status", SmBaseGlobal.CheckStatus.Effective.getid());
 			List<ApplyList> applys = ReadApplyListService.getApplyListList(responseMap);
 			if (applys.size() > 0) {
 				ApplyList apply = applys.get(0);
-//				apply.setCheckerID(0);
-//				apply.setCheckResult(Content);
-//				apply.setArea(Area);
-//				apply.setCheckResult(CheckResult);
-//				apply.setContent(Content);
-//				apply.setCorrectTeacher(CorrectTeacher);
+				apply.setType(Integer.parseInt(type));
+				apply.setFeedback(Content);
+				apply.setUserID(userID.getID());
 				result = ApplyListService.updateApplyList(apply);
 			}
 		}
