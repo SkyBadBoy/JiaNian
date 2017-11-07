@@ -9,80 +9,80 @@
 
 	<!-- search result -->
 	<resultMap id="combo" type="wtb.core.model.Combo">
-		<result property="comboId" column="combo_id" />
-		<result property="comboTitle" column="combo_title" />
-		<result property="comboPrice" column="combo_price" />
-		<result property="comboCreatetime" column="combo_createtime" />
-		<result property="comboModifytime" column="combo_modifytime" />
-		<result property="comboStatus" column="combo_status" />
-		<result property="comboWeight" column="combo_weight" />
-		<result property="comboBest" column="combo_best" />
-		<result property="comboParameter1" column="combo_parameter1" />
-		<result property="comboParameter2" column="combo_parameter2" />
-		<result property="comboParameter3" column="combo_parameter3" />
-		<result property="comboParameter4" column="combo_parameter4" />
-		<result property="comboParameter5" column="combo_parameter5" />
-		<result property="comboParameter6" column="combo_parameter6" />
-		<result property="comboParameter7" column="combo_parameter7" />
-		<result property="comboParameter8" column="combo_parameter8" />
-		<result property="comboParameter9" column="combo_parameter9" />
-		<result property="comboParameter10" column="combo_parameter10" />
+		<result property="comboId" column="combo_id" jdbcType="BIGINT"/>
+		<result property="comboTitle" column="combo_title" jdbcType="VARCHAR"/>
+		<result property="comboPrice" column="combo_price" jdbcType="VARCHAR"/>
+		<result property="comboCreatetime" column="combo_createtime" jdbcType="TIMESTAMP"/>
+		<result property="comboModifytime" column="combo_modifytime" jdbcType="TIMESTAMP"/>
+		<result property="comboStatus" column="combo_status" jdbcType="INTEGER" />
+		<result property="comboWeight" column="combo_weight" jdbcType="INTEGER"/>
+		<result property="comboBest" column="combo_best" jdbcType="INTEGER"/>
+		<result property="comboParameter1" column="combo_parameter1" jdbcType="INTEGER"/>
+		<result property="comboParameter2" column="combo_parameter2" jdbcType="INTEGER"/>
+		<result property="comboParameter3" column="combo_parameter3" jdbcType="INTEGER"/>
+		<result property="comboParameter4" column="combo_parameter4" jdbcType="INTEGER"/>
+		<result property="comboParameter5" column="combo_parameter5" jdbcType="INTEGER"/>
+		<result property="comboParameter6" column="combo_parameter6" jdbcType="INTEGER"/>
+		<result property="comboParameter7" column="combo_parameter7" jdbcType="INTEGER"/>
+		<result property="comboParameter8" column="combo_parameter8" jdbcType="INTEGER"/>
+		<result property="comboParameter9" column="combo_parameter9" jdbcType="INTEGER"/>
+		<result property="comboParameter10" column="combo_parameter10" jdbcType="INTEGER"/>
 	</resultMap>
 <sql id="sql">
 	combo_id,combo_title,combo_Price,combo_createtime,combo_modifytime,combo_status,combo_weight,combo_best,combo_parameter1,combo_parameter2,combo_parameter3,combo_parameter4,combo_parameter5,combo_parameter6,combo_parameter7,combo_parameter8,combo_parameter9,combo_parameter10
 </sql>
 <sql id="where">
 	1=1
-	<if test="combo_id!=null">
-				and combo_id = ${combo_id}
+	<if test="comboId!=null">
+				and combo_id = #{comboId}
 </if>
-<if test="combo_title!=null">
-				and combo_title = ${combo_title}
+<if test="comboTitle!=null">
+				and combo_title = #{comboTitle}
 </if>
-<if test="combo_createtime!=null">
-				and combo_createtime = ${combo_createtime}
+<if test="comboCreatetime !=null">
+				and combo_createtime = #{comboCreatetime}
 </if>
-<if test="combo_modifytime!=null">
-				and combo_modifytime = ${combo_modifytime}
+<if test="comboModifytime !=null">
+				and combo_modifytime = #{comboModifytime}
 </if>
-<if test="combo_status!=null">
-				and combo_status = ${combo_status}
+<if test="comboStatus!=null">
+				and combo_status = #{comboStatus}
 </if>
-<if test="combo_weight!=null">
-				and combo_weight = ${combo_weight}
+<if test="comboWeight !=null">
+				and combo_weight = #{comboWeight}
 </if>
-<if test="combo_best!=null">
-				and combo_best = ${combo_best}
+<if test="comboBest !=null">
+				and combo_best = #{comboBest}
 </if>
-<if test="combo_parameter1!=null">
-				and combo_parameter1 = ${combo_parameter1}
+<if test="comboParameter1 !=null">
+				and combo_parameter1 = #{comboParameter1}
 </if>
-<if test="combo_parameter2!=null">
-				and combo_parameter2 = ${combo_parameter2}
+<if test="comboParameter2 !=null">
+				and combo_parameter2 = #{comboParameter2}
 </if>
-<if test="combo_parameter3!=null">
-				and combo_parameter3 = ${combo_parameter3}
+<if test="comboParameter3 !=null">
+				and combo_parameter3 = #{comboParameter3}
 </if>
-<if test="combo_parameter4!=null">
-				and combo_parameter4 = ${combo_parameter4}
+<if test="comboParameter4 !=null">
+				and combo_parameter4 = #{comboParameter4}
 </if>
-<if test="combo_parameter5!=null">
-				and combo_parameter5 = ${combo_parameter5}
+<if test="comboParameter5 !=null">
+				and combo_parameter5 = #{comboParameter5}
 </if>
-<if test="combo_parameter6!=null">
-				and combo_parameter6 = ${combo_parameter6}
+<if test="comboParameter6 =null">
+				and combo_parameter6 = #{comboParameter6}
 </if>
-<if test="combo_parameter7!=null">
-				and combo_parameter7 = ${combo_parameter7}
+<if test="comboParameter7 !=null">
+				and combo_parameter7 = #{comboParameter7}
 </if>
-<if test="combo_parameter8!=null">
-				and combo_parameter8 = ${combo_parameter8}
+<if test="comboParameter8 !=null">
+				and combo_parameter8 = #{comboParameter8}
 </if>
-<if test="combo_parameter9!=null">
-				and combo_parameter9 = ${combo_parameter9}
+<if test="comboParameter9 !=null">
+				and combo_parameter9 = #{comboParameter9}
 </if>
-<if test="combo_parameter10!=null">
-				and combo_parameter10 = ${combo_parameter10}
+<if test="comboParameter10 !=null">
+				and combo_parameter10 = #{comboParameter10}
 </if>
 <if test="Rand!=null">
     and #{Rand}=#{Rand}
@@ -134,10 +134,8 @@ ${comboId},${comboTitle},${comboPrice},${comboCreatetime},${comboModifytime},${c
 
 	<update id="UpdateCombo"
 		parameterType="wtb.core.model.Combo">
-		update mj_combo set combo_id = ${comboId},combo_title = ${comboTitle},combo_price = ${comboPrice},combo_createtime = ${comboCreatetime},combo_modifytime = ${comboModifytime},combo_status = ${comboStatus},combo_weight = ${comboWeight},combo_best = ${comboBest},combo_parameter1 = ${comboParameter1},combo_parameter2 = ${comboParameter2},combo_parameter3 = ${comboParameter3},combo_parameter4 = ${comboParameter4},combo_parameter5 = ${comboParameter5},combo_parameter6 = ${comboParameter6},combo_parameter7 = ${comboParameter7},combo_parameter8 = ${comboParameter8},combo_parameter9 = ${comboParameter9},combo_parameter10 = ${comboParameter10}
-		<where>
-			<include refid="where"></include>
-		</where>
+		update mj_combo set combo_title = #{comboTitle},combo_price = #{comboPrice},combo_createtime = #{comboCreatetime},combo_modifytime = #{comboModifytime},combo_status = #{comboStatus},combo_weight = #{comboWeight},combo_best = #{comboBest},combo_parameter1 = #{comboParameter1},combo_parameter2 = #{comboParameter2},combo_parameter3 = #{comboParameter3},combo_parameter4 = #{comboParameter4},combo_parameter5 = #{comboParameter5},combo_parameter6 = #{comboParameter6},combo_parameter7 = #{comboParameter7},combo_parameter8 = #{comboParameter8},combo_parameter9 = #{comboParameter9},combo_parameter10 = #{comboParameter10}
+		where combo_id = #{comboId}
 	</update>
 
 

@@ -146,11 +146,37 @@
 			<div class="col-lg-12">
 				<ol class="breadcrumb">
 					<li><a href="<%=path%>/home" target="_self">主页</a></li>
-					<li><strong>新闻评价</strong></li>
+					<li><strong>评论管理</strong></li>
 				</ol>
 			</div>
 			<br/>
 		</div>
+		
+		
+			<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseThree" Title="点击收起" class="collapsed"
+								aria-expanded="false">查询条件</a>
+								
+						</h4>
+					</div>
+					<div id="collapseThree" class="panel-collapse collapse in"
+						aria-expanded="true">
+						<div class="panel-body">
+							<div class="col-md-3">
+								<label>状态</label>
+								<select class="form-control m-b" onchange="getQueryList()" iscon="true"
+									id="Status" name="Status">
+									<option value="<%= SmBaseGlobal.CheckStatus.Effective.getid() %>">正常</option>
+									<option value="<%= SmBaseGlobal.CheckStatus.Disabled.getid() %>">删除</option>
+								</select>
+							</div>
+						</div>
+
+					</div>
+				</div>
 
 		<div class="row">
 			<div class="col-sm-12">
@@ -172,13 +198,9 @@
 								<thead>
 									<tr>
 										<th data-field="state" data-checkbox="true"></th>
-										<th data-field="pkid">评论编号</th>
-										<th data-field="newTitle">新闻名字</th>
-										<th data-field="notice.author">新闻作者</th>
-										<th data-field="userName">评价学生</th>
+										<th data-field="tempImageUrl">头像</th>
+										<th data-field="name">新闻名字</th>
 										<th data-field="content">评价内容</th>
-										<th data-field="notice.student.school">学生学校</th>
-										<th data-field="notice.student.phone">学生电话</th>
 										<th data-field="createTime">评价时间</th>
 									</tr>
 								</thead>
@@ -192,7 +214,6 @@
 	</div>
 	<jsp:include page="/include/commonJs.jsp" />
 	<script type="text/javascript">
-	initialRegionQueryInfo($(".panel-body"),'query',1);
 	var DataTable=$("#exampleTableEvents");
 	var DataTable2=$("#wechatlist");
 		!function(e, t, o) {
@@ -202,7 +223,7 @@
 				DataTable.bootstrapTable({
 					
 					url : "<%=path%>/Comment/getCommentPCList?sina=<%= SmBaseUtil.Random() %>",
-					search : !0,
+					search : 0,
 					pagination : !0,
 					showRefresh : !0,
 					showToggle : !0,

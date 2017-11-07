@@ -1,5 +1,7 @@
 package wtb.core.model;
 
+import wtb.smUtil.SmBaseUtil;
+
 public class Comment {
 	private long ID;
 	private String PKID;
@@ -16,6 +18,7 @@ public class Comment {
 	private String Name;
 	private long ImageID;
 	private String ImageUrl;
+	private String tempImageUrl;
 
 	public String getPKID() {
 		return PKID;
@@ -49,7 +52,7 @@ public class Comment {
 		NoticesID = noticesID;
 	}
 	public String getCreateTime() {
-		return CreateTime;
+			return CreateTime;
 	}
 	public void setCreateTime(String createTime) {
 		CreateTime = createTime;
@@ -101,6 +104,13 @@ public class Comment {
 	}
 	public void setImageUrl(String imageUrl) {
 		ImageUrl = imageUrl;
+	}
+	public String getTempImageUrl() {
+		String img="<a href='IMAGES' title='图片' data-gallery=''><img alt='image' style='width:70px;height:70px;' onerror='nofind()' src='IMAGES'></a>";
+		return img.replace("IMAGES", ImageUrl);
+	}
+	public void setTempImageUrl(String tempImageUrl) {
+		this.tempImageUrl = tempImageUrl;
 	}
 	
 	

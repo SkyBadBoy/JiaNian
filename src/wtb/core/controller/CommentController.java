@@ -169,11 +169,16 @@ public class CommentController extends BaseController {
 
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		String basePath = SmBaseUtil.getProjectBaseUrl(request);
+		String Status = request.getParameter("Status");
 		String nid = request.getParameter("nid");
 		if (nid!=null&&nid!="") {
 			responseMap.put("NoticesID", nid);
 		}
-		// responseMap.put("AreaID", AreaID);
+		if (SmBaseUtil.CheckIsNull(Status)) {
+			responseMap.put("Status", Status);
+		}else {
+			responseMap.put("Status", 1);
+		}
 		responseMap.putAll(SmBaseUtil.AddPageParam(request));
 		List<Comment> comments = ReadCommentService.getCommentList(responseMap);
 		int Prodcount = ReadCommentService.getCommentCount(responseMap);

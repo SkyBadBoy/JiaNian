@@ -60,7 +60,7 @@ public class ErrorUtil {
 			String ClassName = e.getClass().toString().replace("class ", "");
 			ErrorLog errorLog = InsertErrorLog(UserID, ClassMethod, exception, ClassName);
 			
-			ErrorLogStat(ClassMethod,errorLog);
+			//ErrorLogStat(ClassMethod,errorLog);
 			
 			
 		}catch (Exception e1) {

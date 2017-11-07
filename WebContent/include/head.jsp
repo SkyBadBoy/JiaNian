@@ -122,7 +122,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="logo-element">We News
+                        <div class="logo-element">Jia Nian
                         </div>
                     </li>
                     <li>
@@ -145,7 +145,7 @@
 	                        <a href="#"><i class="fa fa-bank"></i> <span class="nav-label">官网管理</span><span class="fa arrow"></span></a>
 	                        <ul class="nav nav-second-level">
 	                            <li>
-	                            	<a class="J_menuItem" href="<%=path%>/Setting/SettingList?parentID=0&sina=<%= SmBaseUtil.Random() %>">基础设置</a>
+	                            		<a class="J_menuItem" href="<%=path%>/Combo/ComboList?sina=<%= SmBaseUtil.Random() %>">套餐管理</a>
 	                            </li>      
 	                        </ul>
 	                    </li>
@@ -154,10 +154,13 @@
 	                        <ul class="nav nav-second-level">
 	                            <li>
 	                          	  <a class="J_menuItem" href="<%=path%>/ApplyList/ApplyListList?type=<%=SmBaseGlobal.DealInfoType.CorrectList.getid() %>&sina=<%= SmBaseUtil.Random() %>">报名管理</a>
-	                            </li>      
+	                            </li>  
+	                             <li>
+	                          	  <a class="J_menuItem" href="<%=path%>/Comment/CommentList?sina=<%= SmBaseUtil.Random() %>">评论管理</a>
+	                            </li>     
 	                        </ul>
 	                    </li>
-	                    <li>
+	               <%--      <li>
 	                        <a href="#"><i class="fa fa-bell"></i> <span class="nav-label">新闻管理</span><span class="fa arrow"></span></a>
 	                        <ul class="nav nav-second-level">
 	                            <li>
@@ -173,8 +176,8 @@
 	                             	<a class="J_menuItem" href="<%=path%>/ApplyList/ApplyListList?type=<%=SmBaseGlobal.DealInfoType.CorrectList.getid() %>&sina=<%= SmBaseUtil.Random() %>">名师点评</a>
 	                            </li>     
 	                        </ul>
-	                    </li>
-                    	 <li>
+	                    </li> --%>
+                    <%-- 	 <li>
 	                        <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">微新闻社管理</span><span class="fa arrow"></span></a>
 	                        <ul class="nav nav-second-level">
 	                            <li>
@@ -280,7 +283,7 @@
 			                        <a class="J_menuItem" href="<%=path%>/WeChatCustom/WeChatCustomHome?sina=<%= SmBaseUtil.Random() %>&flag=1"> <span class="nav-label">微信配置管理</span></a>
 			                    </li>
 		                    </ul>
-		                </li>
+		                </li> --%>
                  </c:if>
                  
                  <c:if test="${AreaManage}">

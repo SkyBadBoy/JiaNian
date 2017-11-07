@@ -85,7 +85,7 @@ public class IndexController extends BaseController {
 		map=new HashMap<>();
 		map.put("Rand", SmBaseUtil.Random());
 		map.put("start", 4);
-		map.put("limit", 7);
+		map.put("limit", 3);
 		map.put("Status", 1);
 		comments=ReadCommentService.getCommentList(map);
 		model.addAttribute("Comment2", comments);

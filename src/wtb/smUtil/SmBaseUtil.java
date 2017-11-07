@@ -887,7 +887,6 @@ public class SmBaseUtil {
            //connection.set
            connection.connect();
            System.err.print("connect");
-           // 定义 BufferedReader输入流来读取URL的响应
            BufferedReader in = new BufferedReader(new InputStreamReader(
                    connection.getInputStream()));
            String line;
@@ -900,7 +899,6 @@ public class SmBaseUtil {
            if(result.contains("{") || result.contains("}")){
         	   ErrorMessage=SmBaseUtil.PaseJsonToJsonObject(result);
            }
-           //	ErrorMessage=JSONObject.fromObject(result);
             if(ErrorMessage==null){
             	ErrorMessage=new JSONObject();
             }
