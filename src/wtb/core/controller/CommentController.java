@@ -243,5 +243,39 @@ public class CommentController extends BaseController {
 	public ModelAndView WeChatPublicList(HttpServletResponse response, HttpServletRequest request, HttpSession session, Model model) {
 		return new ModelAndView(SmBaseGlobal.WebViewPath + "CommentList");
 	}
-
+	
+	/**
+	 * 
+		 * 
+		 * @Author 作者：马健
+		 * @Phone  联系qq：1039510196
+		 * @CreateTime 创建时间：2017年11月15日 上午10:05:46 
+		 * @Details 移动评论列表端列表
+	 */
+	@RequestMapping(value = "/phoneComment", method = RequestMethod.GET)
+	public ModelAndView phoneComment(HttpServletResponse response, HttpServletRequest request, HttpSession session, Model model) {
+		return new ModelAndView(SmBaseGlobal.MobileViewPath + "phoneComment");
+	}
+	
+	/**
+	 * 
+		 * 
+		 * @Author 作者：马健
+		 * @Phone  联系qq：1039510196
+		 * @CreateTime 创建时间：2017年11月15日 上午10:16:42 
+		 * @Details 手机端获取评论列表
+	 */
+	@RequestMapping(value = "/getCommentPhoneList", method = RequestMethod.GET)
+	public @ResponseBody
+	Map<String, Object> getCommentPhoneList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		responseMap.put("Status", 1);
+		responseMap.putAll(SmBaseUtil.AddPageParam(request));
+		List<Comment> comments = ReadCommentService.getCommentList(responseMap);
+		responseMap = new HashMap<String, Object>();
+		responseMap.put("Data", comments);
+		responseMap.put("Status", 1);
+		return responseMap;
+	}
+	
 }

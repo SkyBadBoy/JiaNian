@@ -37,4 +37,20 @@ public class ReadProdPicturesService {
 	public int getPictureCount(Map<String,Object> params) {
 		return mapper.getPictureCount(params);
 	}
+	
+	/**
+	 * 
+		 * 
+		 * @Author 作者：马健
+		 * @Phone  联系qq：1039510196
+		 * @CreateTime 创建时间：2017年11月14日 下午5:38:06 
+		 * @Details 获取广告位
+	 */
+	@Transactional(readOnly = true)
+	public List<ProdPictures> getPicturePhoneList() {
+		return mapper.getPicturePhoneList();
+	}
+	
+	
+	
 }

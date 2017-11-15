@@ -1,0 +1,312 @@
+/*tc-index.html*/
+.teacher-tip{
+	padding: 0px;
+}
+.teacher-tip ul li{
+	width:33%!important;
+	border-right:1px solid #eee;
+	border-bottom:1px solid #eee;
+}
+.teacher-tip ul li img{
+	width:30%
+}
+.teacher-tip ul li p{
+	padding-top: 0px!important;
+}
+/*tc-intr.html*/
+.teacher{
+	margin-top: 15px;
+}
+.teacher li{
+	width:33%!important;
+}
+.teacher li img{
+	border-radius: 35px;
+}
+.work{
+	 background: gray;line-height: 30px;border-radius: 10px;
+	 color:white!important;
+	 margin: 5px 10px;
+	 margin-bottom: 0px;
+	 padding-top: 0px!important;
+}
+/*tc-classphotos.html*/
+.class-photolist{
+	width:100%;
+	background: white!important;
+}
+.class-photolist li{
+	width:47%;
+	float: left;
+	margin-left: 2%;
+	margin-top: 10px;
+	position: relative;
+}
+.class-photolist li span{
+	position: absolute;
+	right: -5px;
+	top:-5px;
+	display: block;
+	width:30px;
+	height:30px;
+	background: rgba(10,10,10,.35);
+	color: white;
+	border-radius: 15px;
+	text-align: center;
+	font-size: 30px;
+	line-height: 30px;
+	display: none;
+	cursor: pointer;
+}
+.class-photolist li img{
+	width:100%;
+	height:130px;
+	border-radius: 8px;
+}
+.ta-center input{
+	width:100%;
+	border:1px solid #ddd;
+	padding: 8px;
+	margin-bottom: 10px;
+}
+/*tc-classphotos-detail.html*/
+.photo-list{
+	width:100%;
+	background: white!important;
+}
+.photo-list li{
+	width:100%;
+	margin: 10px 0;
+	position: relative;
+}
+.photo-list li span{
+	position: absolute;
+	right: 5px;
+	top:5px;
+	display: block;
+	width:30px;
+	height:30px;
+	background: rgba(10,10,10,.35);
+	color: white;
+	border-radius: 15px;
+	text-align: center;
+	font-size: 30px;
+	line-height: 30px;
+	display: none;
+	cursor: pointer;
+}
+.photo-list li img{
+	width:100%;
+}
+/*homework-list.html*/
+.hw_block{
+	border-bottom: 10px;
+	background: white;
+	margin: 10px 0px;
+	padding: 20px 8px;
+	padding-bottom: 0;
+}
+.hw_block li{
+	border-bottom: 0;
+}
+.hw_block p{
+	font-size: 14px;
+}
+.hw_block .state{
+	color: #8C8C8C;
+}
+/*tc-delay.html*/
+.qj-btngroup{
+	width:100%;
+	margin: 20px 0%;
+	margin-left: 13%;
+}
+.qj-btngroup a{
+	display: inline-block;
+	width:30%;
+	margin-left: 5%;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 8px;
+}
+.qj-btngroup a:nth-child(1){
+	background: gray;
+	color: white;
+}
+.qj-btngroup a:nth-child(2){
+	background: #45C0F8;
+	color: white;
+}
+.qj_result{
+	width:50%;
+	background: #C2C2C2;
+	color:white;
+	margin-left: 25%;
+	height: 40px;
+	border-radius: 20px;
+	margin-top:20px;
+}
+.qj_result p{
+	line-height: 40px;
+}
+/*tc-list.html*/
+.head {
+	width: 100%;
+	margin: 5px 20px 5px 0px;
+}.upphoto {
+	width: 50px;
+	height: 50px;
+	border-radius: 30px;
+	overflow: hidden;
+	float: left;
+	margin-left: 5px;
+}.upphoto img {
+	width: 100%;
+	height: 100%;
+}.activity-class {
+	font-size: 15px;
+	line-height: 30px;
+	padding-left: 70px;
+	color: #333333;
+}.activity-name {
+	font-size: 14px;
+	line-height: 30px;
+	padding-left: 70px;
+}.wide-item {
+	margin-bottom: 3px;
+	position: relative;
+	height: 200px;
+}.wide-image {
+	max-height: 200px;
+	overflow: hidden;
+	position: absolute;
+	top: 0px;
+}.responsive-image {
+	width: 100%;
+	margin-bottom: 20px;
+	height: 200px;
+}
+.dt-tip li{
+	display: inline-block;
+}
+.dt-tip img{
+	width: 20px;
+	height: 20px;
+}.dt-tip span{
+	width:40px;
+	display: inline-block;
+	font-size: 14px;
+	color: gray;
+}
+.dt-tip{
+	
+	padding-bottom: 10px;
+	padding-left: 20px;
+}
+.addcomment{
+	border-bottom: 10px solid #ddd;
+	padding-bottom: 10px;
+}
+.addcomment input{
+	width: 94%;
+	height: 30px;
+	margin-left: 3%;
+	padding: 5px;
+	border-radius: 4px;
+}
+.zhezhao-gray{
+	position: fixed;
+	top:0;
+	background: rgba(10,10,10,.2);
+	width:100%;
+	z-index: 10;
+	height: 100%;
+	display: none;
+}
+.comment-content{
+	width: 90%;
+	padding: 20px 8px;
+	background: white;
+	margin: 150px 2.5%;
+	border-radius: 8px;
+}
+.comment-content textarea{
+	width:96%;
+	margin-left: 2%;
+	border-radius: 4px;
+	padding: 5px;
+}
+.comment-content li{
+	width:20%;
+	display: inline-block;
+	font-size: 14px;
+	line-height: 26px;
+	cursor: pointer;
+}
+.comment-content li:nth-child(2){
+	background: white;
+	border:1px solid #ddd;
+	border-radius: 4px;	
+}
+.comment-content li:nth-child(3){
+	background: #45C0F8;
+	border:1px solid #45C0F8;
+	border-radius: 4px;	
+	color: white;
+}
+.comment-content li:nth-child(1){
+	width:51%;	
+	padding-left: 6px;
+	color: #808080;
+	font-weight: 700;
+	font-size: 22px;
+	font-style: italic;
+	font-family: Constantia, Georgia;
+	
+}
+.comment-content li:nth-child(1) span {
+	color: orange;
+	font-weight: 700;
+	font-size: 22px;
+	font-style: italic;
+	font-family: Constantia, Georgia;
+}
+.comm-list p{
+	font-size: 14px;
+	padding: 5px;
+}
+.pl-name{
+	color: #1D7DB1;
+}
+/*tc-addgrade.html*/
+.grade li{
+	width:44%;
+	float: left;
+}
+.grade .delay{
+	width:45%!important;
+}
+.grade li{
+	padding: 4% 3%;
+}
+.grade li input{
+	width:50%!important;
+}
+.grade-title{
+	margin: 10px 0;background: #ddd;line-height: 30px;
+	color: white;
+	margin-bottom: 0;
+}
+/*tc-grades-count.html*/
+.delay_block{
+	padding: 10px;
+}
+
+.avg span{
+	color: orange;
+	font-weight: 700;
+	font-size: 22px;
+	font-style: italic;
+	font-family: Constantia, Georgia;
+}
+

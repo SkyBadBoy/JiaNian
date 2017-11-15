@@ -52,7 +52,11 @@ public class Comment {
 		NoticesID = noticesID;
 	}
 	public String getCreateTime() {
+		if (SmBaseUtil.CheckIsNull(CreateTime)) {
+			return CreateTime.substring(0, 19);
+		}else {
 			return CreateTime;
+		}
 	}
 	public void setCreateTime(String createTime) {
 		CreateTime = createTime;

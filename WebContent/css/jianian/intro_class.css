@@ -1,0 +1,329 @@
+/*学车改版版型介绍页  limengru  2016.1.4*/
+body{
+    height: auto;
+}
+
+.pic_head{
+    width: 50px;
+    height: 50px;
+    background-image: url(/mobile/img_new/classes_intro_head_icons.png);
+    background-size: 224px;
+    background-repeat: no-repeat;
+}
+.head{
+    height: 57px;
+    padding: 25px 0 25px 15px;
+    background-color:#fafafa;
+}
+.head dt , .head dd{
+    float: left;
+}
+.head dd{
+    margin-left: 12px;
+    margin-top: -4px;
+}
+.head dd .class_type{
+    font-size: 18px;
+    color: #4a5062;
+}
+.head dd .mess0{
+    font-size: 13px;
+    color: #999;
+    margin: 4px 0;
+}
+.head dd .mess0 em{
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background-color: #ff7200;
+    border-radius: 4px;
+    position: relative;
+    top: -3px;
+    margin: 0 8px;
+}
+.head dd .mess1{
+    font-size: 14px;
+    color: #999;
+}
+.head dd .mess1 span{
+    font-size: 18px;
+    color: #ff7200;
+}
+.student .pic_head{
+    background-position: 0 0;
+}
+.sociology .pic_head{
+    background-position: -58px 0;
+}
+.high .pic_head{
+    background-position: -116px 0;
+}
+.cs_jy .pic_head{
+	background-position: -174px 0;
+}
+.cost_list , .train_list , .wrap_gdb{
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+.cost_list dt , .train_list .money , .wrap_gdb .tit{
+    height: 43px;
+    line-height: 43px;
+    border-bottom: 1px solid #eee;
+    font-size: 17px;
+    color: #4a5062;
+}
+.cost_list dt em , .train_list .tit em , .wrap_gdb .tit em{
+    display: inline-block;
+    height: 17px;
+    line-height: 17px;
+    border-left: 4px solid #ff7200;
+    padding-left: 11px;
+}
+.cost_list dd .money{
+    /*margin-left: 15px;*/
+    height: 29px;
+    line-height: 29px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #4a5062;
+    overflow:hidden;
+}
+.cost_list dd .money em{
+    float: right;
+    margin-right: 15px;
+}
+.cost_list dd .money em i{
+    font-size: 15px;
+    color: #ff7200;
+}
+.cost_list dd .money span{
+    float: left;
+}
+.cost_list dd .money span b{
+    font-size: 14px;
+    color: #999;
+}
+.cost_list dd p:last-child{
+    border-bottom: 0;
+}
+.cost_list .mess1{
+    height: 50px;
+    line-height: 50px;
+    border-top: 1px solid #eee;
+    font-size: 17px;
+    color: #4a5062;
+}
+.cost_list .mess1 span{
+    float: left;
+    margin-left: 15px;
+}
+.cost_list .mess1 em{
+    float: right;
+    margin-right: 15px;
+    font-size: 14px;
+}
+.cost_list .mess1 em i{
+    font-size: 15px;
+    color: #ff7200;
+}
+.cost_list .mess0 .bg_zk{
+    width: 126px;
+    height: 18px;
+    background-image: url(/mobile/img_new/icons_student.png);
+    background-size: 126px;
+    background-repeat: no-repeat;
+    line-height: 18px;
+    margin-top: 5px;
+    color: #fff;
+    text-align: center;
+}
+.train_list{
+    margin-top: 15px;
+    padding-bottom: 20px;
+}
+.train_list p{
+    margin-top: 12px;
+}
+.train_list .tit{
+    border-bottom: 0;
+    font-size: 17px;
+    margin-top: 20px;
+    color: #4a5062;
+}
+.train_list .mess0{
+    font-size: 15px;
+    border-bottom: 0;
+    color: #4a5062;
+}
+.train_list .mess0 em , .wrap_gdb .mess0 em{
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background-color: #ff7200;
+    border-radius: 4px;
+    position: relative;
+    top: -3px;
+    margin: 0 8px;
+    margin-left: 17px;
+}
+.train_list .mess{
+    width: auto;
+    margin-left: 29px;
+    margin-right: 15px;
+    font-size: 14px;
+    color: #4a5062;
+    line-height: 18px;
+}
+.foot_mess{
+    margin: 10px 15px 0;
+    font-size: 12px;
+    color: #ff7200;
+    line-height: 16px;
+}
+.footer{
+    width: 100%;
+    height: 47px;
+    position: fixed;
+    z-index:100;
+    bottom: 0px;
+    font-size:0px;
+    border-top:1px solid #e7e7e7;
+}
+.footer div{text-align: center;display:inline-block;height:100%;}
+.footer .phone span,.footer .phone i, .footer .mec span,.footer .mec i{
+	display:block;
+	margin-top:2px;
+}
+.footer .phone , .footer .mec{
+    width: 30%;
+    background-color: #fff;
+    color: #838383;
+    float:left;
+    font-size: 11px;
+}
+.footer .mec{
+	border-left:1px solid #e7e7e7;
+	margin-left:-1px;
+}
+.footer div .icon{
+	display: inline-block;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    margin-top:6px;
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-image: url(/mobile/img_new/classes_intro_icons.png);
+}
+.footer .mec .icon{
+    background-position : 0 -19px;
+}
+.footer .name{
+    width: 40%;
+    color: #fff;
+    background-color: #ff861a;
+    border-left:1px solid #e7e7e7;
+	margin-left:-1px;
+    float:right;
+    font-size: 16px;
+    line-height:47px;
+}
+.wrap_gdb{
+    margin-bottom: 15px;
+    padding-bottom: 20px;
+}
+.wrap_gdb p{
+    margin-top: 12px;
+}
+.wrap_gdb .tit{
+    border-bottom: 0;
+}
+.wrap_gdb .mess0{
+    font-size: 14px;
+    color: #75afdc;
+}
+.wrap_gdb .first{
+    margin-top: 0;
+}
+.wrap_gdb .mess{
+    font-size: 14px;
+    color: #4a5062;
+    margin-left:29px;
+    line-height: 18px;
+}
+
+
+.head dd .mess1 .ora{
+	font-size:12px;
+	color:#999;
+	margin-left:7px;
+	text-decoration: line-through;
+}
+.head dd .mess1 .textor{
+	font-size:12px;
+	color:#ff7200;
+	margin-left:7px;
+}
+.cost_list{
+	margin-top: 15px;
+}
+.enter_box{
+    width: 100%;
+    height: auto;
+    margin: 15px 0 0;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+.enter_box li{
+    width: auto;
+    margin-left: 15px;
+    height: 43px;
+    line-height: 43px;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+.enter_box li:last-child{
+    border-bottom: 0;
+}
+.enter_box li .icon_add{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    background-image: url(/mobile/img/icons_add_class.png);
+    background-size: 32px;
+    background-repeat: no-repeat;
+}
+.enter_box .fqxe .icon_add{
+    background-position: -19px 0;
+}
+.enter_box li .left{
+    font-size: 17px;
+    color: #585858;
+    display: inline-block;
+    float: left;
+    width: 30%;
+}
+.enter_box li .right{
+    font-size: 12px;
+    color: #999;
+    display: inline-block;
+    float: right;
+    margin-right: 25px;
+}
+.enter_box li .right i{
+    width: 7px;
+    height: 13px;
+    display: block;
+    float: right;
+    background-image: url(/mobile/img_new/my_arrow_right.png);
+    background-size: 7px;
+    position: absolute;
+    right: 13px;
+    top: 15px;
+    background-repeat: no-repeat
+}

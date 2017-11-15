@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:cache="http://www.springframework.org/schema/cache"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
@@ -12,163 +10,163 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 	http://www.springframework.org/schema/cache
     http://www.springframework.org/schema/cache/spring-cache.xsd">
-	
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
 		p:location="/WEB-INF/jdbc.properties" />
-	 <bean id="statFilter" class="com.alibaba.druid.filter.stat.StatFilter" />
-    <bean id="logFilter" class="com.alibaba.druid.filter.logging.Log4jFilter">
-        <property name="resultSetLogEnabled" value="false" />
-        <property name="statementExecutableSqlLogEnable" value="true" />
-    </bean>
+	<bean id="statFilter" class="com.alibaba.druid.filter.stat.StatFilter" />
+	<bean id="logFilter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+		<property name="resultSetLogEnabled" value="false" />
+		<property name="statementExecutableSqlLogEnable" value="true" />
+	</bean>
 	<!-- 数据源配置, 使用应用中的DBCP数据库连接池 -->
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
 		<!-- Connection Info -->
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-
-		
-		<property name="url" value="jdbc:mysql://127.0.0.1:3306/jianian?useUnicode=true" />
+		<property name="url" value="jdbc:mysql://47.96.160.124:3306/jianian?useUnicode=true" />
 		<property name="username" value="root" />
-		<property name="password" value="123456" />
-		
-		
-		<!-- KOzRh1r8zvf4A4bFF root 120.26.104.38 -->
+		<property name="password" value="jianian123!@#" />
+
 		<!-- Connection Pooling Info -->
 		<property name="maxActive" value="2000" />
 		<property name="maxIdle" value="200" />
-		 <property name="maxWait" value="30000" />
+		<property name="maxWait" value="30000" />
 		<property name="defaultAutoCommit" value="false" />
 		<!-- 连接Idle一个小时后超时 -->
 		<property name="timeBetweenEvictionRunsMillis" value="28800" />
 		<property name="minEvictableIdleTimeMillis" value="60000" />
 		<property name="validationQuery" value="SELECT 1" />
-    	<property name="testOnBorrow" value="true"/>
-    	<property name="testWhileIdle" value="true"/>
-    	<property name="removeAbandoned" value="true"/>
-    	<property name="removeAbandonedTimeout" value="180"/>
-    	<property name="logAbandoned" value="true"/>  
-    	
-    	<property name="proxyFilters">
-            <list>
-                <ref bean="statFilter" />
-                <ref bean="logFilter"/>
-            </list>
-        </property>
+		<property name="testOnBorrow" value="true" />
+		<property name="testWhileIdle" value="true" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="180" />
+		<property name="logAbandoned" value="true" />
 
-        <!-- 配置监控统计拦截-->
-        <property name="filters" value="stat,log4j" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="statFilter" />
+				<ref bean="logFilter" />
+			</list>
+		</property>
+
+		<!-- 配置监控统计拦截 -->
+		<property name="filters" value="stat,log4j" />
 	</bean>
-	
-
-	<!-- define the SqlSessionFactory -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="mapperLocations" value="classpath:wtb/core/data/*.xml"/>
-        <property name="configLocation" value="/WEB-INF/mybatis-config.xml"></property>
-    </bean>
-
-    <!-- scan for mappers and let them be autowired -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="wtb.core.data" />
-         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-    </bean> 
-    
-    
-  
-    
-    
-    <!-- 数据源配置, 使用应用中的DBCP数据库连接池 -->
-	<bean id="ReaddataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
-		<!-- Connection Info -->
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
- 		<property name="url" value="jdbc:mysql://127.0.0.1:3306/jianian?useUnicode=true" />
-		<property name="username" value="root" />
-		<property name="password" value="123456" />
-		<!-- Connection Pooling Info -->
-		<property name="maxActive" value="2000" />
-		<property name="maxIdle" value="200" />
-		 <property name="maxWait" value="30000" />
-		<property name="defaultAutoCommit" value="false" />
-		<!-- 连接Idle一个小时后超时 -->
-		<property name="timeBetweenEvictionRunsMillis" value="28800" />
-		<property name="minEvictableIdleTimeMillis" value="60000" />
-		<property name="validationQuery" value="SELECT 1" />
-    	<property name="testOnBorrow" value="true"/>
-    	<property name="testWhileIdle" value="true"/>
-    	<property name="logAbandoned" value="true"/>  
-    	
-    	<property name="proxyFilters">
-            <list>
-                <ref bean="statFilter" />
-                <ref bean="logFilter"/>
-            </list>
-        </property>
-
-        <!-- 配置监控统计拦截-->
-        <property name="filters" value="stat,log4j" />
-	</bean>
- 
 
 
 	<!-- define the SqlSessionFactory -->
-    <bean id="readsqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="ReaddataSource" />
-        <property name="mapperLocations" value="classpath:read/core/data/*.xml"/>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:wtb/core/data/*.xml" />
 		<property name="configLocation" value="/WEB-INF/mybatis-config.xml"></property>
-    </bean>
+	</bean>
 
-    <!-- scan for mappers and let them be autowired -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="read.core.data" />
-         <property name="sqlSessionFactoryBeanName" value="readsqlSessionFactory"/>
-    </bean> 
-    
-    
-    
-    <!-- transaction manager, use JtaTransactionManager for global tx-->
-    <bean id="transactionManager1" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-	<!-- enable transaction demarcation with annotations-->
-	<tx:annotation-driven transaction-manager="transactionManager1" proxy-target-class="true" />
-    
- 
-	
-	<!-- transaction manager, use JtaTransactionManager for global tx-->
-    <bean id="transactionManager3" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="ReaddataSource" />
-        <qualifier value="ReaddataSource"/>  
-    </bean>
-	<!-- enable transaction demarcation with annotations-->
-	<tx:annotation-driven transaction-manager="transactionManager3" proxy-target-class="true" />
-	
-	
-    <!-- 不扫描带有@Controller注解的类。因为这些类已经随容器启动时，在servlet-context中扫描过一遍了 -->
+	<!-- scan for mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="wtb.core.data" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+	<!-- 数据源配置, 使用应用中的DBCP数据库连接池 -->
+	<bean id="ReaddataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<!-- Connection Info -->
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://47.96.160.124:3306/jianian?useUnicode=true" />
+		<property name="username" value="root" />
+		<property name="password" value="jianian123!@#" />
+		<!-- Connection Pooling Info -->
+		<property name="maxActive" value="2000" />
+		<property name="maxIdle" value="200" />
+		<property name="maxWait" value="30000" />
+		<property name="defaultAutoCommit" value="false" />
+		<!-- 连接Idle一个小时后超时 -->
+		<property name="timeBetweenEvictionRunsMillis" value="28800" />
+		<property name="minEvictableIdleTimeMillis" value="60000" />
+		<property name="validationQuery" value="SELECT 1" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testWhileIdle" value="true" />
+		<property name="logAbandoned" value="true" />
+
+		<property name="proxyFilters">
+			<list>
+				<ref bean="statFilter" />
+				<ref bean="logFilter" />
+			</list>
+		</property>
+
+		<!-- 配置监控统计拦截 -->
+		<property name="filters" value="stat,log4j" />
+	</bean>
+
+
+
+	<!-- define the SqlSessionFactory -->
+	<bean id="readsqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ReaddataSource" />
+		<property name="mapperLocations" value="classpath:read/core/data/*.xml" />
+		<property name="configLocation" value="/WEB-INF/mybatis-config.xml"></property>
+	</bean>
+
+	<!-- scan for mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="read.core.data" />
+		<property name="sqlSessionFactoryBeanName" value="readsqlSessionFactory" />
+	</bean>
+
+
+
+	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager1"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- enable transaction demarcation with annotations -->
+	<tx:annotation-driven transaction-manager="transactionManager1"
+		proxy-target-class="true" />
+
+
+
+	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager3"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="ReaddataSource" />
+		<qualifier value="ReaddataSource" />
+	</bean>
+	<!-- enable transaction demarcation with annotations -->
+	<tx:annotation-driven transaction-manager="transactionManager3"
+		proxy-target-class="true" />
+
+
+	<!-- 不扫描带有@Controller注解的类。因为这些类已经随容器启动时，在servlet-context中扫描过一遍了 -->
 	<context:component-scan base-package="wtb,read">
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-    
 
-<bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">  
-	    <property name="configLocation" value="classpath:ehcache.xml" />  
-	  </bean>
-     <bean id="multipartResolver"
-        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <!-- set the max upload size100MB -->
-        <property name="maxUploadSize">
-            <value>304857600</value>
-        </property>
-        <property name="maxInMemorySize">
-            <value>6096</value>
-        </property>
-    </bean>
-    
-    <!-- 激活annotation功能 -->
+
+	<bean id="ehCacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache.xml" />
+	</bean>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- set the max upload size100MB -->
+		<property name="maxUploadSize">
+			<value>304857600</value>
+		</property>
+		<property name="maxInMemorySize">
+			<value>6096</value>
+		</property>
+	</bean>
+
+	<!-- 激活annotation功能 -->
 	<context:annotation-config />
 	<!-- 激活annotation功能 -->
-	<context:spring-configured/>
-	
-	
-	
+	<context:spring-configured />
+
+
+
 </beans>

@@ -141,9 +141,19 @@
 			<if test="_parameter != null">
 				and Picture_ProductID = #{_parameter}
 			</if>
-
-
 		</where>
 	</select>
+	
+	<resultMap type="wtb.core.model.ProdPictures" id="phoneHomeList">
+		<result property="ID" column="Picture_ID" />
+		<result property="PKID" column="Picture_ID" />
+		<result property="Url" column="Picture_Url" />
+		<result property="PUrl" column="ProdPicture_Url" />
+	</resultMap>
+	<select id="getPicturePhoneList" parameterType="map" resultMap="phoneHomeList">
+		SELECT Picture_ID,Picture_Url,ProdPicture_Url
+		FROM wtb_ProdPicture where Picture_Status=1 and Picture_IsEnable=1 and  Picture_Type=2
+	</select>
+	
 </mapper>
 

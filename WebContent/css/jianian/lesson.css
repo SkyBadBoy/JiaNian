@@ -1,0 +1,405 @@
+.header{
+	background: #F7F9FC;
+}
+.header span{
+	color: #333333;
+}
+.header i{
+	color: #333333;
+}
+
+/*air-lesson-detail.html*/
+.lesson-detail-list p{
+	font-size: 15px;
+	line-height: 20px;
+	padding: 5px 0;
+}
+.lesson-detail-list p span:nth-child(1){
+	display: inline-block;
+	border-radius: 4px;
+	border:1px solid #ddd;
+	font-size: 12px;
+	padding: 2px 3px;
+	margin-right: 5px;
+	line-height: 15px;
+	background: white;
+}
+.lesson-detail-intr p:nth-child(1){
+	line-height: 40px;
+	padding: 10px;
+	padding-bottom: 0;
+	background: white;
+}
+.lesson-detail-intr p:nth-child(2){
+	font-size: 12px;
+	color: #888888;
+	padding: 0 10px ;
+	padding-bottom: 15px;
+	background: white;
+	border-bottom: 1px solid #ddd;
+}
+.lesson-detail-intr p:nth-child(3){
+	line-height: 30px;
+	padding: 10px;
+	background: white;
+	color: #D84C29;
+}
+.lesson-detail-intr p:nth-child(4){
+	height: 10px;
+}
+.lesson-detail-intr p:nth-child(5),.lesson-detail-intr p:nth-child(7){
+	padding: 0 10px ;
+	background: white;
+	font-size: 16px;
+	line-height: 30px;
+}
+.lesson-detail-intr p:nth-child(6){
+	border-bottom: 1px solid #ddd;
+}
+.lesson-detail-intr p:nth-child(6),.lesson-detail-intr p:nth-child(8){
+	padding: 0 10px ;
+	background: white;
+	font-size: 16px;
+	line-height: 23px;
+	color: #888888;
+	font-size: 14px;
+	padding-bottom: 8px;
+}
+
+.add-lesson-btn{
+	position: fixed;
+	bottom: 0;
+	background: #45C0F8;
+	width:100%;
+	height:40px;
+	color: white!important;
+	z-index: 100;
+}
+
+/*air-index.html*/
+.lesson-list{
+	padding-bottom: 10px;
+}
+.lesson-list li{
+	width:46%;
+	float:left;
+	margin: 10px 2%;
+}
+.lesson-list li img{
+	width:100%;
+}
+.lesson-list li p{
+	font-size: 14px;
+}
+.lesson-meau ul li:nth-child(1) div{
+	width:44px;
+	height:44px;
+	background: #FD8364;
+	margin:0 auto ;
+	border-radius: 22px;
+}
+.lesson-meau ul li:nth-child(2) div{
+	width:44px;
+	height:44px;
+	background: #A7D76C;
+	margin:0 auto ;
+	border-radius: 22px;
+}
+.lesson-meau ul li:nth-child(3) div{
+	width:44px;
+	height:44px;
+	background: #FFD45C;
+	margin:0 auto ;
+	border-radius: 22px;
+}
+.lesson-meau ul li:nth-child(4) div{
+	width:44px;
+	height:44px;
+	background: #62ACF8;
+	margin:0 auto ;
+	border-radius: 22px;
+}
+.lesson-meau div p{
+	color: white;
+	font-size: 20px;
+	line-height: 44px;
+}
+.zhuanti > p:nth-child(1){
+	font-size: 16px;
+	text-align: center;
+	background: #F8F9FD;
+	padding-top: 8px;
+}
+.zhuanti > p:nth-child(2){
+	font-size: 12px;
+	text-align: center;
+	background: #F8F9FD;
+	padding-bottom: 8px;
+}
+.zhuanti img{
+	width:100%;
+	margin: 5px 0;
+}
+/*air-ranking.html*/
+.top-one{
+	width:96%;
+	margin: 5px 2%;
+	background: white;
+	position: relative;
+}
+.top-one p{
+	position: absolute;
+	bottom: 0;
+	background: rgba(10,10,10,.3);
+	color: white;
+	line-height: 20px;
+	padding: 8px 2%;
+	padding-bottom: 0;
+	width:96%;
+}
+.top-one p span{
+	font-size: 12px;
+	line-height: 20px;
+}
+.rank1{
+	width:20px;
+	height:20px;
+	background:red;
+	position: absolute;
+	top:-2px;
+	left: -2px;
+	z-index: 1;
+}
+.rank1 p{
+	color: white;
+	line-height: 24px;
+	font-size: 12px;
+	background: none;
+	text-align: center;
+}
+.rank2{
+	width:16px;
+	height:16px;
+	background:red;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+   transform: rotate(45deg);
+   position: absolute;
+   top:9px;
+	left: 0px;
+	opacity: 1;
+	
+}
+.rank-list{
+	width:96%;
+	margin: 14px 2%;
+	position: relative;
+	background: white;
+}
+.rank-list img{
+	width:40%;
+	float: left;
+}
+.rank-list p:nth-child(2){
+	width:52%;
+	font-size: 16px;
+	padding-left: 10px;
+}
+.rank-list p:nth-child(3){
+	font-size: 12px;
+	color: #888888;
+	margin-top: 35px;
+	float: left;
+	padding-left: 10px;
+}
+.free-ranking{
+	background: white;
+}
+.pay-ranking{
+	padding: 0;
+}
+/*air-mystudy.html*/
+.study-head{
+	width:100%;
+	background:#2CC17B ;
+	height:150px;
+	padding-top: 30px;
+}
+.study-head div:nth-child(1){
+	width:80px;
+	height:80px;
+	border-radius: 45px;
+	overflow: hidden;
+	margin: 0 auto;
+	border:5px solid #2AB775;
+	
+}
+.study-head p{
+	color: white;
+	font-size: 14px;
+}
+.study-head ul{
+	width:100%;
+	vertical-align: middle;
+	text-align: center;
+}
+.study-head ul li:nth-child(1){
+	border-right: 1px solid white;
+}
+.study-head li{
+	margin: 0 auto;
+	width:30%;
+	display: inline-block;
+	margin-top: 10px;
+}
+.study-head span{
+	font-size: 20px;
+}
+.removestudy-btn{
+	border:1px solid #2CC17B;
+	color: #2CC17B;
+	border-radius: 2px;
+	padding: 3px 5px;
+}
+/*air-alllesson.html*/
+.all-content{
+	width:76%;
+	margin-left:24%;
+}
+
+.study-choose{
+	width:24%;
+	position: fixed;
+	left: 0;
+	font-size: 14px;
+	line-height: 30px;
+	background: #F7F9FC;
+	top:94px;
+	height: 100%;}
+.study-choose li{
+	padding-left: 8px;
+	border-left: 3px solid #F7F9FC;
+}
+.choose{
+	border-left:3px solid #00A7EE !important;
+	background: white;
+}
+#search-form{
+	width:96%;
+	padding: 5px 2%;
+	height:30px;
+}
+.search{
+	background:white url(../images/search.png) no-repeat right center;
+	width:96%;
+	padding:3px 5px;
+	box-shadow: none;
+}
+/*air-search.html*/
+.search-result{
+	color: orange;font-size: 16px;line-height: 20px;padding: 10px 5px;padding-bottom: 0;
+}
+.search-result span{
+	color: #333333;
+}
+/*air-parent.html*/
+.parent-meau p{
+	font-size: 16px;
+	line-height: 35px;
+}
+.parent-meau div{
+	width:64px;
+	height:35px;
+	margin:0 auto ;
+	border-radius: 22px;
+	background: white;
+}
+.parent-meau ul li:nth-child(1) div{
+	border:1px solid #FD8364;	
+}
+.parent-meau ul li:nth-child(1) p{
+	color: #FD8364;
+	
+}
+.parent-meau ul li:nth-child(2) div{
+	border:1px solid #A7D76C;
+}
+.parent-meau ul li:nth-child(2) p{
+	color: #A7D76C;
+}
+.parent-meau ul li:nth-child(3) div{
+	border:1px solid #FFD45C;
+}
+.parent-meau ul li:nth-child(3) p{
+	color: #FFD45C;
+}
+.parent-meau ul li:nth-child(4) div{
+	border:1px solid #62ACF8;
+}
+.parent-meau ul li:nth-child(4) p{
+	color: #62ACF8;
+}
+/*.air-students.html*/
+.students-meau ul li:nth-child(1) div{
+	width:44px;
+	height:44px;
+	background: #FD8364;
+	margin:0 auto ;
+	border-radius: 22px;
+}
+.students-meau ul li:nth-child(2) div{
+	width:44px;
+	height:44px;
+	background: #A7D76C;
+	margin:0 auto ;
+	border-radius: 22px;
+}
+.students-meau ul li:nth-child(3) div{
+	width:44px;
+	height:44px;
+	background: #FFD45C;
+	margin:0 auto ;
+	border-radius: 22px;
+}
+.students-meau ul li:nth-child(4) div{
+	width:44px;
+	height:44px;
+	background: #49CFAE;
+	margin:0 auto ;
+	border-radius: 22px;
+}
+.students-meau ul li:nth-child(5) div{
+	width:44px;
+	height:44px;
+	background: #BFA7F5;
+	margin:0 auto ;
+	border-radius: 22px;
+}
+.students-meau div p{
+	color: white;
+	font-size: 20px;
+	line-height: 44px;
+}
+.students-meau li{
+	width:20%!important;
+}
+/*air-zhuanti.html*/
+.zt-lesson p:nth-child(2){
+	font-weight: 700;
+	line-height: 35px;
+	padding: 3px 2%;
+	width:96%;
+}
+.zt-lesson p:nth-child(3){
+	font-size: 14px;
+	padding: 0px 2%;
+	width:96%;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #ddd;
+}
+.zt-lesson p:nth-child(4){
+	color: #DC2D00;
+	padding: 5px 2%;
+	width:96%;
+	border-bottom: 10px solid #eee;
+}

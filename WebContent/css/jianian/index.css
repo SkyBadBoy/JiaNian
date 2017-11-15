@@ -1,0 +1,232 @@
+/*chongzhi.html*/
+.money{
+	width:100%;
+}
+.money li{
+	float: left;
+	border:1px solid #45C0F8;
+	border-radius: 4px;
+	width:30.7%;
+	margin:5px 1%;
+}
+.money li p{
+	text-align: center;
+	line-height:60px;
+	color:#45C0F8;
+}
+.money_checked{
+	background:#45C0F8;
+}
+.money_checked p{
+	color:white!important;
+}
+.chongzhi_info{
+	width:152px;
+	margin: 10px auto;
+}
+.chongzhi_info li{
+	display: inline;
+	font-size: 13px;
+	color: #1F4469;
+}
+
+/*delay-count.html*/
+.delay_block{
+	background: white;
+	padding: 5px 0px;
+}
+.delay_block .dorm-book li{
+    padding: 0% 4%!important;
+}
+.delay_block p{
+	font-size: 14px;
+	padding: 0px 10px;
+}
+
+.my_news{
+	display: inline-block;
+	background: #E34629;
+	padding: 0 10px;
+	color: white;
+	border-radius: 20px;
+	font-size: 15px;
+}
+.news_bg{
+	background: white;border-radius:20px ;
+}
+
+
+
+/*sendMsg.html*/
+.contactFormWrapper {
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-left: 12px;
+	padding-right: 12px;
+	background-color: #f9f9f9;
+	/*padding-top: 23px;
+	padding-bottom: 20px;*/
+}
+.contactForm {
+	margin-bottom: 27px;
+}
+.formFieldWrapper {
+	margin-bottom: 23px;
+}
+.contactForm label {
+	margin-bottom: 13px;
+	font-size: 14px;
+	width: 100%;
+	box-sizing: border-box;
+	height: 30px;
+	line-height: 30px;
+}
+.contactForm input[type="text"] {
+	width: 100%;
+	height: 36px;
+}
+.contactForm input[type="text"], .contactForm textarea {
+	margin-bottom: 0px;
+	box-sizing: border-box;
+	background-color: #ffffff;
+	border: 3px solid #f0f0f0;
+	color: #333333;
+	padding: 0 10px;
+}
+.contactForm textarea{
+	padding: 10px;
+}
+.formTextareaWrapper {
+	/*margin-bottom: 36px;*/
+}
+.contactTextarea {
+	width: 100%;
+	max-width: 100%;
+	height: 168px;
+	box-sizing: border-box;
+}
+
+#contactForm fieldset{
+	border: none;;
+}
+
+
+/*headmasterMsg.html*/
+.text-logo{
+	background:#45C0F8;
+	color:white;
+	padding: 10 15px;
+	display: block;
+	text-align: center;
+	width:80px;
+	border-radius: 15px;
+	margin-bottom: 10px;
+}
+.detail-txt{
+	margin-bottom: 10px;
+}
+
+
+/*chongzhi-detail.html*/
+.cz_list li{
+	border-bottom: 1px solid #ddd;
+}
+.cz_time{
+	float: left;
+	padding: 5px;
+}
+.cz_time span:nth-child(1){
+	font-size: 17px;
+	
+}
+.cz_time span:nth-child(3){
+	font-size: 12px;
+}
+.cz_img{
+	float: left;
+	padding: 14px 10px;
+}
+.cz_content{
+	padding: 5px;
+	font-size: 18px;
+	line-height: 22px;
+	float: left;
+}
+.cz_content p:nth-child(2){
+	color: #808080;
+	font-size: 12px;
+	line-height: 22px;
+}
+.cz_status{
+	padding: 5px;
+	font-size: 13px;
+	color: #666666;
+	line-height: 43px;
+	float: right;
+}
+
+
+/*yue.html*/
+.money-cacu{
+	font-size: 16px;
+	line-height: 30px;
+}
+.money-cacu span{
+	color: #F57452;
+	font-size: 20px;
+}
+
+
+/*login.html*/
+.remember{
+	padding: 10px 20px;
+	padding-bottom: 0px;
+}
+
+/*question.html*/
+.question-title{
+	text-align: center;
+	font-size: 16px;
+	margin-top: 10px;
+}
+
+/*class-schedule.html*/
+.week-list{
+	width:100%;
+	height:35px;
+	background: #EEEEEE;
+	position: fixed;
+	top:60px;
+}
+.week-list li{
+	display: inline-block;
+	width:11.7%;	
+}
+.week-list li p{
+	font-size: 14px;
+	line-height:35px;
+	color: #17556A;
+	text-align: center;
+}
+.week-list li:nth-child(1),.schedule-list td:nth-child(1){
+	width:6%;
+	font-size: 14px;
+	text-align: center;
+}
+.schedule-list{
+	background: white;
+	width:100%;
+	margin-top:35px;
+}
+.schedule-list p{
+	font-size: 13px;
+	text-align: center;
+}
+.schedule-list td{
+	width:11.7%;
+	height: 35px;
+	border-bottom: 1px dotted #eee;
+}
+.schedule-list td:nth-child(1){
+	background: #efefef;
+}

@@ -14,5 +14,7 @@ public interface ReadProdPictureMapper {
 	 public List<ProdPictures> getPictureByIDList(Map<String, Object> params);
 	 public List<ProdPictures> getPictureList(Map<String, Object> params);
 	 
+	 public List<ProdPictures> getPicturePhoneList();
+	 
 	 public int getPictureCount(Map<String, Object> params);
 }

@@ -13,6 +13,8 @@ public class SmBaseGlobal {
 	 * 统一的公司名称
 	 */
 	public static String CompanyName="杭州嘉念网络科技有限公司";
+	
+	public static String YouMenCode="";
 	/**
 	 * 当前的年度
 	 */
@@ -28,7 +30,7 @@ public class SmBaseGlobal {
 	public  static String  WebViewPath="views/web/";
 	public  static String  WebApyApiPath="views/api/";
 	/**
-	 * PCWeb的视图路径
+	 * 移动端的视图路径
 	 */
 	public  static String  MobileViewPath="views/mobiles/";
 	/**

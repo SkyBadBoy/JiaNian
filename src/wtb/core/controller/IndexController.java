@@ -66,6 +66,14 @@ public class IndexController extends BaseController {
 	@Autowired
 	WeNewsController WeNewsController;
 	
+	/**
+	 * 
+		 * 
+		 * @Author 作者：马健
+		 * @Phone  联系qq：1039510196
+		 * @CreateTime 创建时间：2017年11月12日 下午11:57:42 
+		 * @Details pc 管网
+	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView login(HttpServletResponse response, HttpServletRequest req, HttpSession session, Model model) {
 		//获取套餐详细表
@@ -81,7 +89,6 @@ public class IndexController extends BaseController {
 		map.put("Status", 1);
 		List<Comment> comments=ReadCommentService.getCommentList(map);
 		model.addAttribute("Comment1", comments);
-		
 		map=new HashMap<>();
 		map.put("Rand", SmBaseUtil.Random());
 		map.put("start", 4);
@@ -89,12 +96,36 @@ public class IndexController extends BaseController {
 		map.put("Status", 1);
 		comments=ReadCommentService.getCommentList(map);
 		model.addAttribute("Comment2", comments);
-		
-		
 		return new ModelAndView(SmBaseGlobal.JIANIANPC + "index");
+	}
+	/**
+	 * 
+		 * @Author 作者：马健
+		 * @Phone  联系qq：1039510196
+		 * @CreateTime 创建时间：2017年11月14日 上午11:51:16 
+		 * @Details 手机官网
+	 */
+	@RequestMapping(value = "/phoneIndex", method = RequestMethod.GET)
+	public ModelAndView phoneIndex(HttpServletResponse response, HttpServletRequest req, HttpSession session, Model model) {
+		//广告位图片
+		List<ProdPictures> pictures = ReadProdPicturesService.getPicturePhoneList();
+		model.addAttribute("ImageList", pictures);
+		
+		//获取评论10条
+		Map<String, Object> map = new HashMap<>();
+		map.put("Rand", SmBaseUtil.Random());
+		map.put("start", 0);
+		map.put("limit", 10);
+		map.put("Status", SmBaseGlobal.CheckStatus.Effective.getid());
+		List<Comment> comments=ReadCommentService.getCommentList(map);
+		model.addAttribute("Comment", comments);
+		return new ModelAndView(SmBaseGlobal.MobileViewPath + "phoneIndex");
 	}
 	
 
+	
+	
+	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public ModelAndView test(HttpServletResponse response, HttpServletRequest req, HttpSession session, Model model) throws IOException, SAXException, ParserConfigurationException, DocumentException {
 		/*********轻松装************/
@@ -170,38 +201,7 @@ public class IndexController extends BaseController {
 	}
 
 
-	@RequestMapping(value = "/WeNewsHome", method = RequestMethod.GET)
-	public ModelAndView WeNewsHome(HttpServletResponse response, HttpServletRequest req, HttpSession session, Model model) throws SocketException, UnknownHostException {
-		/**广告位*/
-		Map<String, Object> map = new HashMap<>();
-		map.put("Type", 2);
-		map.put("IsEnable", 1);
-		List<ProdPictures> pictures = ReadProdPicturesService.getPictureList(map);//获取广告位
-		model.addAttribute("ImageList", pictures);
-		model.addAttribute("_page_",1);
-		model.addAttribute("_isStu_", 0);
-		model.addAttribute("_pc_", "PC");
-		
-		/**侧栏的状态*/
-		model.addAttribute("flag", "Home");//用于侧栏的标记
-		
-		WeNewsController.WeNewsPCModel(model,req);
-		
-		return new ModelAndView(SmBaseGlobal.WeNewsPCViewPath + "WeNewsHome");
-	}
-	
-	@RequestMapping(value = "/noticesdetail", method = RequestMethod.GET)
-	public ModelAndView noticesdetail(HttpServletResponse response, HttpServletRequest req, HttpSession session, Model model) {
-		String pid = req.getParameter("pid");
-		Map<String, Object> responseMap = new HashMap<String, Object>();
-		responseMap.put("ID", pid);
-		List<Notices> lswe = ReadNoticesService.getReadNoticesList(responseMap);
-		if (lswe.size() > 0) {
-			model.addAttribute("Notices", lswe.get(0));
-		}
 
-		return new ModelAndView(SmBaseGlobal.WebViewPath + "noticesdetail");
-	}
 
 	@RequestMapping(value = "/Parsonhome", method = RequestMethod.GET)
 	public ModelAndView Parsonhome(HttpServletResponse response, HttpServletRequest req, HttpSession session, Model model) {

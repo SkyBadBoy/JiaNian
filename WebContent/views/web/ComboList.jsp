@@ -193,8 +193,6 @@
 			that.attributes['data-select'].value=1;
 			that.style.backgroundColor= "#23c6c8";
 		}
-		
-		
 	}
 	
 	var DataTable=$("#exampleTableEvents");

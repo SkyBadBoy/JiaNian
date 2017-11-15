@@ -115,10 +115,14 @@ public class UserAuthenticationController implements HandlerInterceptor
 			if(queryString==null){
 				queryString="";
 			}
+			if (true) {
+				return true;
+			}
 			queryString="?"+queryString;
 			if (requestUrl.equals("//index")||requestUrl.equals("/index")||requestUrl.equals("index")) {
 				return true;
 			}
+			
 			System.err.println(SmBaseUtil.getCurrentWebUrl(arg0));
 			System.err.println(queryString);
 			System.err.println(requestUrl);

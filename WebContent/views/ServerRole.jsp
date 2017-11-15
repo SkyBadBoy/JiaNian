@@ -122,7 +122,7 @@
 </div>
 <!-- 友盟统计代码 begin -->
 <%@ include file="../cs.jsp" %>
-<%CS cs = new CS(1260405162);cs.setHttpServlet(request,response);
+<%CS cs = new CS(1269379638);cs.setHttpServlet(request,response);
 String imgurl = cs.trackPageView();%> 
 <img src="<%= imgurl %>" width="0" height="0"  />
 <!-- 友盟统计代码 end -->

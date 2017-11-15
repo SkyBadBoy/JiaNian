@@ -585,7 +585,7 @@
 		<script src="<%=basePath %>js/jianianpc/jquery.ajaxchimp.min.js"></script>
 		<script src="<%=basePath %>js/jianianpc/script.js"></script>
 		<script src="<%=basePath %>js/jianianpc/swwetalert.min.js"></script>
-	<!-- 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+		<jsp:include page="/include/commonStatistics.jsp"></jsp:include>
 		<script type="text/javascript">
 			function a(){
 				console.log("asdf");
