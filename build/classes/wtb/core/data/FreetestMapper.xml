@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wtb.core.data.FreetestMapper">
+  <!--mybatis ehcache缓存配置 -->
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+	<!-- search result -->
+	<resultMap id="freetest" type="wtb.core.model.Freetest">
+		<result property="freetestId" column="freetest_id" />
+		<result property="freetestUserid" column="freetest_userid" />
+		<result property="freetestPhone" column="freetest_phone" />
+		<result property="freetestContent" column="freetest_content" />
+		<result property="freetestStatus" column="freetest_status" />
+		<result property="freetestCreatetime" column="freetest_createTime" />
+		<result property="freetestModifytime" column="freetest_modifyTime" />
+		<result property="freetestType" column="freetest_type" />
+		<result property="freetestReply" column="freetest_reply" />
+	</resultMap>
+	
+	
+<sql id="sql">
+	freetest_id,freetest_userid,freetest_phone,freetest_content,freetest_status,freetest_createTime,freetest_modifyTime,freetest_type,freetest_reply
+</sql>
+<sql id="where">
+	1=1 
+	<if test="freetest_id!=null">
+				 and freetest_id = ${freetest_id}
+</if>
+<if test="freetest_userid!=null">
+				 and freetest_userid = ${freetest_userid}
+</if>
+<if test="freetest_phone!=null">
+				 and freetest_phone = ${freetest_phone}
+</if>
+<if test="freetest_content!=null">
+				 and freetest_content = ${freetest_content}
+</if>
+<if test="freetest_status!=null">
+				 and freetest_status = ${freetest_status}
+</if>
+<if test="freetest_createTime!=null">
+				 and freetest_createTime = ${freetest_createTime}
+</if>
+<if test="freetest_modifyTime!=null">
+				 and freetest_modifyTime = ${freetest_modifyTime}
+</if>
+<if test="freetest_type!=null">
+				 and freetest_type = ${freetest_type}
+</if>
+<if test="freetest_reply!=null">
+				 and freetest_reply = ${freetest_reply}
+</if>
+
+</sql>
+	
+
+	<select id="FindByFreetestId" resultType="wtb.core.model.Freetest"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM wtb_freetest
+		<where>
+			freetest_id = #{_parameter} 
+		</where>
+	</select>
+
+	<select id="FindFreetestsByCondition"  resultMap="freetest"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="sql"></include>
+		FROM wtb_freetest
+		<where>
+			<include refid="where"></include>
+		</where>
+		order by freetest_id asc
+		
+		<if test="limit != null and start !=null ">
+			limit ${start},${limit} 
+		</if>
+	</select>
+
+<select id="getCountByCondition" parameterType="map" resultType="int">
+	SELECT
+		Count(1)
+		FROM wtb_freetest
+		<where>
+			<include refid="where"></include>
+		</where>
+		
+</select>
+
+	<!-- insert sql -->
+	<insert id="addFreetest" parameterType="wtb.core.model.Freetest"  keyProperty="ID" useGeneratedKeys="true">
+		insert into wtb_freetest(freetest_id,freetest_userid,freetest_phone,freetest_content,freetest_status,freetest_createTime,freetest_modifyTime,freetest_type,freetest_reply)
+		values(
+${freetestId},${freetestUserid},'${freetestPhone}','${freetestContent}',${freetestStatus},now(),now(),${freetestType},'${freetestReply}')
+	</insert>
+
+
+	<update id="UpdateFreetest"
+		parameterType="wtb.core.model.Freetest">
+		update wtb_freetest set freetest_id = ${freetestId},freetest_userid = ${freetestUserid},freetest_phone = ${freetestPhone},freetest_content = ${freetestContent},freetest_status = ${freetestStatus},freetest_modifyTime = now(),freetest_type = ${freetestType},freetest_reply = ${freetestReply}
+		<where>
+			<include refid="where"></include>
+		</where>
+	</update>
+
+
+
+	<delete id="DeleteFreetestById"
+		parameterType="wtb.core.model.Freetest">
+		update wtb_freetest set status=88
+		<where>
+			<include refid="where"></include>
+		</where>
+	</delete>
+
+	<delete id="EnabledFreetestById"
+		parameterType="wtb.core.model.Freetest">
+		update wtb_freetest set status=1
+		<where>
+			<include refid="where"></include>
+		</where>
+	</delete>
+</mapper>

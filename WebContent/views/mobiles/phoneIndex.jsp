@@ -47,7 +47,7 @@
 		<div class="menu">
 			<ul class="clearfix">
 				<li>
-					<a href="<%=basePath %>Flow/phoneFree?Rand=<%=SmBaseUtil.Random() %>">
+					<a href="<%=basePath %>Free/phoneFree?Rand=<%=SmBaseUtil.Random() %>">
 						<img src="<%=basePath %>images/jianian/icon1.png" >
 						<p class="menu-txt">免费试学</p>
 					</a>
@@ -124,24 +124,24 @@
 					</dd>
 				</a>
 			</c:forEach>
-			<a href="evaluate.html"><dt class="dt_ev"><span class="news-title">查看更多</span></dt></a>
+			<a href="<%=basePath %>Comment/phoneComment?Rand=<%=SmBaseUtil.Random() %>"><dt class="dt_ev"><span class="news-title">查看更多</span></dt></a>
 		</dl>
 		<div class="footer">
 			<ul class="footer-page clearfix">
 				<li class="page-item active">
-					<a href="index.html">
+					<a href="#">
 						<i class="iconfont icon-index"></i>
 						<p>首页</p>
 					</a>
 				</li>
 				<li class="page-item">
-					<a href="apply.html">
+					<a href="<%=basePath %>ApplyList/phoneApply?Rand=<%=SmBaseUtil.Random() %>">
 						<i class="iconfont icon-computer"></i>
 						<p>报名</p>
 					</a>
 				</li>
 				<li class="page-item">
-					<a href="user-center.html">
+					<a href="<%=basePath %>Students/phoneUserCenter?Rand=<%=SmBaseUtil.Random() %>">
 						<i class="iconfont icon-person1"></i>
 						<p>我的</p>
 					</a>

@@ -157,7 +157,10 @@
 	                            </li>  
 	                             <li>
 	                          	  <a class="J_menuItem" href="<%=path%>/Comment/CommentList?sina=<%= SmBaseUtil.Random() %>">评论管理</a>
-	                            </li>     
+	                            </li>   
+	                             <li>
+	                          	  <a class="J_menuItem" href="<%=path%>/Comment/CommentList?sina=<%= SmBaseUtil.Random() %>">免费试学管理</a>
+	                            </li>      
 	                        </ul>
 	                    </li>
 	               <%--      <li>

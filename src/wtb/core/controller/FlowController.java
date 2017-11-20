@@ -21,11 +21,6 @@ public class FlowController extends BaseController {
 		return new ModelAndView(SmBaseGlobal.MobileViewPath + "phoneFlow");
 	}
 	
-	@RequestMapping(value = "/phoneFree", method = RequestMethod.GET)
-	public ModelAndView phoneFree(HttpServletResponse response, HttpServletRequest request, HttpSession session) {
-		return new ModelAndView(SmBaseGlobal.MobileViewPath + "phoneFree");
-	}
-	
 	@RequestMapping(value = "/phonePlace", method = RequestMethod.GET)
 	public ModelAndView phonePlace(HttpServletResponse response, HttpServletRequest request, HttpSession session) {
 		return new ModelAndView(SmBaseGlobal.MobileViewPath + "phonePlace");

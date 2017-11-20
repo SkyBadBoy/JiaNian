@@ -96,8 +96,9 @@
         <exception-type>java.lang.Throwable</exception-type>   
         <location>/include/500.jsp</location>   
     </error-page>  
- <listener>
+    <!-- 关闭定时器 -->
+  <listener>
     <listener-class>wtb.smUtil.WeNewsListen</listener-class>
-  </listener>
+  </listener> 
   
 </web-app>

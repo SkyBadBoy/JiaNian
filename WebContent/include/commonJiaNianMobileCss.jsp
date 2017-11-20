@@ -7,16 +7,18 @@
 <%
 	String path = request.getContextPath();
 	String basePath = SmBaseUtil.getProjectBaseUrl(request);
+	String version="1.0.0";
 %>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="description" content="人人学车--马健">
-<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/slick.css" />
-<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/base.css" />
-<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/style.css" />
-<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/swiper.min.css" />
-<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/iconfont/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/index.css?version=1.0.0" />
+<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/slick.css?v=<%=version %>" />
+<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/base.css?v=<%=version %>" />
+<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/style.css?v=<%=version %>" />
+<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/swiper.min.css?v=<%=version %>" />
+<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/iconfont/iconfont.css?v=<%=version %>" />
+<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/index.css?version=1.0.0?v=<%=version %>" />
+<link rel="stylesheet" type="text/css" href="<%=basePath %>css/jianian/iosLoading.css?Rand=<%=SmBaseUtil.Random() %>" /> 
 
 
 	

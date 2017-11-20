@@ -30,11 +30,11 @@
 				<fieldset>
 					<div class="formFieldWrapper">
 						<label for="contactMessage">预约手机</label>
-						<input type="text" placeholder="请输入预约手机号" name="contactTitle" value="" class="contactField requiredField" id="contactTitle" data-placeholder="" />
+						<input id="phone" type="text" placeholder="请输入预约手机号" name="contactTitle" value="" class="contactField requiredField" id="contactTitle" data-placeholder="" />
 					</div>
 					<div class="formTextareaWrapper">
 						<label for="contactMessage">预约建议</label>
-						<textarea name="contactMessage" class="contactTextarea requiredField" id="contactMessage"></textarea>
+						<textarea id="content" name="contactMessage" class="contactTextarea requiredField" id="contactMessage"></textarea>
 					</div>
 				
 		</div>
@@ -43,7 +43,7 @@
 
 		</div>
 	<div class="confirm">
-		<a href="javascript:;" id="send_btn">立即预约</a>
+		<a href="javascript:;" id='Apply'>立即预约</a>
 	</div>
 		<!--消息提示-->
 		<div class="pop-msg">
@@ -58,8 +58,40 @@
 				<div class="popup text-default"></div>
 			</div>
 		</div>
-	</body>
 	
+	</body>
 	<jsp:include page="/include/commonJiaNianMobileJs.jsp" /> 
+	<script type="text/javascript">
+	
+	$("#Apply").click(function(){
+	    $.ajax({
+	        type: "POST",
+	        url: "phoneFree",
+	        data:{
+	        		Phone:$("#phone").val(),
+	        		Content:$('#content').val()
+	        },
+	        beforeSend: function () {
+	        		Loading();
+	        },
+	        success: function (json) {
+	        	console.log(json)
+	        	 NoLoading();
+	        	// mui.toast(json.Message);
+	        	 if (json.Status) {
+	        		// window.location.href="phoneInfo";
+			 }else{
+				 
+			 }
+	        },
+	        error: function (err) {
+	      	  	NoLoading();
+	    		}
+	    });
+		
+	})
+	
+
+	</script>
 
 </html>

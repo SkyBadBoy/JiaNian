@@ -104,7 +104,21 @@ public class StudentsController extends BaseController {
 	private static String Register = SmBaseGlobal.XBLoginOrRegister;
 	SmBaseUtil amBaseUtil = SmBaseUtil.getInstance();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+	
+	/**
+	 * 
+		 * 
+		 * @Author 作者：马健
+		 * @Phone  联系qq：1039510196
+		 * @CreateTime 创建时间：2017年11月18日 上午11:21:30 
+		 * @Details 个人中心
+	 */
+	@RequestMapping(value = "/phoneUserCenter", method = RequestMethod.GET)
+	public ModelAndView phoneUserCenter( HttpServletResponse response,HttpServletRequest req, HttpSession session, Model model) throws IOException {
+		return new ModelAndView(SmBaseGlobal.MobileViewPath + "phoneUserCenter");
+	}
+	
+	
 	@RequestMapping(value = "/phoneRegister", method = RequestMethod.GET)
 	public ModelAndView addWeChatPublic(@ModelAttribute("StudentsForm") Students Students, BindingResult result, HttpServletResponse response,
 			HttpServletRequest req, HttpSession session, Model model) throws IOException {

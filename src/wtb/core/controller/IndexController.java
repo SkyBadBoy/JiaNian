@@ -115,10 +115,15 @@ public class IndexController extends BaseController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("Rand", SmBaseUtil.Random());
 		map.put("start", 0);
-		map.put("limit", 10);
+		map.put("limit", 5);
 		map.put("Status", SmBaseGlobal.CheckStatus.Effective.getid());
 		List<Comment> comments=ReadCommentService.getCommentList(map);
 		model.addAttribute("Comment", comments);
+		
+		map=new HashMap<>();
+		map.put("ID", "367");
+		List<Students> students=ReadStudentsService.getStudentsList(map);
+		SmBaseUtil.CreateSession("StudentName", students.get(0), req, session, response);
 		return new ModelAndView(SmBaseGlobal.MobileViewPath + "phoneIndex");
 	}
 	

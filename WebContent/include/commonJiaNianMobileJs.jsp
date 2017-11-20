@@ -8,7 +8,7 @@
 	String basePath = SmBaseUtil.getProjectBaseUrl(request);
 	String version=SmBaseUtil.Random();
 %>
-
+<div class="popupDom" id="loadingDom"></div>
 <script src="<%=basePath%>js/jianian/jquery.min.js?v=<%=version %>"></script>
 <script src="<%=basePath%>js/jianian/fastclick.js?v=<%=version %>"></script>
 <script src="<%=basePath%>js/jianian/slick.min.js?v=<%=version %>"></script>
@@ -18,6 +18,8 @@
 <script src="<%=basePath%>js/jianian/index.js?v=<%=version %>"></script>
 <script type="text/javascript" src="<%=basePath%>js/jianian/plugins/lazyload/jquery.lazyload.js?v=<%=version %>"></script>
 <script type="text/javascript" src="<%=basePath%>js/jianian/plugins/updown/updown.js?v=<%=version %>"></script>
+<script type="text/javascript" src="<%=basePath %>js/jianian/iosLoading.js?v=<%=version %>"></script>
+<script type="text/javascript" src="<%=basePath %>js/jianian/iosLoadingspin.min.js?v=<%=version %>"></script>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>  
 <jsp:include page="/include/commonStatistics.jsp"></jsp:include>
 <script type="text/javascript">

@@ -16,6 +16,7 @@ import read.core.service.ReadLotteryStatuService;
 import read.core.service.ReadPrizesService;
 import read.core.service.ReadRedPacketService;
 import read.core.service.ReadRollsService;
+import wtb.core.model.Freetest;
 import wtb.core.model.NoticesTemp;
 import wtb.core.model.Students;
 import wtb.core.model.Users;
@@ -33,6 +34,7 @@ import wtb.core.service.ErrorLogService;
 import wtb.core.service.ErrorSendService;
 import wtb.core.service.ErrorStatService;
 import wtb.core.service.FeedbackService;
+import wtb.core.service.FreetestService;
 import wtb.core.service.GameQuestionService;
 import wtb.core.service.HonorRecordService;
 import wtb.core.service.IntegrationService;
@@ -99,6 +101,8 @@ public class BaseController { // 基础控制器
 
 	@Autowired
 	protected ComboService ComboService;
+	@Autowired
+	protected FreetestService FreetestService;
 	
 	
 	@Autowired

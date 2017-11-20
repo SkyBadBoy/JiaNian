@@ -168,6 +168,33 @@ public class SmBaseGlobal {
 		public abstract int getid();
 	}
 	
+	/**
+	 * 
+	 * @author MaJian
+	 * 
+	 */
+	public enum FreeTestType {
+		/** 正在预约*/
+		Nowing {
+			public int getid() {
+				return 1;
+			}
+		},	
+		/** 预约通过*/
+		Pass {
+			public int getid() {
+				return 2;
+			}
+		},
+		/** 预约失败*/
+		NoPass {
+			public int getid() {
+				return 3;
+			}
+		};
+		public abstract int getid();
+	}
+	
 	
 	/**
 	 * 状态类型 

@@ -25,7 +25,7 @@ public class WeNewsListen implements ServletContextListener,HttpSessionListener 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		try {
-			
+		System.err.println("定时器启动");	
 			
 		Calendar calendar = Calendar.getInstance();
 	    int year = calendar.get(Calendar.YEAR);

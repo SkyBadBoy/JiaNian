@@ -122,7 +122,6 @@ public class UserAuthenticationController implements HandlerInterceptor
 			if (requestUrl.equals("//index")||requestUrl.equals("/index")||requestUrl.equals("index")) {
 				return true;
 			}
-			
 			System.err.println(SmBaseUtil.getCurrentWebUrl(arg0));
 			System.err.println(queryString);
 			System.err.println(requestUrl);
@@ -133,7 +132,6 @@ public class UserAuthenticationController implements HandlerInterceptor
 			if(retUrl!=null && !retUrl.isEmpty()){
 				arg0.getSession().setAttribute("returnURL", retUrl);
 			}
-			
 			/** 
 			 * 例外放行
 			 */

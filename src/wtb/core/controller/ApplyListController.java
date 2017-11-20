@@ -113,6 +113,21 @@ public class ApplyListController extends BaseController {
 		return new ModelAndView(SmBaseGlobal.WebViewPath + "ApplyList");
 	}
 	
+	/**
+	 * 
+		 * 
+		 * @Author 作者：马健
+		 * @Phone  联系qq：1039510196
+		 * @CreateTime 创建时间：2017年11月18日 上午12:09:41 
+		 * @Details 手机报名总列表
+	 */
+	@RequestMapping(value = "/phoneApply", method = RequestMethod.GET)
+	public ModelAndView phoneApply(HttpServletResponse response, HttpServletRequest request, HttpSession session, Model model) {
+		return new ModelAndView(SmBaseGlobal.MobileViewPath + "phoneApply");
+	}
+	
+	
+	
 	@RequestMapping(value = "/phoneAreaManageApply", method = RequestMethod.GET)
 	public ModelAndView phoneAreaManageApply(HttpServletResponse response, @ModelAttribute("ApplyListForm") ApplyList ApplyList, BindingResult result,
 			HttpServletRequest req, HttpSession session, Model model) {
